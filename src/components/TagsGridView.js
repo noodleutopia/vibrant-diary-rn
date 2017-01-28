@@ -149,7 +149,7 @@ render() {
     console.log('标记' + this.state.selected);
     if(this.state.selected) {
       return (<Image
-        style={[{width: 24, height: 24, alignSelf: 'flex-end', marginTop: 15, marginRight: 5}, this.props.imageStyle]}
+        style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
         source={require('../../res/images/ic_polular.png')}
         />);
     }
