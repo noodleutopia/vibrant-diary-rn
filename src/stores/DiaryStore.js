@@ -6,7 +6,7 @@ import Realm from 'realm';
 import React from 'react-native';
 import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
 
-const DAIRY_KEY = 'xiaomubiao-tag';
+const DAIRY_KEY = 'xiaomubiao-diary';
 
 var realm = null;
 class DiaryStore extends Reflux.Store {
@@ -18,12 +18,13 @@ class DiaryStore extends Reflux.Store {
     this.state = {diarys: []}; // <- set store's default state much like in React
     this._diarys = [];
     // this.createTag('testTag-1');
-    // this._loadDiarys().done();
+    this._loadDiarys().done();
     this.listenTo(DiaryActions.createDiary, this.createDiary); // listen to the statusUpdate action
     // this.listenTo(DiaryActions.deleteTag, this.deleteTag);
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
     // this.deleteTag(1);
     // this.createTag('testTag-1');
+    this.maxId = -1;
     // this.emit();
   }
 
@@ -32,13 +33,13 @@ class DiaryStore extends Reflux.Store {
       // var val = await AsyncStorage.getItem(TAG_KEY);
       // this.realm = new Realm({schema: TagSchema});
       var val = await realm.objects(DiarySchema.name);
-      if (val !== null) {
+      if (val !== null && val.length > 0) {
         this._diarys = val;
-        console.info('all tags: ' + val.length);
-        let sortedDiarys = val.sorted(DiarySchema.properties.date);
+        console.info('all diarys: ' + val.length);
+        let sortedDiarys = val.sorted('id');
         this.maxId = val.length>0 ? sortedDiarys[val.length-1].id : -1; //maxId 是当前最大的ID，再加入新tag则自增
         console.info('maxId: ' + this.maxId);
-        // this.emit();
+        this.emit();
       }
       else {
         console.info(`${DAIRY_KEY} not found on disk.`);

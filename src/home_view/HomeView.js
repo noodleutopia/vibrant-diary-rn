@@ -11,7 +11,8 @@ import TopBar from '../components/TopBar';
 import BottomBar from '../components/BottomBar';
 import TagsGridView from '../components/TagsGridView';
 import colors from '../styles/colors';
-import TagStore from '../stores/TagStore';
+import DiaryStore from '../stores/DiaryStore';
+// import TagStore from '../stores/TagStore';
 import {TagActions} from '../AllActions';
 import Reflux from 'reflux';
 
@@ -24,11 +25,11 @@ class HomeView extends Reflux.Component {
 		this.state = {
 			// selectedTags: [],
 		}; // our store will add its own state to the component's
-		// this.store = TagStore; // <- just assign the store class itself
+		// this.store = DiaryStore;
 	}
 
 	//点击事件处理
-	_onPress=()=>{
+	_onPress(){
 		console.log('点击了完成按钮');
 		// console.log('选择的标签有： ' + this.refs.tagsGridView.getAllSelectedTags().length);
 		// this.setState({selectedTags: this.refs.tagsGridView.getAllSelectedTags()});
@@ -37,7 +38,7 @@ class HomeView extends Reflux.Component {
 		this.props.createNewDiary(selectedTags);
 	}
 
-	onPressBottom = (tab) =>{
+	onPressBottom(tab){
 		console.log('进入homeview: ' + tab);
 		this.props._onPBottom(tab);
 	}
@@ -52,7 +53,7 @@ class HomeView extends Reflux.Component {
 	}
 
 	render() {
-		console.log('render home view here...');
+		// console.log('render home view here...' + 'all diarys: ' + this.state.diarys.length);
 		return(
 			<View style={{flex: 1}}>
 				<TopBar handleTopPress={this.onPressTop}/>
@@ -63,9 +64,9 @@ class HomeView extends Reflux.Component {
 						<Button onPress={()=>this._addTag()} style={homeStyles.addButton}/>
 					</View>
 					</ScrollView>
-					<Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={this._onPress}/>
+					<Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={()=>this._onPress()}/>
 				</View>
-				<BottomBar handleBottomPress={this.onPressBottom}/>
+				<BottomBar handleBottomPress={(tab)=>this.onPressBottom(tab)}/>
 			</View>
 		);
 	}

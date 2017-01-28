@@ -8,8 +8,15 @@ import{
 import Button from '../components/Button';
 import BottomBar from './BottomBar'
 import {PAGES} from '../xiaomubiao'
+import DiaryStore from '../stores/DiaryStore';
+import Reflux from 'reflux';
 import {BOTTOM_TAB} from './BottomBar'
-class PreviewView extends Component {
+class PreviewView extends Reflux.Component {
+
+  constructor(props) {
+    super(props);
+    this.store = DiaryStore;
+  }
 
   onPressBottom = (tab) =>{
 		console.log('preview bottom: ' + tab);
@@ -33,6 +40,8 @@ class PreviewView extends Component {
 
   render() {
     console.log('render DataAnalyzeView view here...');
+    console.log('all diarys: ' + this.state.diarys.length);
+
     return(
       <View style={{flex: 1}}>
         <View style={styles.container}>

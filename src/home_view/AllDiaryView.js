@@ -6,7 +6,18 @@ import{
 } from 'react-native';
 
 import Button from '../components/Button';
+import Reflux from 'reflux';
+import DiaryStore from '../stores/DiaryStore';
+
 class AllDiaryView extends Component {
+
+  constructor(props) {
+    super(props);
+    this.allQuestions = [];
+    this.state = {};
+    this.store = DiaryStore;
+    // this.storeKeys = ['diarys'];
+  }
 
   render() {
     console.log('render AllDiaryView view here...');

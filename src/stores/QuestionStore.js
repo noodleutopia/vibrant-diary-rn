@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {QuestionActions} from './../AllActions';
 import Realm from 'realm';
 import React from 'react-native';
-import {QuestionSchema, TagSchema} from './../data/AllSchema'
+import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
 
 const QUESTION_KEY = 'xiaomubiao-question';
 
@@ -149,7 +149,7 @@ class QuestionStore extends Reflux.Store{
   emit(tagId) {
     // this._writeCards().done();
     // this.trigger(this._tags);
-    console.log('emit tag: ' + this.state.tagId);
+    console.log('emit tag: ' + tagId);
     this.setState({questions: this._questions.slice(), tagId: tagId});
   }
 }

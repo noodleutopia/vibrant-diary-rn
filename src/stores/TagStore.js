@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {TagActions} from './../AllActions';
 import Realm from 'realm';
 import React from 'react-native';
-import {QuestionSchema, TagSchema} from './../data/AllSchema'
+import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
 
 var { AsyncStorage } = React;
 
@@ -16,7 +16,7 @@ class TagStore extends Reflux.Store {
   {
     super();
     console.log('TagStore');
-    realm = new Realm({schema: [TagSchema, QuestionSchema]});
+    realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
     this.state = {tags: []}; // <- set store's default state much like in React
     this._tags = [];
     // this.createTag('testTag-1');

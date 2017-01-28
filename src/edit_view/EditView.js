@@ -29,7 +29,7 @@ class EditView extends Component {
     this.state = { 
       keyboardShow: false,
       keyboardHeight: 0,
-      text: this.props.question.answer,};
+      text: this.props.answer,};
   }
 
   componentWillMount () {

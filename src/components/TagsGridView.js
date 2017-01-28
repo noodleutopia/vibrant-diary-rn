@@ -30,13 +30,12 @@ class TagsGridView extends Reflux.Component {
       // ]),
       // tags: props.tags,
       // selectedTags: [1,2,3],
-      data: [],
+
     };
+    this.data = [];
     // this.selectedTags = new Map();
     console.log('TagsGridView');
     this.store = TagStore; // <- just assign the store class itself
-    // this.stores = [QuestionStore, TagStore];
-    // this.storeKeys = ['tags', 'questions'];
   }
 
   componentDidMount() {
@@ -48,8 +47,6 @@ class TagsGridView extends Reflux.Component {
 
   componentWillReceiveProps() {
     console.log('homeview will update');
-
-    // this.store = TagStore;
     // TagActions.getAllTags();
   }
 
@@ -63,14 +60,18 @@ class TagsGridView extends Reflux.Component {
   }
 
   render() {
-    
+    this.data = Array.prototype.slice.call(this.state.tags);
+    if(this.data == null) {
+      this.data = [];
+      console.log('tag get PROS');
+    }
     this.test();
     return (
       <GridView
         // contentContainerStyle={styles.list}
         itemStyle={styles.list}
         //这里的tags是TagStore传来的。将具有length属性的对象转成数组
-        data={Array.prototype.slice.call(this.state.tags)}
+        data={this.data}
         dataSource={null}
         renderItem={this.renderRow}
         itemsPerRow={itemsPerRow}
@@ -78,7 +79,7 @@ class TagsGridView extends Reflux.Component {
     );
   }
 
-  test=()=> {
+  test(){
     // let test = Array.prototype.slice.call(this.state.tags);
         let test = this.state.tags;
 

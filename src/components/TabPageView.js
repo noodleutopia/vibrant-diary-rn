@@ -14,6 +14,7 @@ import GridView from '../components/GridView';
 import {PAGES} from '../xiaomubiao';
 import Reflux from 'reflux';
 import QuestionStore from '../stores/QuestionStore';
+import DiaryStore from '../stores/DiaryStore';
 // import TagStore from '../stores/TagStore';
 import {QuestionActions} from '../AllActions';
 import QAItem from '../components/QAItem';
@@ -27,13 +28,13 @@ class TabPageView extends Reflux.Component {
       data: [],
       answers: [],
     };
-    console.log('加载问题的tag: ' + props.tagId);
+    console.log('加载问题的tag: ' + props.tagId + props.tabLabel);
     // QuestionActions.createQuestion(props.tagId, "first question ? "+ props.tagId);
     this.store = QuestionStore;
   }
 
   componentWillMount() {
-    super.componentWillMount.call(this);
+    super.componentWillMount();
     console.log('componentWillMount');
   }
 
@@ -72,6 +73,10 @@ class TabPageView extends Reflux.Component {
           }
       }
     });
+  }
+
+  getAllQuestions() {
+    return this.state.data;
   }
 
   render() {
