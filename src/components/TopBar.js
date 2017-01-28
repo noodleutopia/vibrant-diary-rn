@@ -6,9 +6,22 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-class TopBar extends Component {
+import DateStore from '../stores/DateStore';
+import Reflux from 'reflux';
+
+class TopBar extends Reflux.Component {
+
+  constructor(props)
+	{
+		super(props);
+		this.state = {
+			// selectedTags: [],
+		}; // our store will add its own state to the component's
+		this.store = DateStore;
+	}
   
   render() {
+    let _date = this.state.date;  //这里的date是DateStore中插入的
     let opacity = this.props.disabled ? 1 : 0.5;
     return(
       <TouchableOpacity
@@ -16,12 +29,28 @@ class TopBar extends Component {
         onPress={this.props.handleTopPress}
         style={[this.props.style]}>
         <View style={topBarStyles.container}>
-          <Text style={topBarStyles.date}>日期</Text>
+          <Text style={topBarStyles.date}>{_date.getFullYear()}年{_date.getMonth()+1}月{_date.getDate()}日{'\n'+this.getXingqi(_date.getDay())}</Text>
           <Text style={topBarStyles.mood}>心情</Text>
           <Text style={topBarStyles.temprature}>天气</Text>
         </View>
       </TouchableOpacity>
     );
+  }
+
+  //获得星期数
+  getXingqi(day) {
+    let xingqi = '';
+    switch(day) {
+      case 0:xingqi="星期日";break; 
+      case 1:xingqi="星期一";break; 
+      case 2:xingqi="星期二";break; 
+      case 3:xingqi="星期三";break; 
+      case 4:xingqi="星期四";break; 
+      case 5:xingqi="星期五";break; 
+      case 6:xingqi="星期六";break; 
+      default:xingqi="系统错误！" 
+    }
+    return xingqi;
   }
 }
 

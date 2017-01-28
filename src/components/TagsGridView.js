@@ -45,10 +45,10 @@ class TagsGridView extends Reflux.Component {
     // }
   }
 
-  componentWillReceiveProps() {
-    console.log('homeview will update');
-    // TagActions.getAllTags();
-  }
+  // componentWillReceiveProps() {
+  //   console.log('homeview will update');
+  //   // TagActions.getAllTags();
+  // }
 
   addTag(id) {
     console.log('addTag: ' + id);

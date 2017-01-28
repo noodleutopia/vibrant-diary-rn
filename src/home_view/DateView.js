@@ -8,25 +8,29 @@ import{
 
 import Button from '../components/Button';
 import GridView from '../components/GridView';
-import DateTimePicker from 'react-native-modal-datetime-picker'
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import {DateActions} from '../AllActions';
+import Reflux from 'reflux';
+import DateStore from '../stores/DateStore'
 
 const itemsPerRow = 3;
 
 // Use data from an array...
-const data = Array(20)
+const tianqiData = ['晴','阴','雨','雪','多云'];
+
+const xinqingData = Array(20)
   .fill(null)
   .map((item, index) => index + 1);
   
-class DateView extends Component {
+class DateView extends Reflux.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      date: new Date(),
-      
+      // date: new Date(),
       isDateTimePickerVisible: false
-    }
-    console.log('today: ' + this.state.date);
+    };
+    this.store = DateStore;
   }
 
    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true })
@@ -38,7 +42,7 @@ class DateView extends Component {
             ' ' +
             date.toLocaleTimeString())
     this._hideDateTimePicker()
-    this.setState({date: date});
+    DateActions.updateDate(date);
   }
 
   // _onPress = this.props.quit;
@@ -48,6 +52,7 @@ class DateView extends Component {
         return this._showDateTimePicker;
         break;
         case 'done':
+        DateActions.writeAll();
         return this.props.quit;
       }
     };
@@ -55,8 +60,7 @@ class DateView extends Component {
 
   render() {
     console.log('render DateView view here...');
-    let _date = this.state.date;
-    console.log('date here: ' + _date);
+    let _date = this.state.date;  //这里的date是DateStore中插入的
     return(
       <View style={styles.container}>
         <View>
@@ -74,19 +78,19 @@ class DateView extends Component {
         </TouchableOpacity>
         <Text style={styles.title}>天气</Text>
         <GridView
-          data={data}
+          data={tianqiData}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
             return (
-              <View style={{ flex: 1, backgroundColor: '#8F8', borderWidth: 1 }}>
+              <View style={{ flex: 1,height:30, backgroundColor: '#8F8', borderWidth: 1 }}>
                 <Text>{`${item} (${sectionID}-${rowID}-${itemIndex}-${itemID})`}</Text>
               </View>
             );
         }}/>
         <Text style={styles.title}>心情</Text>
         <GridView 
-          data={data}
+          data={xinqingData}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {

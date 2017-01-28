@@ -11,7 +11,6 @@ import TabPageView from '../components/TabPageView';
 import {DiaryActions} from '../AllActions';
 
 class NewDiaryView extends Component {
-// class NewDiaryView extends Component {
 
   constructor(props) {
     super(props);

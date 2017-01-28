@@ -18,7 +18,7 @@ class DiaryStore extends Reflux.Store {
     this.state = {diarys: []}; // <- set store's default state much like in React
     this._diarys = [];
     // this.createTag('testTag-1');
-    this._loadDiarys().done();
+    this._loadDiarys();
     this.listenTo(DiaryActions.createDiary, this.createDiary); // listen to the statusUpdate action
     // this.listenTo(DiaryActions.deleteTag, this.deleteTag);
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
@@ -28,11 +28,11 @@ class DiaryStore extends Reflux.Store {
     // this.emit();
   }
 
-  async _loadDiarys() {
+   _loadDiarys() {
     try {
       // var val = await AsyncStorage.getItem(TAG_KEY);
       // this.realm = new Realm({schema: TagSchema});
-      var val = await realm.objects(DiarySchema.name);
+      var val = realm.objects(DiarySchema.name);
       if (val !== null && val.length > 0) {
         this._diarys = val;
         console.info('all diarys: ' + val.length);

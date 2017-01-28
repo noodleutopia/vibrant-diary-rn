@@ -20,7 +20,7 @@ class TagStore extends Reflux.Store {
     this.state = {tags: []}; // <- set store's default state much like in React
     this._tags = [];
     // this.createTag('testTag-1');
-    this._loadTags().done();
+    this._loadTags();
     this.listenTo(TagActions.createTag, this.createTag); // listen to the statusUpdate action
     this.listenTo(TagActions.deleteTag, this.deleteTag);
     this.listenTo(TagActions.getAllTags, this._loadTags);
@@ -29,11 +29,11 @@ class TagStore extends Reflux.Store {
     // this.emit();
   }
 
-  async _loadTags() {
+  _loadTags() {
     try {
       // var val = await AsyncStorage.getItem(TAG_KEY);
       // this.realm = new Realm({schema: TagSchema});
-      var val = await realm.objects(TagSchema.name);
+      var val = realm.objects(TagSchema.name);
       if (val !== null) {
         this._tags = val;
         console.info('all tags: ' + val.length);

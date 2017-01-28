@@ -12,12 +12,13 @@ import BottomBar from '../components/BottomBar';
 import TagsGridView from '../components/TagsGridView';
 import colors from '../styles/colors';
 import DiaryStore from '../stores/DiaryStore';
+import DateStore from '../stores/DateStore';
 // import TagStore from '../stores/TagStore';
 import {TagActions} from '../AllActions';
 import Reflux from 'reflux';
 
 var selectedTags = [];
-class HomeView extends Component {
+class HomeView extends Reflux.Component {
 
 	constructor(props)
 	{
@@ -25,7 +26,7 @@ class HomeView extends Component {
 		this.state = {
 			// selectedTags: [],
 		}; // our store will add its own state to the component's
-		// this.store = DiaryStore;
+		// this.store = DateStore;
 	}
 
 	//点击事件处理

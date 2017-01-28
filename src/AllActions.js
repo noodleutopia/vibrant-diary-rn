@@ -23,3 +23,11 @@ export var DiaryActions = Reflux.createActions([
   'editDiary',
   // 'deleteAllCards'
 ]);
+
+export var DateActions = Reflux.createActions([
+  'updateDate',
+  'updateTemperature',
+  'updateMood',
+  'writeAll',
+  // 'deleteAllCards'
+]);
