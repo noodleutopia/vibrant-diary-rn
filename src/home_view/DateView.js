@@ -11,16 +11,15 @@ import GridView from '../components/GridView';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {DateActions} from '../AllActions';
 import Reflux from 'reflux';
-import DateStore from '../stores/DateStore'
+import DateStore from '../stores/DateStore';
+import SelectableItem from '../components/SelectableItem';
 
 const itemsPerRow = 3;
 
 // Use data from an array...
-const tianqiData = ['晴','阴','雨','雪','多云'];
+export const tianqiData = ['晴','阴','雨','雪','多云'];
 
-const xinqingData = Array(20)
-  .fill(null)
-  .map((item, index) => index + 1);
+export const xinqingData = ['开心','忧虑','平淡','伤心','愤怒'];
   
 class DateView extends Reflux.Component {
 
@@ -28,7 +27,7 @@ class DateView extends Reflux.Component {
     super(props);
     this.state = {
       // date: new Date(),
-      isDateTimePickerVisible: false
+      isDateTimePickerVisible: false,
     };
     this.store = DateStore;
   }
@@ -57,10 +56,22 @@ class DateView extends Reflux.Component {
       }
     };
 
+    onSelected(name, itemId) {
+      switch(name) {
+        case 'tianqi':
+        DateActions.updateTemperature(itemId);
+        break;
+        case 'xinqing':
+        DateActions.updateMood(itemId);
+        break;
+      }
+    }
 
   render() {
     console.log('render DateView view here...');
     let _date = this.state.date;  //这里的date是DateStore中插入的
+    let _selectedTianqi = this.state.temperature;
+    let _selectedXinqing = this.state.mood;
     return(
       <View style={styles.container}>
         <View>
@@ -78,26 +89,24 @@ class DateView extends Reflux.Component {
         </TouchableOpacity>
         <Text style={styles.title}>天气</Text>
         <GridView
+          itemStyle={styles.list}
           data={tianqiData}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
             return (
-              <View style={{ flex: 1,height:30, backgroundColor: '#8F8', borderWidth: 1 }}>
-                <Text>{`${item} (${sectionID}-${rowID}-${itemIndex}-${itemID})`}</Text>
-              </View>
+               <SelectableItem item={item} itemId={itemID} setSelected={()=>this.onSelected('tianqi', itemID)} selectedId={_selectedTianqi}/>
             );
         }}/>
         <Text style={styles.title}>心情</Text>
         <GridView 
+          itemStyle={styles.list}
           data={xinqingData}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
             return (
-              <View style={{ flex: 1, backgroundColor: '#8F8', borderWidth: 1 }}>
-                <Text>{`${item} (${sectionID}-${rowID}-${itemIndex}-${itemID})`}</Text>
-              </View>
+               <SelectableItem item={item} itemId={itemID} setSelected={()=>this.onSelected('xinqing', itemID)} selectedId={_selectedXinqing}/>
             );
         }}/>
         </View>
@@ -112,6 +121,12 @@ DateView.propTypes = {
 };
 
 var styles = StyleSheet.create({
+  list: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center'
+  },
   container: {
     flex: 1,
     backgroundColor: '#00a600',

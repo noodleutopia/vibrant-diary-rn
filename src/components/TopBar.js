@@ -8,6 +8,7 @@ import {
 
 import DateStore from '../stores/DateStore';
 import Reflux from 'reflux';
+import {tianqiData, xinqingData} from '../home_view/DateView';
 
 class TopBar extends Reflux.Component {
 
@@ -22,6 +23,8 @@ class TopBar extends Reflux.Component {
   
   render() {
     let _date = this.state.date;  //这里的date是DateStore中插入的
+    let _temper = this.state.temperature; 
+    let _mood = this.state.mood;
     let opacity = this.props.disabled ? 1 : 0.5;
     return(
       <TouchableOpacity
@@ -30,8 +33,8 @@ class TopBar extends Reflux.Component {
         style={[this.props.style]}>
         <View style={topBarStyles.container}>
           <Text style={topBarStyles.date}>{_date.getFullYear()}年{_date.getMonth()+1}月{_date.getDate()}日{'\n'+this.getXingqi(_date.getDay())}</Text>
-          <Text style={topBarStyles.mood}>心情</Text>
-          <Text style={topBarStyles.temprature}>天气</Text>
+          <Text style={topBarStyles.mood}>心情：{xinqingData[_mood]}</Text>
+          <Text style={topBarStyles.temprature}>天气：{tianqiData[_temper]}</Text>
         </View>
       </TouchableOpacity>
     );

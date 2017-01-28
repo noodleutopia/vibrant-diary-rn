@@ -114,30 +114,25 @@ class Tag extends Component {
     super(props);
     this.state = {
       selected: false,
-      item: props.item,
-      itemId: props.itemId,
+      // item: props.item,
+      // itemId: props.itemId,
     };
   }
-  _getTagIdx = () => {
-    return 1;
-  };
 
   _onPress (item) {
     console.log('你点击了标签：' + item.tagName + " " + item.id);
     let temp = this.state.selected ? false : true;
     this.setState({selected: temp});
-    this.props.addTag(this.state.itemId);
+    this.props.addTag(this.props.itemId);
   };
-
-  state = {tagIndex: this._getTagIdx(), dir: 'row'};
 
 render() {
     return (
       <TouchableOpacity
-        onPress={()=>this._onPress(this.state.item)}
+        onPress={()=>this._onPress(this.props.item)}
         style={styles.tag}>
         <Text  style={{textAlign: 'center'}}>
-        测试标签+{this.state.item.tagName}
+        测试标签+{this.props.item.tagName}
         </Text>
         {this.selectTag()}
       </TouchableOpacity>
