@@ -11,11 +11,11 @@ import {PAGES} from '../xiaomubiao'
 import DiaryStore from '../stores/DiaryStore';
 import Reflux from 'reflux';
 import {BOTTOM_TAB} from './BottomBar'
-class PreviewView extends Reflux.Component {
+class PreviewView extends Component {
 
   constructor(props) {
     super(props);
-    this.store = DiaryStore;
+    // this.store = DiaryStore;
   }
 
   onPressBottom = (tab) =>{
@@ -40,7 +40,7 @@ class PreviewView extends Reflux.Component {
 
   render() {
     console.log('render DataAnalyzeView view here...');
-    console.log('all diarys: ' + this.state.diarys.length);
+    // console.log('all diarys: ' + this.state.diarys.length);
 
     return(
       <View style={{flex: 1}}>

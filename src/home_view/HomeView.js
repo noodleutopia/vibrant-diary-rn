@@ -17,7 +17,7 @@ import {TagActions} from '../AllActions';
 import Reflux from 'reflux';
 
 var selectedTags = [];
-class HomeView extends Reflux.Component {
+class HomeView extends Component {
 
 	constructor(props)
 	{
