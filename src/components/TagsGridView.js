@@ -116,25 +116,41 @@ class Tag extends Component {
       selected: false,
       // item: props.item,
       // itemId: props.itemId,
+      deletable: false,
     };
   }
 
   _onPress (item) {
     console.log('你点击了标签：' + item.tagName + " " + item.id);
     let temp = this.state.selected ? false : true;
-    this.setState({selected: temp});
+    this.setState({selected: temp, deletable: false});
     this.props.addTag(this.props.itemId);
-  };
+  }
+
+  _onLongPress(item) {
+    console.log('你长按了标签：' + item.tagName + " " + item.id);
+    let temp = this.state.deletable ? false : true;
+    this.setState({deletable: temp});
+  }
+
+  _onDelete(item) {
+    console.log('你删除了标签：' + item.tagName + " " + item.id);
+    this.setState({deletable: false});
+    TagActions.deleteTag(item.id);
+  }
+
 
 render() {
     return (
       <TouchableOpacity
         onPress={()=>this._onPress(this.props.item)}
+        onLongPress={()=>this._onLongPress(this.props.item)}
         style={styles.tag}>
         <Text  style={{textAlign: 'center'}}>
         测试标签+{this.props.item.tagName}
         </Text>
         {this.selectTag()}
+        {this.deleteTag()}
       </TouchableOpacity>
     );
   }
@@ -147,6 +163,21 @@ render() {
         style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
         source={require('../../res/images/ic_polular.png')}
         />);
+    }
+  }
+
+  //是否显示删除按钮
+  deleteTag() {
+    if(this.state.deletable) {
+      return (
+        <TouchableOpacity
+        onPress={()=>this._onDelete(this.props.item)}
+        style={{position: 'absolute', right: 10, top: 10,}}>
+          <Image
+          style={[{ width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
+          source={require('../../res/images/ic_polular.png')}
+          />
+        </TouchableOpacity>);
     }
   }
   

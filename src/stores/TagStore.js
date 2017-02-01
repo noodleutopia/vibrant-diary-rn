@@ -85,10 +85,10 @@ class TagStore extends Reflux.Store {
       realm.write(() => {
         console.log('限制条件: '+'id == '+id);
         let tags = realm.objects(TagSchema.name);
-        console.log('delete tag: '+ tags.length);
+        console.log('删除前个数: '+ tags.length);
         let tag = tags.filtered('id == '+id);
-        console.log('delete tag: ', tag.length);
-        realm.delete(tag);
+        console.log('删除的tagID: ', tag[0].id);
+        realm.delete(tag[0]);
         this.emit();
       });
     } catch (error) {

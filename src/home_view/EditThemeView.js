@@ -6,7 +6,16 @@ import{
 } from 'react-native';
 
 import Button from '../components/Button';
-class EditThemeView extends Component {
+import Reflux from 'reflux';
+import TagStore from '../stores/TagStore';
+
+class EditThemeView extends Reflux.Component {
+
+    constructor(props) {
+    super(props);
+    console.log('EditThemeView');
+    this.store = TagStore; // <- just assign the store class itself
+  }
 
   render() {
     console.log('render EditThemeView view here...');
