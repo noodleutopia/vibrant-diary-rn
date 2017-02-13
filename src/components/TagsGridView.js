@@ -18,7 +18,7 @@ import QuestionStore from '../stores/QuestionStore';
 import {TagActions} from '../AllActions';
 
 const itemsPerRow = 2;
-var selectedTags = new Map();
+// var selectedTags = new Map();
 
 class TagsGridView extends Reflux.Component {
   constructor(props) {
@@ -26,6 +26,7 @@ class TagsGridView extends Reflux.Component {
     // const ds = new GridView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       selected: [],
+      deletable: [],
       // dataSource: ds.cloneWithRows([
       //   'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin', 'Jackson', 'Jillian', 'Julie', 'Devin'
       // ]),
@@ -41,7 +42,10 @@ class TagsGridView extends Reflux.Component {
   componentDidMount() {
     console.log('componentDidMount');
     let len = this.state.tags.length;
-    this.setState({selected: Array(len).fill(false)});
+    this.setState({
+      selected: Array(len).fill(false),
+      deletable: Array(len).fill(false),
+    });
   }
 
   // componentWillReceiveProps() {
@@ -49,13 +53,34 @@ class TagsGridView extends Reflux.Component {
   //   // TagActions.getAllTags();
   // }
 
-  addTag(id) {
-    console.log('addTag: ' + id);
-    if(selectedTags.has(id)) {
-      selectedTags.delete(id);
+  addTag=(id)=> {
+    console.log('addTag: ' + id, this.state);
+    let temp = this.state.selected.slice();
+    if(temp[id]) {
+      temp[id] = false;
     } else {
-      selectedTags.set(id, true);
+      temp[id] = true;
     }
+    this.setState({selected: temp, deletable: Array(temp.length).fill(false)});
+  }
+
+  deleteFlag=(id)=> {
+    let temp = this.state.deletable.slice();
+    if(temp[id]) {
+      temp[id] = false;
+    } else {
+      temp[id] = true;
+    }
+    this.setState({deletable: temp});
+  }
+
+  deleteTag=(id, itemId)=> {
+    let tempDelete = this.state.deletable;
+    tempDelete.splice(itemId, 1);
+    let tempSelect = this.state.selected;
+    tempSelect.splice(itemId, 1);
+    TagActions.deleteTag(id);
+    this.setState({selected: tempSelect, deletable: tempDelete});
   }
 
   render() {
@@ -91,7 +116,9 @@ class TagsGridView extends Reflux.Component {
     console.log(item);
     return (
       <View >
-        <Tag addTag={this.addTag} item={item} itemId={itemID} isSelected={this.state.selected[item]}/>
+        <Tag addTag={this.addTag} deleteFlag={this.deleteFlag} deleteTag={this.deleteTag} item={item} itemId={itemID} 
+        isSelected={this.state.selected[itemID]}
+        isDeletable={this.state.deletable[itemID]}/>
       </View>
       );
   }
@@ -99,10 +126,9 @@ class TagsGridView extends Reflux.Component {
   getAllSelectedTags(){
     let array = [];
     let tags = this.state.tags;
-    for(let key of selectedTags.keys()) {
-      if(tags[key]) {
-        console.log('已选择'+ key);
-        array.push(tags[key]);
+    for(let i=0; i<this.state.selected.length; ++i) {
+      if(this.state.selected[i]) {
+        array.push(tags[i]);
       }
     }
     return array;
@@ -114,41 +140,27 @@ class Tag extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: false,
-      // item: props.item,
-      // itemId: props.itemId,
       deletable: false,
     };
   }
 
   _onPress (item) {
     console.log('你点击了标签：' + item.tagName + " " + item.id);
-    let temp = this.state.selected ? false : true;
-    if(this.state.deletable) {
-      this.setState({deletable: false});
-    } else {
-      this.setState({selected: temp});
-      this.props.addTag(this.props.itemId);
-    }
-    
+    this.props.addTag(this.props.itemId);
   }
 
   _onLongPress(item) {
     console.log('你长按了标签：' + item.tagName + " " + item.id);
-    if(this.state.deletable) {
+    if(this.props.isDeletable) {
       return;
     }
-    let temp = this.state.deletable ? false : true;
-    if(this.state.selected) {
-      this.props.addTag(this.props.itemId);
-    }
-    this.setState({selected: false, deletable: temp});
+    this.props.deleteFlag(this.props.itemId);
   }
 
   _onDelete(item) {
     console.log('你删除了标签：' + item.tagName + " " + item.id);
-    // this.setState({deletable: false});
-    TagActions.deleteTag(item.id);
+    // TagActions.deleteTag(item.id);
+    this.props.deleteTag(item.id, this.props.itemId)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -187,8 +199,8 @@ render() {
 
   //是否显示选择标记
   selectTag() {
-    console.log('标记' + this.state.selected);
-    if(this.state.selected) {
+    // if(this.state.selected) {
+    if(this.props.isSelected) {
       return (<Image
         style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
         source={require('../../res/images/ic_polular.png')}
@@ -198,7 +210,7 @@ render() {
 
   //是否显示删除按钮
   deleteTag() {
-    if(this.state.deletable) {
+    if(this.props.isDeletable) {
       return (
         <TouchableOpacity
         onPress={()=>this._onDelete(this.props.item)}

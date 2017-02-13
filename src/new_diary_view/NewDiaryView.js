@@ -14,7 +14,7 @@ class NewDiaryView extends Component {
 
   constructor(props) {
     super(props);
-    console.log('新日记的tags: ' + this.props.route.data.tags.length);
+    console.log('新日记的tags: ' ,this.props.route.data.tags);
     this.tags = this.props.route.data.tags;
     this.allQuestions = [];
     this.state = {};
