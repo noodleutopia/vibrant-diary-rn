@@ -14,6 +14,7 @@ import GridView from '../components/GridView';
 import {PAGES} from '../xiaomubiao';
 import Reflux from 'reflux';
 import QuestionStore from '../stores/QuestionStore';
+import AnswerStore from '../stores/AnswerStore';
 import DiaryStore from '../stores/DiaryStore';
 // import TagStore from '../stores/TagStore';
 import {QuestionActions} from '../AllActions';
@@ -25,13 +26,13 @@ class TabPageView extends Reflux.Component {
   constructor(props) {
     super(props);
     this.state={
-      data: [],
+      // data: [],
       answers: [],
     };
     this.data = [];
     console.log('加载问题的tag: ' + props.tagId + props.tabLabel);
     // QuestionActions.createQuestion(props.tagId, "first question ? "+ props.tagId);
-    this.store = QuestionStore;
+    this.stores = [QuestionStore, AnswerStore];
   }
 
   componentWillMount() {
@@ -42,6 +43,7 @@ class TabPageView extends Reflux.Component {
   componentDidMount() {
     console.log('componentDidMount');
     QuestionActions.getAllQuestions(this.props.tagId);
+    this.setState({answers: Array(this.state.questions.length).fill('')});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,7 +73,7 @@ class TabPageView extends Reflux.Component {
             this.setState({
              answers:temp
             });
-          }
+        }
       }
     });
   }
@@ -81,10 +83,6 @@ class TabPageView extends Reflux.Component {
   }
 
   render() {
-    // QuestionActions.createQuestion(this.props.tagId, "first question ? "+ this.props.tagId);
-    // console.log('questions length: '+this.state.questions.length);
-    // let data = [];
-    //<Text>{`${item.question} (${sectionID}-${rowID}-${itemIndex}-${itemID})`}</Text>
     if(this.state.questions && Array.prototype.slice.call(this.state.questions)){
       this.data=Array.prototype.slice.call(this.state.questions);
     }

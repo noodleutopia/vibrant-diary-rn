@@ -38,7 +38,10 @@ class HomeView extends Reflux.Component {
 		if(selectedTags.length > 0) {
 			console.log('此时选择的tags: ' + selectedTags);
 			this.props.createNewDiary(selectedTags);
+		} else {
+			alert('请选择至少一个标签');
 		}
+
 	}
 
 	onPressBottom(tab){

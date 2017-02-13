@@ -16,6 +16,14 @@ export var QuestionActions = Reflux.createActions([
   // 'deleteAllCards'
 ]);
 
+export var AnswerActions = Reflux.createActions([
+  'getAllAnswers',
+  'createAnswer',
+  'deleteAnswer',
+  'editAnswer',
+  // 'deleteAnswer'
+]);
+
 export var DiaryActions = Reflux.createActions([
   'getAllDairies',
   'createDiary',

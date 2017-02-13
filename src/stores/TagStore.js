@@ -20,7 +20,7 @@ class TagStore extends Reflux.Store {
     this._tags = [];
     this.sortedTags = [];
     console.log('realm: ' , realm);
-
+    this.maxId = -1;
     this._loadTags();
     this.listenTo(TagActions.createTag, this.createTag); // listen to the statusUpdate action
     this.listenTo(TagActions.deleteTag, this.deleteTag);

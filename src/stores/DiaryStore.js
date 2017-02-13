@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {DiaryActions} from './../AllActions';
 import Realm from 'realm';
 import { AsyncStorage } from 'react-native';
-import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
+import {DiarySchema} from './../data/AllSchema'
 import {realm} from './../Utils';
 import {tianqiData, xinqingData} from '../home_view/DateView';
 

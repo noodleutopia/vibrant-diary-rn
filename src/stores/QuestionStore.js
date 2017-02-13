@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {QuestionActions} from './../AllActions';
 import Realm from 'realm';
 import React from 'react-native';
-import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema';
+import {QuestionSchema} from './../data/AllSchema';
 import {realm} from './../Utils';
 
 const QUESTION_KEY = 'xiaomubiao-question';
@@ -23,8 +23,8 @@ class QuestionStore extends Reflux.Store{
     }; // <- set store's default state much like in React
     this._questions = [];
     // this.createTag('testTag-1');
-    this.loadQuestions();
     this.maxId = -1;
+    this.loadQuestions();
     this.listenTo(QuestionActions.getAllQuestions, this.getAllQuestions);
     this.listenTo(QuestionActions.createQuestion, this.createQuestion); // listen to the statusUpdate action
     this.listenTo(QuestionActions.deleteQuestion, this.deleteQuestion);
