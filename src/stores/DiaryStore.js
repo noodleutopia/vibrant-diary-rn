@@ -3,11 +3,16 @@ import Reflux from 'reflux';
 import _ from 'lodash';
 import {DiaryActions} from './../AllActions';
 import Realm from 'realm';
-import React from 'react-native';
+import { AsyncStorage } from 'react-native';
 import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
 import {realm} from './../Utils';
+import {tianqiData, xinqingData} from '../home_view/DateView';
 
 const DAIRY_KEY = 'xiaomubiao-diary';
+
+const DATE_KEY = 'xiaomubiao-date';
+const TEMPER_KEY = 'xiaomubiao-temperature';
+const MOOD_KEY = 'xiaomubiao-mood';
 
 class DiaryStore extends Reflux.Store {
   constructor()
@@ -116,17 +121,21 @@ class DiaryStore extends Reflux.Store {
         questions: {type: 'list', objectType: 'Question'},
         answers: {type: 'list', objectType: 'Answer'}
    */
-  createDiary(tags, questions, answers) {
+  async createDiary(tags, questions, answers) {
     console.log('将插入日记：',this.maxId+1, this);
     // var realm = this.realm;
     try{
+      let date = await AsyncStorage.getItem(DATE_KEY);
+      console.log('date: ', date);
+      let mood = await AsyncStorage.getItem(MOOD_KEY);
+      var temper = await AsyncStorage.getItem(TEMPER_KEY);
       realm.write(() => {
         let newDiary = realm.create(DiarySchema.name, {
           id: this.maxId+1,
-          date: new Date(),
+          date: new Date(date),
           //这里天气心情暂时写死，后面加入AsyncStorage
-          temperature: 'qing',
-          mood: 'kaixin',
+          temperature: tianqiData[temper],
+          mood: xinqingData[mood],
           tags: tags,
           questions: questions,
           answers: answers

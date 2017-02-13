@@ -49,7 +49,7 @@ class DateStore extends Reflux.Store {
       console.log('将要写入日期： ' + this._date.toLocaleDateString() +
             ' ' +
             this._date.toLocaleTimeString());
-      await AsyncStorage.setItem(DATE_KEY, this._date);
+      await AsyncStorage.setItem(DATE_KEY, this._date.toString());
     }
     catch (error) {
       console.error('AsyncStorage error: ', error.message);
