@@ -16,49 +16,38 @@ import Reflux from 'reflux';
 import QuestionStore from '../stores/QuestionStore';
 import AnswerStore from '../stores/AnswerStore';
 import DiaryStore from '../stores/DiaryStore';
-// import TagStore from '../stores/TagStore';
 import {QuestionActions} from '../AllActions';
 import QAItem from '../components/QAItem';
 
 const itemsPerRow = 2;
 var clickItem = -1;
-class TabPageView extends Reflux.Component {
+class TabPageView extends Component {
   constructor(props) {
     super(props);
     this.state={
-      // data: [],
-      answers: [],
+      // answers: [],
     };
     this.data = [];
     console.log('加载问题的tag: ' + props.tagId + props.tabLabel);
-    // QuestionActions.createQuestion(props.tagId, "first question ? "+ props.tagId);
-    this.stores = [QuestionStore, AnswerStore];
   }
 
   componentWillMount() {
-    super.componentWillMount();
     console.log('componentWillMount');
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
-    QuestionActions.getAllQuestions(this.props.tagId);
-    this.setState({answers: Array(this.state.questions.length).fill('')});
+    console.log('componentDidMount', this.props.questions);
+    //这里先将所有回答置空
+    // this.setState({answers: Array(this.props.questions.length).fill('')});
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps, nextkey: ' + nextProps);
-    QuestionActions.getAllQuestions(this.props.tagId);
+    console.log('componentWillReceiveProps, nextkey: ' ,nextProps);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    //通过此处判断是否需要更新页面数据，只有当前Tab展示新数据
-    return nextState.tagId == this.props.tagId;
-  }
-
-  // componentWillUnmount() {
-  //   console.log('componentWillUnmount');
-
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // 通过此处判断是否需要更新页面数据，只有当前Tab展示新数据
+  //   return nextState.tagId == this.props.tagId;
   // }
 
   _onPress(question, itemID) {
@@ -66,13 +55,9 @@ class TabPageView extends Reflux.Component {
       name: PAGES.page_edit,
       data: {
         question: question,
-        answer: this.state.answers[itemID],
+        answer: this.props.answers[itemID],
         getAnswer:(newAnswer)=>{
-          let temp = this.state.answers;
-          temp[itemID] = newAnswer;
-            this.setState({
-             answers:temp
-            });
+          this.props.addAnswer(this.props.index, itemID, newAnswer);
         }
       }
     });
@@ -83,15 +68,10 @@ class TabPageView extends Reflux.Component {
   }
 
   render() {
-    if(this.state.questions && Array.prototype.slice.call(this.state.questions)){
-      this.data=Array.prototype.slice.call(this.state.questions);
-    }
-    // console.log('props: ' + this.props);
     return(
       <GridView
-          // data={Array.prototype.slice.call(this.state.questions)}
           itemStyle={styles.container}
-          data={this.data}
+          data={this.props.questions}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
@@ -101,7 +81,7 @@ class TabPageView extends Reflux.Component {
               onPress={()=>this._onPress(item, itemID)}
               >
               <View style={styles.grid}>
-                <QAItem qaItem={item} itemId={itemID} answer={this.state.answers[itemID]}/>  
+                <QAItem qaItem={item} itemId={itemID} answer={this.props.answers[itemID]}/>  
               </View>
               </TouchableOpacity>
             );

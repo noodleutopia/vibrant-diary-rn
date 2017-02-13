@@ -19,7 +19,7 @@ class QuestionStore extends Reflux.Store{
     //路径："/Users/zhangyafei/Library/Developer/CoreSimulator/Devices/80DF32C9-62D3-4B11-B817-869BFF5A8592/data/Containers/Data/Application/88C70E3C-F37A-4A23-9EEF-F3934F3A418A/Documents/default.realm"
     this.state = {
       questions: [],
-      tagId: -1
+      // tagId: -1
     }; // <- set store's default state much like in React
     this._questions = [];
     // this.createTag('testTag-1');
@@ -50,14 +50,19 @@ class QuestionStore extends Reflux.Store{
     }
   }
 
-  getAllQuestions(tagId) {
+  getAllQuestions(tags) {
     try {
-    // this.createQuestion(tagId, "first question ? "+ tagId);
-      // this.deleteAllQuestions();
-      // var val = await AsyncStorage.getItem(TAG_KEY);
-      // this.realm = new Realm({schema: TagSchema});
-      // var val = this.realm.objects(QuestionSchema.name);
-      let questions = val.filtered('tagId == '+tagId);
+      let questions = [];
+      let tagId = null;
+      for(let i=0; i<tags.length; ++i) {
+        tagId = tags[i].id;
+        let temp = val.filtered('tagId == '+tagId);
+        if(temp != null && temp.length > 0) {
+          // Array.prototype.push.apply(questions, temp);
+          questions.push(temp);
+        }
+      }
+      // let questions = val.filtered('tagId == '+tagId);
       if (questions !== null && questions.length > 0) {
         this._questions = questions;
         // this.emit();
@@ -66,7 +71,7 @@ class QuestionStore extends Reflux.Store{
         console.info('tagId: '+tagId+` ${QUESTION_KEY} not found on disk.`);
         this._questions = [];
       }
-      this.emit(tagId);
+      this.emit();
     }
     catch (error) {
       console.error('getAllQuestions error: ', error.message);
@@ -147,11 +152,8 @@ class QuestionStore extends Reflux.Store{
     }
   }
 
-  emit(tagId) {
-    // this._writeCards().done();
-    // this.trigger(this._tags);
-    console.log('emit tag: ' + tagId);
-    this.setState({questions: this._questions.slice(), tagId: tagId});
+  emit() {
+    this.setState({questions: this._questions.slice()});
   }
 }
 

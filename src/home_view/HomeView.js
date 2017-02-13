@@ -36,7 +36,7 @@ class HomeView extends Reflux.Component {
 		// this.setState({selectedTags: this.refs.tagsGridView.getAllSelectedTags()});
 		selectedTags = this.refs.tagsGridView.getAllSelectedTags().slice();
 		if(selectedTags.length > 0) {
-			console.log('此时选择的tags: ' + selectedTags);
+			console.log('此时选择的tags: ' ,selectedTags);
 			this.props.createNewDiary(selectedTags);
 		} else {
 			alert('请选择至少一个标签');

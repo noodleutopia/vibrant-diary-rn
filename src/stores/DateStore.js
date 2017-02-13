@@ -111,6 +111,7 @@ class DateStore extends Reflux.Store {
   }
 
   init() {
+    this.emit();
     this.setState({
       date: this._date,
       temperature: this._temperature,

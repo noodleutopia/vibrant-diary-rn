@@ -121,9 +121,35 @@ class DiaryStore extends Reflux.Store {
         questions: {type: 'list', objectType: 'Question'},
         answers: {type: 'list', objectType: 'Answer'}
    */
-  async createDiary(tags, questions, answers) {
-    console.log('将插入日记：',this.maxId+1, this);
-    // var realm = this.realm;
+  // async createDiary(tags, questions, answers) {
+  //   console.log('将插入日记：',this.maxId+1, tags, questions, answers);
+  //   // var realm = this.realm;
+  //   try{
+  //     let date = await AsyncStorage.getItem(DATE_KEY);
+  //     console.log('date: ', date);
+  //     let mood = await AsyncStorage.getItem(MOOD_KEY);
+  //     var temper = await AsyncStorage.getItem(TEMPER_KEY);
+  //     realm.write(() => {
+  //       let newDiary = realm.create(DiarySchema.name, {
+  //         id: this.maxId+1,
+  //         date: new Date(date),
+  //         //这里天气心情暂时写死，后面加入AsyncStorage
+  //         temperature: tianqiData[temper],
+  //         mood: xinqingData[mood],
+  //         tags: tags,
+  //         questions: questions,
+  //         answers: answers
+  //       });
+  //     });
+  //     this.maxId++;
+  //     console.log('after create: ' + realm.objects(DiarySchema.name).length);
+  //     this.emit();
+  //   } catch (error) {
+  //     console.error('createDiary error: ', error.message);
+  //   }
+  // }
+  async createDiary(content) {
+    console.log('将插入日记：',this.maxId+1, content);
     try{
       let date = await AsyncStorage.getItem(DATE_KEY);
       console.log('date: ', date);
@@ -136,9 +162,7 @@ class DiaryStore extends Reflux.Store {
           //这里天气心情暂时写死，后面加入AsyncStorage
           temperature: tianqiData[temper],
           mood: xinqingData[mood],
-          tags: tags,
-          questions: questions,
-          answers: answers
+          content: content
         });
       });
       this.maxId++;

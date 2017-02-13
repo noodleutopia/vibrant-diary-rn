@@ -9,22 +9,57 @@ import Button from '../components/Button';
 import ScrollableTabView, {ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import TabPageView from '../components/TabPageView';
 import {DiaryActions} from '../AllActions';
+import QuestionStore from '../stores/QuestionStore';
+import AnswerStore from '../stores/AnswerStore';
+import {QuestionActions} from '../AllActions';
+import Reflux from 'reflux';
 
-class NewDiaryView extends Component {
+class NewDiaryView extends Reflux.Component {
 
   constructor(props) {
     super(props);
     console.log('新日记的tags: ' ,this.props.route.data.tags);
     this.tags = this.props.route.data.tags;
+    // this.allTagGroups = new Array(this.tags.length);
     this.allQuestions = [];
-    this.state = {};
+    this.allAnswers = [];
+    this.questionFlags = Array(this.tags.length).fill(false);
+    this.state = {
+      answers: new Array([]),
+    };
+    this.store = QuestionStore;
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
+    console.log('componentWillMount');
+    QuestionActions.getAllQuestions(this.tags);
+  }
+
+  componentDidMount() {
+    //这里先将所有回答置空
+    let temp = new Array(this.tags.length);
+    for(let i=0;i<this.tags.length;++i) {
+      temp[i] = new Array(this.tags[i].length);
+    }
+    this.setState({answers: temp});
+    console.log('answers', this.state.answers);
   }
 
   _onPress(name){
     switch(name) {
       case 'done':
         //这里写入新日记
-        DiaryActions.createDiary(this.tags, this.allQuestions, 'temp answer');
+        let content='';
+        for(let i=0;i<this.tags.length;++i) {
+          content += ' '+this.tags[i].tagName;
+          for(let j=0; j<this.state.questions[i].length;++j) {
+            content += ' '+this.state.questions[i][j].question;
+            content += ' '+(this.state.answers[i][j]==undefined? "" : this.state.answers[i][j]);
+          }
+          
+        }
+        DiaryActions.createDiary(content);
         this.props.preview(123);
         break;
       case 'back':
@@ -36,6 +71,26 @@ class NewDiaryView extends Component {
   _onChangeTab(tab) {
     console.log('_onChangeTab' + tab.i);
     this.currentTab = tab.ref.props.tagId;
+  }
+
+  addQuestions=(index, questions)=> {
+    console.log('addQuestions before: ', index, questions);
+    if(!this.questionFlags[index]) {
+      this.questionFlags[index] = true;
+      Array.prototype.push.apply(this.allQuestions, questions);
+    }
+    console.log('addQuestions after: ',  this.allQuestions);
+  }
+
+  addAnswer=(index, itemID, answer)=> {
+    console.log('addAnswer:', index, itemID, answer, this.state.answers);
+    let temp = this.state.answers.slice();
+    console.log('before: ', temp);
+    temp[index][itemID] = answer;
+    console.log('after: ', temp);
+    this.setState( {
+      answers: temp,
+    })
   }
 
   // renderTabs() {
@@ -56,6 +111,8 @@ class NewDiaryView extends Component {
 
     //        {this.tags.map((tag, index) => <TabPageView key={index} tagId={tag.id} tabLabel={tag.tagName} {...this.props} getQuestions={this._getQuestions}/>)}
     console.log('render NewDiary view here...');
+    console.log('all questions: ', this.state.questions);
+    console.log('render answers', this.state.answers);
     // console.log('props: ' + this.props);
     return (
       <View style={styles.container}>
@@ -67,7 +124,7 @@ class NewDiaryView extends Component {
         // locked={true}
         // scrollWithoutAnimation={true}
         >
-        {this.tags.map((tag, index) => <TabPageView key={index} tagId={tag.id} tabLabel={tag.tagName} {...this.props} />)}
+        {this.tags.map((tag, index) => <TabPageView key={index} index={index} tagId={tag.id} tabLabel={tag.tagName} questions={this.state.questions[index].slice()} answers={this.state.answers[index]} addQuestions={this.addQuestions} addAnswer={this.addAnswer} {...this.props} />)}
         </ScrollableTabView>
         <Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={()=>this._onPress('done')}/>
         <Button style={{position:'absolute', bottom:70, left:20}} text={'返回'} onPress={()=>this._onPress('back')}/>
