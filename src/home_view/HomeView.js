@@ -26,7 +26,7 @@ class HomeView extends Reflux.Component {
 		this.state = {
 			// selectedTags: [],
 		}; // our store will add its own state to the component's
-		// this.store = DateStore;
+		this.store = DiaryStore;
 	}
 
 	//点击事件处理
@@ -35,8 +35,10 @@ class HomeView extends Reflux.Component {
 		// console.log('选择的标签有： ' + this.refs.tagsGridView.getAllSelectedTags().length);
 		// this.setState({selectedTags: this.refs.tagsGridView.getAllSelectedTags()});
 		selectedTags = this.refs.tagsGridView.getAllSelectedTags().slice();
-		console.log('此时选择的tags: ' + selectedTags.length);
-		this.props.createNewDiary(selectedTags);
+		if(selectedTags.length > 0) {
+			console.log('此时选择的tags: ' + selectedTags.length);
+			this.props.createNewDiary(selectedTags);
+		}
 	}
 
 	onPressBottom(tab){

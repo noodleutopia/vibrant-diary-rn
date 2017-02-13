@@ -5,26 +5,27 @@ import {DiaryActions} from './../AllActions';
 import Realm from 'realm';
 import React from 'react-native';
 import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
+import {realm} from './../Utils';
 
 const DAIRY_KEY = 'xiaomubiao-diary';
 
-var realm = null;
 class DiaryStore extends Reflux.Store {
   constructor()
   {
     super();
     console.log('DiaryStore');
-    realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
+    // realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
     this.state = {diarys: []}; // <- set store's default state much like in React
     this._diarys = [];
     // this.createTag('testTag-1');
+    this.maxId = -1;
     this._loadDiarys();
     this.listenTo(DiaryActions.createDiary, this.createDiary); // listen to the statusUpdate action
     // this.listenTo(DiaryActions.deleteTag, this.deleteTag);
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
     // this.deleteTag(1);
     // this.createTag('testTag-1');
-    this.maxId = -1;
+
     // this.emit();
   }
 
@@ -116,7 +117,7 @@ class DiaryStore extends Reflux.Store {
         answers: {type: 'list', objectType: 'Answer'}
    */
   createDiary(tags, questions, answers) {
-    console.log('将插入日记：');
+    console.log('将插入日记：',this.maxId+1, this);
     // var realm = this.realm;
     try{
       realm.write(() => {
@@ -131,7 +132,7 @@ class DiaryStore extends Reflux.Store {
           answers: answers
         });
       });
-      this.maxId ++;
+      this.maxId++;
       console.log('after create: ' + realm.objects(DiarySchema.name).length);
       this.emit();
     } catch (error) {

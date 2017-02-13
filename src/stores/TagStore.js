@@ -5,28 +5,26 @@ import {TagActions} from './../AllActions';
 import Realm from 'realm';
 import React from 'react-native';
 import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
-
+import {realm} from './../Utils';
 var { AsyncStorage } = React;
 
 const TAG_KEY = 'xiaomubiao-tag';
 
-var realm = null;
 class TagStore extends Reflux.Store {
   constructor()
   {
     super();
     console.log('TagStore');
-    realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
+    // realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
     this.state = {tags: []}; // <- set store's default state much like in React
     this._tags = [];
-    // this.createTag('testTag-1');
+    this.sortedTags = [];
+    console.log('realm: ' , realm);
+
     this._loadTags();
     this.listenTo(TagActions.createTag, this.createTag); // listen to the statusUpdate action
     this.listenTo(TagActions.deleteTag, this.deleteTag);
     this.listenTo(TagActions.getAllTags, this._loadTags);
-    // this.deleteTag(1);
-    // this.createTag('testTag-1');
-    // this.emit();
   }
 
   _loadTags() {
@@ -37,8 +35,8 @@ class TagStore extends Reflux.Store {
       if (val !== null) {
         this._tags = val;
         console.info('all tags: ' + val.length);
-        let sortedTags = val.sorted('date');
-        this.maxId = val.length>0 ? sortedTags[val.length-1].id : -1; //maxId 是当前最大的ID，再加入新tag则自增
+        this.sortedTags = val.sorted('date');
+        this.maxId = val.length>0 ? this.sortedTags[val.length-1].id : -1; //maxId 是当前最大的ID，再加入新tag则自增
         console.info('maxId: ' + this.maxId);
         this.emit();
       }
@@ -127,9 +125,7 @@ class TagStore extends Reflux.Store {
   }
 
   emit() {
-    // this._writeCards().done();
-    // this.trigger(this._tags);
-    this.setState({tags: this._tags});
+    this.setState({tags: this.sortedTags.slice()});
   }
 }
 

@@ -25,12 +25,12 @@ class TagsGridView extends Reflux.Component {
     super(props);
     // const ds = new GridView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      selected: [],
       // dataSource: ds.cloneWithRows([
       //   'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin', 'Jackson', 'Jillian', 'Julie', 'Devin'
       // ]),
       // tags: props.tags,
       // selectedTags: [1,2,3],
-
     };
     this.data = [];
     // this.selectedTags = new Map();
@@ -40,9 +40,8 @@ class TagsGridView extends Reflux.Component {
 
   componentDidMount() {
     console.log('componentDidMount');
-    // if(this.state.tags && Array.prototype.slice.call(this.state.tags)) {
-    //   this.setState(Array.prototype.slice.call(this.state.tags));
-    // }
+    let len = this.state.tags.length;
+    this.setState({selected: Array(len).fill(false)});
   }
 
   // componentWillReceiveProps() {
@@ -65,6 +64,7 @@ class TagsGridView extends Reflux.Component {
       this.data = [];
       console.log('tag get PROS');
     }
+    
     this.test();
     return (
       <GridView
@@ -87,10 +87,11 @@ class TagsGridView extends Reflux.Component {
   }
   
   renderRow = (item, sectionID, rowID, itemIndex, itemID) =>{
-    console.log('item: ' + item.tagName + ' row: ' + rowID + ' itemID: ' + itemID + ' itemIndex: ' + itemIndex);
+    // console.log('item: ' + item.tagName + ' row: ' + rowID + ' itemID: ' + itemID + ' itemIndex: ' + itemIndex);
+    console.log(item);
     return (
       <View >
-        <Tag addTag={this.addTag} item={item} itemId={itemID}/>
+        <Tag addTag={this.addTag} item={item} itemId={itemID} isSelected={this.state.selected[item]}/>
       </View>
       );
   }
@@ -123,31 +124,60 @@ class Tag extends Component {
   _onPress (item) {
     console.log('你点击了标签：' + item.tagName + " " + item.id);
     let temp = this.state.selected ? false : true;
-    this.setState({selected: temp, deletable: false});
-    this.props.addTag(this.props.itemId);
+    if(this.state.deletable) {
+      this.setState({deletable: false});
+    } else {
+      this.setState({selected: temp});
+      this.props.addTag(this.props.itemId);
+    }
+    
   }
 
   _onLongPress(item) {
     console.log('你长按了标签：' + item.tagName + " " + item.id);
+    if(this.state.deletable) {
+      return;
+    }
     let temp = this.state.deletable ? false : true;
-    this.setState({deletable: temp});
+    if(this.state.selected) {
+      this.props.addTag(this.props.itemId);
+    }
+    this.setState({selected: false, deletable: temp});
   }
 
   _onDelete(item) {
     console.log('你删除了标签：' + item.tagName + " " + item.id);
-    this.setState({deletable: false});
+    // this.setState({deletable: false});
     TagActions.deleteTag(item.id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(this.props.item != nextProps.item) {
+      
+    }
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   //通过此处判断是否需要更新页面数据，只有当前Tab展示新数据
+  //   let result = false;
+  //   try {
+  //     result = nextProps.item.id == this.props.item.id;
+  //   } catch (error) {
+      
+  //   }
+  //   return result;
+  // }
+
 
 render() {
+    console.log(this.state,this.props.item.id)
     return (
       <TouchableOpacity
         onPress={()=>this._onPress(this.props.item)}
         onLongPress={()=>this._onLongPress(this.props.item)}
         style={styles.tag}>
         <Text  style={{textAlign: 'center'}}>
-        测试标签+{this.props.item.tagName}
+        测试标签+{this.props.item.tagName}+{this.props.item.id}
         </Text>
         {this.selectTag()}
         {this.deleteTag()}
@@ -175,7 +205,7 @@ render() {
         style={{position: 'absolute', right: 10, top: 10,}}>
           <Image
           style={[{ width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
-          source={require('../../res/images/ic_polular.png')}
+          source={require('../../res/images/ic_trending.png')}
           />
         </TouchableOpacity>);
     }

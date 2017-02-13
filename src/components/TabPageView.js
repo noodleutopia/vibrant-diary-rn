@@ -28,6 +28,7 @@ class TabPageView extends Reflux.Component {
       data: [],
       answers: [],
     };
+    this.data = [];
     console.log('加载问题的tag: ' + props.tagId + props.tabLabel);
     // QuestionActions.createQuestion(props.tagId, "first question ? "+ props.tagId);
     this.store = QuestionStore;
@@ -76,7 +77,7 @@ class TabPageView extends Reflux.Component {
   }
 
   getAllQuestions() {
-    return this.state.data;
+    return this.data.slice();
   }
 
   render() {
@@ -85,14 +86,14 @@ class TabPageView extends Reflux.Component {
     // let data = [];
     //<Text>{`${item.question} (${sectionID}-${rowID}-${itemIndex}-${itemID})`}</Text>
     if(this.state.questions && Array.prototype.slice.call(this.state.questions)){
-      this.state.data=Array.prototype.slice.call(this.state.questions);
+      this.data=Array.prototype.slice.call(this.state.questions);
     }
     // console.log('props: ' + this.props);
     return(
       <GridView
           // data={Array.prototype.slice.call(this.state.questions)}
           itemStyle={styles.container}
-          data={this.state.data}
+          data={this.data}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
