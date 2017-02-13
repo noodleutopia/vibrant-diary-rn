@@ -57,7 +57,6 @@ class NewDiaryView extends Reflux.Component {
             content += ' '+this.state.questions[i][j].question;
             content += ' '+(this.state.answers[i][j]==undefined? "" : this.state.answers[i][j]);
           }
-          
         }
         DiaryActions.createDiary(content);
         this.props.preview(123);

@@ -57,7 +57,7 @@ class QuestionStore extends Reflux.Store{
       for(let i=0; i<tags.length; ++i) {
         tagId = tags[i].id;
         let temp = val.filtered('tagId == '+tagId);
-        if(temp != null && temp.length > 0) {
+        if(temp != null) {
           // Array.prototype.push.apply(questions, temp);
           questions.push(temp);
         }
@@ -77,7 +77,6 @@ class QuestionStore extends Reflux.Store{
       console.error('getAllQuestions error: ', error.message);
     }
   }
-
   // async _writeCards() {
   //   try {
   //     // await AsyncStorage.setItem(CARD_KEY, JSON.stringify(this._tags));
