@@ -32,8 +32,8 @@ class TopBar extends Component {
         <Text style={styles.temprature}>天气：{_temper}</Text>
         </View>
         <View style={styles.secondRow}>
-        <Text style={styles.mood}>主题 {}</Text>
-        <Text style={styles.temprature}>回答 {}</Text>
+        <Text style={styles.mood}>主题 {this.props.diary.tagCount}</Text>
+        <Text style={styles.temprature}>回答 {this.props.diary.answerCount}</Text>
         </View>
       </View>
     );
