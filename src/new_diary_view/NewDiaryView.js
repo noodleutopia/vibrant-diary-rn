@@ -25,6 +25,7 @@ class NewDiaryView extends Reflux.Component {
     this.allQuestions = [];
     this.allAnswers = [];
     this.questionFlags = Array(this.tags.length).fill(false);
+    this.diaryId = -1;
     this.state = {
       answers: new Array([]),
     };
@@ -69,7 +70,14 @@ class NewDiaryView extends Reflux.Component {
         newDiary.tagCount = this.tags.length;
         newDiary.questionCount = questionCount;
         newDiary.answerCount = answerCount;
-        DiaryActions.createDiary(newDiary, this.onCreateDone);
+        //判断是否是新日记，新日记则新建，旧日记则修改
+        if(this.diaryId < 0) {
+          console.log('插入新日记');
+          DiaryActions.createDiary(newDiary, this.onCreateDone);
+        } else {
+          console.log('修改旧日记', this.diaryId);
+          DiaryActions.editDiary(this.diaryId, newDiary, this.onCreateDone);
+        }
         break;
       case 'back':
         this.props.navigator.pop();
@@ -81,11 +89,17 @@ class NewDiaryView extends Reflux.Component {
   onCreateDone=(isSuccess, id)=> {
     console.log('写入回调', isSuccess);
     if(isSuccess) {
-      this.props.preview(id);
+      this.props.preview(id, this.onPreviewBack);
     } else {
       alert("保存日记时发生错误");
     }
   }
+
+  //浏览返回的回调
+  onPreviewBack=(diaryId)=> {
+    this.diaryId = diaryId;
+  }
+    
 
   _onChangeTab(tab) {
     console.log('_onChangeTab' + tab.i);
