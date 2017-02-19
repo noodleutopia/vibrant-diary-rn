@@ -58,7 +58,6 @@ class NewDiaryView extends Reflux.Component {
           jsonObjs[i].answers = this.state.answers[i];
         }
         let content = JSON.stringify(jsonObjs);
-
         DiaryActions.createDiary(content, this.onCreateDone);
         break;
       case 'back':
@@ -72,6 +71,8 @@ class NewDiaryView extends Reflux.Component {
     console.log('写入回调', isSuccess);
     if(isSuccess) {
       this.props.preview(id);
+    } else {
+      alert("保存日记时发生错误");
     }
   }
 
