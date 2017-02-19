@@ -94,7 +94,7 @@ var Xiaomubiao = React.createClass({
 
 	//日记预览页
 	_previewDiary(id) {
-		console.log('back id: ' + id);
+		console.log('back content: ' + id);
 		this.refs.navigator.push({
 			name: PAGES.page_preview,
 			data: {
@@ -151,7 +151,7 @@ var Xiaomubiao = React.createClass({
 				return <DateView quit={this.goHome}/>;
 			case PAGES.page_preview:
 				console.log('diary id: ' + route.data.diaryId);
-				return <PreviewView quit={this.goHome} diaryId={route.data.diaryId} navigator={navigator}/>;
+				return <PreviewView quit={this.goHome} {...route.data} navigator={navigator}/>;
 			case PAGES.page_edit:
 				console.log('QA id: ' + route.data.question.question);
 				return <EditView quit={this.goHome} {...route.data} navigator={navigator}/>;

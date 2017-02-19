@@ -50,20 +50,28 @@ class NewDiaryView extends Reflux.Component {
     switch(name) {
       case 'done':
         //这里写入新日记
-        let content='';
+        let jsonObjs = Array(this.tags.length);
         for(let i=0;i<this.tags.length;++i) {
-          content += ' '+this.tags[i].tagName;
-          for(let j=0; j<this.state.questions[i].length;++j) {
-            content += ' '+this.state.questions[i][j].question;
-            content += ' '+(this.state.answers[i][j]==undefined? "" : this.state.answers[i][j]);
-          }
+          jsonObjs[i] = Object.create(null);
+          jsonObjs[i].tag = this.tags[i].tagName;
+          jsonObjs[i].questions = Object.values(this.state.questions[i]).map(v=>v.question);
+          jsonObjs[i].answers = this.state.answers[i];
         }
-        DiaryActions.createDiary(content);
-        this.props.preview(123);
+        let content = JSON.stringify(jsonObjs);
+
+        DiaryActions.createDiary(content, this.onCreateDone);
         break;
       case 'back':
         this.props.navigator.pop();
         break;
+    }
+  }
+
+  //写入日记后回调，执行跳转
+  onCreateDone=(isSuccess, id)=> {
+    console.log('写入回调', isSuccess);
+    if(isSuccess) {
+      this.props.preview(id);
     }
   }
 
@@ -100,7 +108,7 @@ class NewDiaryView extends Reflux.Component {
   //   }
   //   return tabs;
   // }
-
+  //[{"tag":"heheda","questions":["first q","second q","third q"],"answers":["First answer","Sss","Ttt"]},{"tag":"heheda","questions":["forth q","fifth q","sixth q"],"answers":["Fff","Ffffiii","Sssix"]}]
   render() {
     //     <TabPageView {...this.props} tabLabel='Tab #1'/>
     // <Text tabLabel='Tab #2 word word'>favorite</Text>

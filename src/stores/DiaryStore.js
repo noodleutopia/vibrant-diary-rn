@@ -20,12 +20,16 @@ class DiaryStore extends Reflux.Store {
     super();
     console.log('DiaryStore');
     // realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
-    this.state = {diarys: []}; // <- set store's default state much like in React
+    this.state = {
+      diarys: [],
+      currentDiary: null
+    }; // <- set store's default state much like in React
     this._diarys = [];
     // this.createTag('testTag-1');
     this.maxId = -1;
     this._loadDiarys();
     this.listenTo(DiaryActions.createDiary, this.createDiary); // listen to the statusUpdate action
+    this.listenTo(DiaryActions.getDiary, this.getDiary); 
     // this.listenTo(DiaryActions.deleteTag, this.deleteTag);
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
     // this.deleteTag(1);
@@ -148,7 +152,7 @@ class DiaryStore extends Reflux.Store {
   //     console.error('createDiary error: ', error.message);
   //   }
   // }
-  async createDiary(content) {
+  async createDiary(content, callback) {
     console.log('将插入日记：',this.maxId+1, content);
     try{
       let date = await AsyncStorage.getItem(DATE_KEY);
@@ -167,17 +171,35 @@ class DiaryStore extends Reflux.Store {
       });
       this.maxId++;
       console.log('after create: ' + realm.objects(DiarySchema.name).length);
+      //回调
+      callback(true, this.maxId);
       this.emit();
+    } catch (error) {
+      //回调
+      callback(false);
+      console.error('createDiary error: ', error.message);
+    }
+  }
+
+  async getDiary(id) {
+    if(id == -1) id=this.maxId+1;
+    try{
+      let diarys = realm.objects(DiarySchema.name);
+      let temp = diarys.filtered('id == '+id);
+      if(temp != null && temp.length > 0) {
+        let diary = temp[0];
+        console.log('get diary: ', diary);
+        this.setState({currentDiary: diary});
+      }
     } catch (error) {
       console.error('createDiary error: ', error.message);
     }
   }
 
   emit() {
-    // this._writeCards().done();
-    // this.trigger(this._tags);
     this.setState({diarys: this._diarys});
   }
+
 }
 
 export default DiaryStore;

@@ -75,6 +75,7 @@ class TagsGridView extends Reflux.Component {
   }
 
   deleteTag=(id, itemId)=> {
+    //这里注意将两个标记状态数组更新
     let tempDelete = this.state.deletable;
     tempDelete.splice(itemId, 1);
     let tempSelect = this.state.selected;

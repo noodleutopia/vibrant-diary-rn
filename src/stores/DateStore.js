@@ -2,9 +2,9 @@ import Reflux from 'reflux'
 import { AsyncStorage } from 'react-native';
 import {DateActions} from '../AllActions';
 
-const DATE_KEY = 'xiaomubiao-date';
-const TEMPER_KEY = 'xiaomubiao-temperature';
-const MOOD_KEY = 'xiaomubiao-mood';
+export const DATE_KEY = 'xiaomubiao-date';
+export const TEMPER_KEY = 'xiaomubiao-temperature';
+export const MOOD_KEY = 'xiaomubiao-mood';
 
 class DateStore extends Reflux.Store {
   constructor() {

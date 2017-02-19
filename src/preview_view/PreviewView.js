@@ -3,19 +3,28 @@ import{
 	View,
 	Text,
 	StyleSheet,
+  AsyncStorage,
 } from 'react-native';
 
 import Button from '../components/Button';
 import BottomBar from './BottomBar'
 import {PAGES} from '../xiaomubiao'
 import DiaryStore from '../stores/DiaryStore';
+import {DiaryActions} from '../AllActions';
 import Reflux from 'reflux';
 import {BOTTOM_TAB} from './BottomBar'
-class PreviewView extends Component {
+import {DATE_KEY,TEMPER_KEY,MOOD_KEY} from '../stores/DateStore'
+class PreviewView extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    // this.store = DiaryStore;
+    // this.content = this.props.content;  //整个日记内容
+    this.store = DiaryStore;
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
+    DiaryActions.getDiary(this.props.diaryId);
   }
 
   onPressBottom = (tab) =>{
@@ -39,14 +48,14 @@ class PreviewView extends Component {
 	}
 
   render() {
-    console.log('render DataAnalyzeView view here...');
+    console.log('render PreviewView view here...', this.state.currentDiary);
     // console.log('all diarys: ' + this.state.diarys.length);
 
     return(
       <View style={{flex: 1}}>
         <View style={styles.container}>
           <Text style={styles.title}>This is a diary preview view page.</Text>
-          <Text style={styles.title}>diary id is: {this.props.diaryId}.</Text>
+          <Text style={styles.title}>diary id is: {this.state.currentDiary.id}.</Text>
           <Button onPress={this.props.quit}/>
         </View>
         <BottomBar handleBottomPress={this.onPressBottom}/>
