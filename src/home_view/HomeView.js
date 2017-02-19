@@ -27,6 +27,7 @@ class HomeView extends Reflux.Component {
 			// selectedTags: [],
 		}; // our store will add its own state to the component's
 		this.store = DiaryStore;
+		this.storeKeys = ['diarys'];
 	}
 
 	//点击事件处理

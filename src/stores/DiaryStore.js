@@ -173,10 +173,12 @@ class DiaryStore extends Reflux.Store {
         });
       });
       this.maxId++;
-      console.log('after create: ' + realm.objects(DiarySchema.name).length);
+      // console.log('after create: ' + realm.objects(DiarySchema.name).length);
+      
+      // this.emit();
+      // this.setState({diarys: this._diarys});
       //回调
       callback(true, this.maxId);
-      this.emit();
     } catch (error) {
       //回调
       callback(false);

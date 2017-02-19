@@ -4,6 +4,7 @@ import{
 	Text,
 	StyleSheet,
   AsyncStorage,
+  ScrollView,
 } from 'react-native';
 
 import Button from '../components/Button';
@@ -15,11 +16,12 @@ import Reflux from 'reflux';
 import {BOTTOM_TAB} from './BottomBar'
 import {DATE_KEY,TEMPER_KEY,MOOD_KEY} from '../stores/DateStore'
 import TopBar from './TopBar';
+import PreviewUnit from '../components/PreviewUnit'
 class PreviewView extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    // this.content = this.props.content;  //整个日记内容
+    this.content = Object.create(null);  //整个日记内容
     this.store = DiaryStore;
     this.storeKeys = ['currentDiary'];
   }
@@ -50,18 +52,30 @@ class PreviewView extends Reflux.Component {
 	}
 
   render() {
+    this.content = JSON.parse(this.state.currentDiary.content);
+    console.log('转化的日记：', this.content);
     console.log('render PreviewView view here...', this.state.currentDiary);
     return(
       <View style={{flex: 1}}>
         <TopBar diary={this.state.currentDiary} />
+        <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.title}>This is a diary preview view page.</Text>
-          <Text style={styles.title}>diary id is: {this.state.currentDiary.id}.</Text>
-          <Button onPress={this.props.quit}/>
+          {this.renderUnits(this.state.currentDiary)}
         </View>
+        </ScrollView>
         <BottomBar handleBottomPress={this.onPressBottom}/>
       </View>
     )
+  }
+
+  renderUnits(diary) {
+    let units = [];
+    for(let i=0; i<diary.tagCount; ++i) {
+      units.push(
+        <PreviewUnit key={i} data={this.content[i]}/>
+      );
+    }
+    return units;
   }
 }
 
@@ -69,13 +83,9 @@ PreviewView.propTypes = {
   quit: React.PropTypes.func.isRequired,
   diaryId: React.PropTypes.number.isRequired,
 };
-
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0000cf',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   title: {
     // flex: 1,

@@ -20,7 +20,7 @@ class TopBar extends Component {
 	}
 
   render() {
-    console.log('render bottom bar...');
+    console.log('render preview top bar...');
     let _date = this.props.diary.date;  //这里的date是DateStore中插入的
     let _temper = this.props.diary.temperature; 
     let _mood = this.props.diary.mood;
