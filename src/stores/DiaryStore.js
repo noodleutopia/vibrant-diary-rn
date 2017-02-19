@@ -152,8 +152,8 @@ class DiaryStore extends Reflux.Store {
   //     console.error('createDiary error: ', error.message);
   //   }
   // }
-  async createDiary(content, callback) {
-    console.log('将插入日记：',this.maxId+1, content);
+  async createDiary(diary, callback) {
+    console.log('将插入日记：',this.maxId+1, diary);
     try{
       let date = await AsyncStorage.getItem(DATE_KEY);
       console.log('date: ', date);
@@ -166,7 +166,10 @@ class DiaryStore extends Reflux.Store {
           //这里天气心情暂时写死，后面加入AsyncStorage
           temperature: tianqiData[temper],
           mood: xinqingData[mood],
-          content: content
+          tagCount: diary.tagCount,
+          questionCount: diary.questionCount,
+          answerCount: diary.answerCount,
+          content: diary.content
         });
       });
       this.maxId++;

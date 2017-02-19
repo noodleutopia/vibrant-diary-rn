@@ -38,6 +38,9 @@ export const DiarySchema = {
         date: "date",
         temperature: "string",
         mood: "string",
+        tagCount: "int",
+        questionCount: "int",
+        answerCount: "int",
         content: "string"   //用json保存的内容，包括tag下面的一组问答
         // tags: {type: 'list', objectType: 'Tag'},
         // questions: {type: 'list', objectType: 'Question'},

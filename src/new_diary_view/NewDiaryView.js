@@ -21,6 +21,7 @@ class NewDiaryView extends Reflux.Component {
     console.log('新日记的tags: ' ,this.props.route.data.tags);
     this.tags = this.props.route.data.tags;
     // this.allTagGroups = new Array(this.tags.length);
+    //[{"tag":"heheda","questions":["first q","second q","third q"],"answers":[null]},{"tag":"heheda","questions":[],"answers":[null]}]
     this.allQuestions = [];
     this.allAnswers = [];
     this.questionFlags = Array(this.tags.length).fill(false);
@@ -28,6 +29,7 @@ class NewDiaryView extends Reflux.Component {
       answers: new Array([]),
     };
     this.store = QuestionStore;
+    this.storeKeys = ['questions'];
   }
 
   componentWillMount() {
@@ -40,7 +42,7 @@ class NewDiaryView extends Reflux.Component {
     //这里先将所有回答置空
     let temp = new Array(this.tags.length);
     for(let i=0;i<this.tags.length;++i) {
-      temp[i] = new Array(this.tags[i].length);
+      temp[i] = new Array(this.state.questions[i].length).fill('');
     }
     this.setState({answers: temp});
     console.log('answers', this.state.answers);
@@ -51,14 +53,23 @@ class NewDiaryView extends Reflux.Component {
       case 'done':
         //这里写入新日记
         let jsonObjs = Array(this.tags.length);
+        let questionCount = 0;
+        let answerCount = 0;
         for(let i=0;i<this.tags.length;++i) {
           jsonObjs[i] = Object.create(null);
           jsonObjs[i].tag = this.tags[i].tagName;
           jsonObjs[i].questions = Object.values(this.state.questions[i]).map(v=>v.question);
+          questionCount += jsonObjs[i].questions.length;
           jsonObjs[i].answers = this.state.answers[i];
+          answerCount += this.state.answers[i].length;
         }
+        let newDiary = Object.create(null);
         let content = JSON.stringify(jsonObjs);
-        DiaryActions.createDiary(content, this.onCreateDone);
+        newDiary.content = content;
+        newDiary.tagCount = this.tags.length;
+        newDiary.questionCount = questionCount;
+        newDiary.answerCount = answerCount;
+        DiaryActions.createDiary(newDiary, this.onCreateDone);
         break;
       case 'back':
         this.props.navigator.pop();
@@ -101,27 +112,10 @@ class NewDiaryView extends Reflux.Component {
     })
   }
 
-  // renderTabs() {
-  //   let tabs = [];
-  //   for(let i=0; i<this.tags.length; i++) {
-  //     let tag = this.tags[i];
-  //     tabs.push(<TabPageView key={i} tagId={tag.id} tabLabel={tag.tagName} {...this.props}/>);
-  //   }
-  //   return tabs;
-  // }
-  //[{"tag":"heheda","questions":["first q","second q","third q"],"answers":["First answer","Sss","Ttt"]},{"tag":"heheda","questions":["forth q","fifth q","sixth q"],"answers":["Fff","Ffffiii","Sssix"]}]
   render() {
-    //     <TabPageView {...this.props} tabLabel='Tab #1'/>
-    // <Text tabLabel='Tab #2 word word'>favorite</Text>
-    // <Text tabLabel='Tab #3 word word word'>project</Text>
-    // <Text tabLabel='Tab #4 word word word word'>favorite</Text>
-    // <Text tabLabel='Tab #5'>project</Text>
-
-    //        {this.tags.map((tag, index) => <TabPageView key={index} tagId={tag.id} tabLabel={tag.tagName} {...this.props} getQuestions={this._getQuestions}/>)}
     console.log('render NewDiary view here...');
     console.log('all questions: ', this.state.questions);
     console.log('render answers', this.state.answers);
-    // console.log('props: ' + this.props);
     return (
       <View style={styles.container}>
         <ScrollableTabView
