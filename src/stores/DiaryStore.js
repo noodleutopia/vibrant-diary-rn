@@ -30,6 +30,7 @@ class DiaryStore extends Reflux.Store {
     this._loadDiarys();
     this.listenTo(DiaryActions.createDiary, this.createDiary); // listen to the statusUpdate action
     this.listenTo(DiaryActions.getDiary, this.getDiary); 
+    this.listenTo(DiaryActions.editDiary, this.editDiary);
     // this.listenTo(DiaryActions.deleteTag, this.deleteTag);
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
     // this.deleteTag(1);
@@ -198,6 +199,21 @@ class DiaryStore extends Reflux.Store {
       }
     } catch (error) {
       console.error('createDiary error: ', error.message);
+    }
+  }
+
+  editDiary(diaryId, diary, callback) {
+    console.log('将修改日记：', diaryId);
+    try{
+      realm.write(() => {
+        realm.create(DiarySchema.name, {id: diaryId, content: diary.content}, true);
+      });
+      //回调
+      callback(true, this.diaryId);
+    } catch (error) {
+      //回调
+      callback(false);
+      console.error('editDiary error: ', error.message);
     }
   }
 
