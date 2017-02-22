@@ -9,6 +9,7 @@ import {
 import DateStore from '../stores/DateStore';
 import Reflux from 'reflux';
 import {tianqiData, xinqingData} from '../home_view/DateView';
+import {dateTimeHelper} from '../utils/DateFormatUtil'
 
 class TopBar extends Reflux.Component {
 
@@ -32,7 +33,7 @@ class TopBar extends Reflux.Component {
         onPress={this.props.handleTopPress}
         style={[this.props.style]}>
         <View style={topBarStyles.container}>
-          <Text style={topBarStyles.date}>{_date.getFullYear()}年{_date.getMonth()+1}月{_date.getDate()}日{'\n'+this.getXingqi(_date.getDay())}</Text>
+          <Text style={topBarStyles.date}>{dateTimeHelper.getInstance().format(_date)+'\n'+dateTimeHelper.getInstance().xingqi(_date)}</Text>
           <Text style={topBarStyles.mood}>心情：{xinqingData[_mood]}</Text>
           <Text style={topBarStyles.temprature}>天气：{tianqiData[_temper]}</Text>
         </View>
