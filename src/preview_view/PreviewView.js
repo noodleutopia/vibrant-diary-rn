@@ -35,7 +35,9 @@ class PreviewView extends Reflux.Component {
 		console.log('preview bottom: ' + tab);
     switch(tab) {
       case BOTTOM_TAB.flag_edit:
-        this.props.callback(this.state.currentDiary.id);
+        if(this.props.callback != null) {
+          this.props.callback(this.state.currentDiary.id);
+        }
         this.props.navigator.pop();
         break;
       case BOTTOM_TAB.flag_share:

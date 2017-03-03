@@ -104,7 +104,8 @@ class AllDiaryView extends Reflux.Component {
         </View>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID} rowID={rowID} deleteDiary={this.deleteDiary}/>}
+          renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID} 
+            rowID={rowID} deleteDiary={this.deleteDiary} preview={this.props.preview}/>}
           renderSeparator={this._renderSeperator}
           renderSectionHeader={this.renderSectionHeader}
         />
@@ -144,7 +145,7 @@ class DiaryListItem extends Component {
 
   _onPress (item) {
     console.log('你点击了Item：', item);
-    // this.props.preview(this.props.itemId);
+    this.props.preview(item.id);
   }
 
   render() {
@@ -153,10 +154,11 @@ class DiaryListItem extends Component {
         onPress={()=>this._onPress(this.props.rowData)}
         onLongPress={()=>this.props.deleteDiary(this.props.rowData.id)}
         style={styles.listItem}>
-        <View>
+
           <Text>{dateTimeHelper.getInstance().format(this.props.rowData.date) + " " 
             + dateTimeHelper.getInstance().xingqi(this.props.rowData.date)}</Text>
-        </View>
+          <Text style={{marginLeft: 20}}>{this.props.rowData.mood}</Text>
+
       </TouchableOpacity>
     );
   }
@@ -183,7 +185,8 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   listItem: {
-    height: 40,
+    flexDirection: 'row',
+    height: 50,
     padding: 10,
   },
 });

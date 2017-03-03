@@ -19,6 +19,7 @@ class QuestionStore extends Reflux.Store{
     //路径："/Users/zhangyafei/Library/Developer/CoreSimulator/Devices/80DF32C9-62D3-4B11-B817-869BFF5A8592/data/Containers/Data/Application/88C70E3C-F37A-4A23-9EEF-F3934F3A418A/Documents/default.realm"
     this.state = {
       questions: [],
+      questionsByTag: [],
       // tagId: -1
     }; // <- set store's default state much like in React
     this._questions = [];
@@ -26,6 +27,7 @@ class QuestionStore extends Reflux.Store{
     this.maxId = -1;
     this.loadQuestions();
     this.listenTo(QuestionActions.getAllQuestions, this.getAllQuestions);
+    this.listenTo(QuestionActions.getQuestions, this.getQuestions);
     this.listenTo(QuestionActions.createQuestion, this.createQuestion); // listen to the statusUpdate action
     this.listenTo(QuestionActions.deleteQuestion, this.deleteQuestion);
     this.listenTo(QuestionActions.editQuestion, this.editQuestion);
@@ -75,6 +77,19 @@ class QuestionStore extends Reflux.Store{
     }
     catch (error) {
       console.error('getAllQuestions error: ', error.message);
+    }
+  }
+
+  getQuestions(tagId) {
+    try {
+      let questions = [];
+      let temp = val.filtered('tagId == '+tagId);
+      if(temp != null) {
+        this.setState({questionsByTag: temp.slice()});
+      }
+    }
+    catch (error) {
+      console.error('getQuestions error: ', error.message);
     }
   }
   // async _writeCards() {

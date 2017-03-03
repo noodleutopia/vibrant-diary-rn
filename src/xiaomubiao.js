@@ -15,12 +15,13 @@ import DateView from './home_view/DateView'
 import PreviewView from './preview_view/PreviewView'
 import EditView from './edit_view/EditView'
 import ShareView from './preview_view/ShareView'
+import EditQuestionView from './edit_question_view/EditQuestionView'
 
 
 export var PAGES = { page_new_diary: 'newDiary', page_all_diary: 'allDiary',
 							page_edit_theme: 'editTheme', page_data_analyze: 'dataAnalyze',
 							page_setting: 'setting', page_date: 'date', page_preview: 'preview',
-						page_edit: 'edit', page_share: 'share'};
+						page_edit: 'edit', page_share: 'share', page_edit_question: 'editQuestion'};
 
 var Xiaomubiao = React.createClass({
 
@@ -95,7 +96,7 @@ var Xiaomubiao = React.createClass({
 	//日记预览页
 	_previewDiary(id, backFunc) {
 		console.log('back content: ' + id);
-		this.refs.navigator.push({
+		this.refs.navigator.replace({
 			name: PAGES.page_preview,
 			data: {
 				diaryId: id,
@@ -141,11 +142,11 @@ var Xiaomubiao = React.createClass({
 			 	console.log('navigater newDiary view.');
 				return <NewDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator} route={route}/>;
 			case PAGES.page_all_diary:
-				return <AllDiaryView quit={this.goHome}/>;
+				return <AllDiaryView quit={this.goHome} preview={this._previewDiary}/>;
 			case PAGES.page_data_analyze:
 				return <DataAnalyzeView quit={this.goHome}/>;
 			case PAGES.page_edit_theme:
-				return <EditThemeView quit={this.goHome}/>;
+				return <EditThemeView quit={this.goHome} navigator={navigator}/>;
 			case PAGES.page_setting:
 				return <SettingView quit={this.goHome}/>;
 			case PAGES.page_date:
@@ -158,6 +159,8 @@ var Xiaomubiao = React.createClass({
 				return <EditView quit={this.goHome} {...route.data} navigator={navigator}/>;
 			case PAGES.page_share:
 				return <ShareView navigator={navigator}/>;
+			case PAGES.page_edit_question:
+				return <EditQuestionView navigator={navigator} {...route.data}/>;
 			default:
      		console.error('Encountered unexpected route: ' + route.name);
     }

@@ -190,7 +190,7 @@ render() {
         onLongPress={()=>this._onLongPress(this.props.item)}
         style={styles.tag}>
         <Text  style={{textAlign: 'center'}}>
-        测试标签+{this.props.item.tagName}+{this.props.item.id}
+        {this.props.item.tagName} {this.props.item.id}
         </Text>
         {this.selectTag()}
         {this.deleteTag()}

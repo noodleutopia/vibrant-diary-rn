@@ -3,15 +3,19 @@ import{
 	View,
 	Text,
 	StyleSheet,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
-
+import GridView from '../components/GridView';
 import Button from '../components/Button';
 import Reflux from 'reflux';
 import TagStore from '../stores/TagStore';
+import {PAGES} from '../xiaomubiao';
 
+const itemsPerRow = 2;
 class EditThemeView extends Reflux.Component {
 
-    constructor(props) {
+  constructor(props) {
     super(props);
     console.log('EditThemeView');
     this.store = TagStore; // <- just assign the store class itself
@@ -20,11 +24,33 @@ class EditThemeView extends Reflux.Component {
   render() {
     console.log('render EditThemeView view here...');
     return(
-      <View style={diaryStyles.container}>
-        <Text style={diaryStyles.title}>This is a edit theme view page.</Text>
-        <Button onPress={this.props.quit}/>
-      </View>
+      <GridView
+        itemStyle={styles.container}
+        data={this.state.tags}
+        dataSource={null}
+        itemsPerRow={itemsPerRow}
+        renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
+          // console.log('render questions: ' + item.tagId);
+          return (
+            <TouchableOpacity
+            onPress={()=>this._onPress(item, itemID)}
+            >
+            <View style={styles.grid}>
+              <Text>{item.tagName}</Text>
+            </View>
+            </TouchableOpacity>
+          );
+      }}/>
     )
+  }
+
+  _onPress(tag, itemID) {
+    this.props.navigator.push({
+      name: PAGES.page_edit_question,
+      data: {
+        tag: tag,
+      }
+    });
   }
 }
 
@@ -32,18 +58,26 @@ EditThemeView.propTypes = {
   quit: React.PropTypes.func.isRequired,
 };
 
-var diaryStyles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0000f3',
-    justifyContent: 'center',
-    alignItems: 'center'
+    // alignItems: 'center',
+    // justifyContent: 'space-around',
+    // marginTop: 10,
+    // marginBottom: 20,
   },
-  title: {
-    // flex: 1,
+  grid: {
     justifyContent: 'center',
-    alignItems: 'center'
-  },
+    padding: 8,
+    // margin: 10,
+    width: Dimensions.get('window').width / 2,
+    height: Dimensions.get('window').width / 2,
+    backgroundColor: '#F6F6F6',
+    alignItems: 'center',
+    borderWidth: 1,
+    // borderRadius: 5,
+    borderColor: '#CCC'
+  }
 });
 
 export default EditThemeView;
