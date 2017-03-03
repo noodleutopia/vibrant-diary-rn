@@ -3,7 +3,8 @@ import Reflux from 'reflux';
 import _ from 'lodash';
 import {DiaryActions} from './../AllActions';
 import Realm from 'realm';
-import { AsyncStorage } from 'react-native';
+
+import { ListView,AsyncStorage } from 'react-native';
 import {DiarySchema} from './../data/AllSchema'
 import {realm} from './../Utils';
 import {tianqiData, xinqingData} from '../home_view/DateView';
@@ -20,8 +21,23 @@ class DiaryStore extends Reflux.Store {
     super();
     console.log('DiaryStore');
     // realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
+    // 初始化getSectionData
+    var getSectionData = (dataBlob, sectionID) => {
+         return dataBlob[sectionID];
+        };
+    // 初始化getRowData
+    var getRowData = (dataBlob, sectionID, rowID) => {
+          return dataBlob[sectionID + ':' + rowID];
+        };
     this.state = {
       diarys: [],
+      // 初始化数据源
+      dataSource: new ListView.DataSource({
+        getSectionData : getSectionData,
+        getRowData : getRowData,
+        rowHasChanged : (r1, r2) => r1 !== r2,
+        sectionHeaderHasChanged : (s1, s2) => s1 !== s2
+      }),
       currentDiary: null
     }; // <- set store's default state much like in React
     this._diarys = [];
@@ -31,7 +47,9 @@ class DiaryStore extends Reflux.Store {
     this.listenTo(DiaryActions.createDiary, this.createDiary); // listen to the statusUpdate action
     this.listenTo(DiaryActions.getDiary, this.getDiary); 
     this.listenTo(DiaryActions.editDiary, this.editDiary);
-    // this.listenTo(DiaryActions.deleteTag, this.deleteTag);
+    this.listenTo(DiaryActions.deleteDiary, this.deleteDiary);
+    this.listenTo(DiaryActions.loadData, this.loadData);
+    this.sectionList = [];
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
     // this.deleteTag(1);
     // this.createTag('testTag-1');
@@ -45,7 +63,7 @@ class DiaryStore extends Reflux.Store {
       // this.realm = new Realm({schema: TagSchema});
       var val = realm.objects(DiarySchema.name);
       if (val !== null && val.length > 0) {
-        this._diarys = val;
+        this._diarys = val.sorted('date', true);
         console.info('all diarys: ' + val.length);
         let sortedDiarys = val.sorted('id');
         this.maxId = val.length>0 ? sortedDiarys[val.length-1].id : -1; //maxId 是当前最大的ID，再加入新tag则自增
@@ -87,24 +105,23 @@ class DiaryStore extends Reflux.Store {
   //   });
   // }
 
-  // deleteTag(id) {
-  //   // this._tags = [];
-  //   console.log('want to delete tag: ', id);
-  //   // let realm = this.realm;
-  //   try{
-  //     realm.write(() => {
-  //       console.log('限制条件: '+'id == '+id);
-  //       let tags = realm.objects(TagSchema.name);
-  //       console.log('delete tag: '+ tags.length);
-  //       let tag = tags.filtered('id == '+id);
-  //       console.log('delete tag: ', tag.length);
-  //       realm.delete(tag);
-  //       this.emit();
-  //     });
-  //   } catch (error) {
-  //     console.error('deleteTag error:', error.message);
-  //   }
-  // }
+  deleteDiary(id) {
+    console.log('want to delete diary: ', id);
+    try{
+      realm.write(() => {
+        console.log('限制条件: '+'id == '+id);
+        let diarys = realm.objects(DiarySchema.name);
+        let diary = diarys.filtered('id == '+id);
+        console.log('限制后： ', diary);
+        realm.delete(diary[0]);
+        this.emit();
+        this.loadData();
+        // this.loadData();
+      });
+    } catch (error) {
+      console.error('deleteTag error:', error.message);
+    }
+  }
 
   // editCard(newCard) {
   //   // Assume newCard.id corresponds to an existing card.
@@ -164,7 +181,6 @@ class DiaryStore extends Reflux.Store {
         let newDiary = realm.create(DiarySchema.name, {
           id: this.maxId+1,
           date: new Date(date),
-          //这里天气心情暂时写死，后面加入AsyncStorage
           temperature: tianqiData[temper],
           mood: xinqingData[mood],
           tagCount: diary.tagCount,
@@ -178,6 +194,7 @@ class DiaryStore extends Reflux.Store {
       
       // this.emit();
       // this.setState({diarys: this._diarys});
+      this.emit();
       //回调
       callback(true, this.maxId);
     } catch (error) {
@@ -217,8 +234,57 @@ class DiaryStore extends Reflux.Store {
     }
   }
 
+    // 加载数据
+  loadData() {
+    this.sectionList = [];
+      var allData = this.state.diarys;
+      console.log('allData', allData);
+      // 定义变量
+      var dataBlob = {},
+          sectionIDs = [],
+          rowIDs = [],
+          icons = [];
+      let date = new Date(0);
+      console.log('date', allData[0].date);
+      let ii=-1, jj=0;
+      while(jj< allData.length) {
+        if(allData[jj].date.getFullYear() == date.getFullYear() && 
+        allData[jj].date.getMonth() == date.getMonth()) {
+          this.sectionList[ii]++;
+        } else {
+          date = allData[jj].date;
+          this.sectionList[++ii] = 1;
+        }
+        jj++;
+      }
+      let index = 0;
+     
+      // 遍历数组中对应的数据并存入变量内
+      for (let i = 0; i<this.sectionList.length; i++){
+          // 将组号存入 sectionIDs 中
+          sectionIDs.push(i);
+          // 将每组头部需要显示的内容存入 dataBlob 中
+          if(i>0)index = index + this.sectionList[i-1];
+          let d = new Date(allData[index].date);
+          dataBlob[i] = d.getFullYear() + '年' + (d.getMonth()+1) + '月';
+          // 取出该组所有的 icon
+          rowIDs[i] = [];
+          // 遍历所有 icon
+          for (var j = 0; j<this.sectionList[i]; j++){
+              // 设置标识
+              rowIDs[i].push(j);
+              // 根据标识,将数据存入 dataBlob
+              dataBlob[i + ':' + j] = allData[index+j];
+          }
+      }
+      console.log('after init:', dataBlob);
+      // 刷新dataSource状态
+      this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
+      });
+  }
+
   emit() {
-    this.setState({diarys: this._diarys});
+    this.setState({diarys: this._diarys.slice()});
   }
 
 }

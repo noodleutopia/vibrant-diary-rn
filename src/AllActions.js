@@ -30,6 +30,7 @@ export var DiaryActions = Reflux.createActions([
   'deleteDiary',
   'editDiary',
   'getDiary',
+  'loadData'
   // 'deleteAllCards'
 ]);
 
