@@ -14,19 +14,12 @@ import DiaryStore from '../stores/DiaryStore';
 import {DiaryActions} from '../AllActions';
 import {dateTimeHelper} from '../utils/DateFormatUtil'
 
-// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-var afterMount = false;
 class AllDiaryView extends Reflux.Component {
 
   constructor(props) {
     super(props);
     this.store = DiaryStore;
     this.storeKeys = ['dataSource'];
-    
-    this.state = {
-       
-    }
-    // this.afterMount = false;
     this.diaryList = [];
     this.sectionList = [];
     this.sections = [];
