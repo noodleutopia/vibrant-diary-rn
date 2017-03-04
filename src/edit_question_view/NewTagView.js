@@ -12,49 +12,34 @@ import ImageButton from '../components/ImageButton';
 import Button from '../components/Button';
 import Reflux from 'reflux';
 import QuestionStore from '../stores/QuestionStore';
-import {QuestionActions} from '../AllActions';
+import {TagActions, QuestionActions} from '../AllActions';
 import BottomBar from './BottomBar'
+import {PAGES} from '../xiaomubiao';
+
 
 const itemsPerRow = 2;
-class EditQuestionView extends Reflux.Component {
+class NewTagView extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    console.log('EditThemeView');
+    console.log('NewTagView');
     this.store = QuestionStore; // <- just assign the store class itself
-    this.storeKeys = ['questionsByTag'];
+    // this.storeKeys = ['questionsByTag'];
     this.state = {
+      tagName: '',
       data: []
     }
-    this.deleteList = [];//删除的数据库中的问题
-    this.editList = [];//编辑的数据库中的问题
-  }
-
-  componentWillMount() {
-    super.componentWillMount();
-    console.log('componentWillMount');
-    QuestionActions.getQuestions(this.props.tag.id);
-  }
-
-  componentDidMount() {
-    let temp = this.state.questionsByTag;
-    let data = [];
-    for(let i in temp) {
-      let obj = {};
-      obj.id = temp[i].id;
-      obj.question = temp[i].question;
-      obj.tagId = temp[i].tagId;
-      data.push(obj);
-    }
-    console.log('componentDidMount', data);
-    this.setState({data: data});
   }
 
   render() {
-    console.log('render EditThemeView view here...', this.state.data);
+    console.log('render NewTagView view here...', this.state.data);
     return(
       <View style={styles.container}>
-        <Text style={styles.top}>{this.props.tag.tagName}</Text>
+        <TextInput 
+          style={styles.top} 
+          placeholder='主题名称'
+          onChangeText={(text) => this.setState({tagName: text})}
+          value={this.state.tagName} />
         <GridView
           itemStyle={styles.container}
           data={this.state.data}
@@ -77,21 +62,11 @@ class EditQuestionView extends Reflux.Component {
     console.log('此时的数组：', this.state.data);
     let temp = this.state.data;
     temp.splice(itemID, 1);
-    //如果是数据库中的问题，加入列表
-    if(item.id != undefined) {
-      this.deleteList.push(item);
-      console.log('加入删除列表问题：', item);
-    }
     this.setState({data: temp});
   }
 
   _editQuestion=(item, itemID, text)=> {
     let temp = this.state.data;
-    //如果是数据库中的问题，加入列表
-    // if(item.id != undefined) {
-    //   this.editList.push(item);
-    //   console.log('加入删除列表问题：', item);
-    // }
     temp[itemID].question = text;
     this.setState({data: temp});
   }
@@ -114,20 +89,27 @@ class EditQuestionView extends Reflux.Component {
   addNewQuestion() {
     let newQuestion = {};
     newQuestion.question = "随机问题";
-    newQuestion.tagId = this.props.tag.id;
+    // newQuestion.tagId = this.props.tag.id;
     let temp = this.state.data;
     temp.push(newQuestion);
     this.setState({data: temp});
   }
 
   saveQuestions() {
-    QuestionActions.editQuestionsByTag(this.props.tag.id, this.deleteList, this.state.data, this.callback);
+    TagActions.createTag(this.state.tagName, this.getNewTagId);
+  }
+
+  getNewTagId=(success, tagId)=>{
+    console.log('getNewTagId', success, tagId);
+    if(success) {
+      QuestionActions.editQuestionsByTag(tagId, [], this.state.data, this.callback);
+    }
+    
   }
 
   callback=()=> {
     this.props.navigator.pop();
   }
-
 }
 
 class QuestionItem extends Component {
@@ -171,6 +153,7 @@ var styles = StyleSheet.create({
     height: 60,
     fontSize: 20,
     backgroundColor: '#ffffff',
+    
   },
   questionItem: {
     flex: 1,
@@ -193,4 +176,4 @@ var styles = StyleSheet.create({
   },
 });
 
-export default EditQuestionView;
+export default NewTagView;

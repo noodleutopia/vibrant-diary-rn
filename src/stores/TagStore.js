@@ -104,7 +104,7 @@ class TagStore extends Reflux.Store {
 
   // }
 
-  createTag(name) {
+  createTag(name, callback) {
     console.log('将插入标签：' + name);
     // var realm = this.realm;
     try{
@@ -119,7 +119,9 @@ class TagStore extends Reflux.Store {
       // this._tags.push(new Card(front, back, deckID));
       console.log('after create: ' + realm.objects(TagSchema.name).length);
       this.emit();
+      callback(true, this.maxId);
     } catch (error) {
+      callback(false);
       console.error('createTag error: ', error.message);
     }
   }

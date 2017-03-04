@@ -16,12 +16,13 @@ import PreviewView from './preview_view/PreviewView'
 import EditView from './edit_view/EditView'
 import ShareView from './preview_view/ShareView'
 import EditQuestionView from './edit_question_view/EditQuestionView'
-
+import NewTagView from './edit_question_view/NewTagView'
 
 export var PAGES = { page_new_diary: 'newDiary', page_all_diary: 'allDiary',
 							page_edit_theme: 'editTheme', page_data_analyze: 'dataAnalyze',
 							page_setting: 'setting', page_date: 'date', page_preview: 'preview',
-						page_edit: 'edit', page_share: 'share', page_edit_question: 'editQuestion'};
+						page_edit: 'edit', page_share: 'share', page_edit_question: 'editQuestion', 
+					page_new_tag: 'newTag'};
 
 var Xiaomubiao = React.createClass({
 
@@ -136,7 +137,7 @@ var Xiaomubiao = React.createClass({
     switch (route.name) {
       case 'home':
 			  console.log('navigater home view.');
-				return <HomeView createNewDiary={this._createNewDiary} _onPBottom={this._onHandleBottom} 
+				return <HomeView createNewDiary={this._createNewDiary} _onPBottom={this._onHandleBottom} navigator={navigator}
 				_onPTop={this._onHandleTop}/>;
 			case PAGES.page_new_diary:
 			 	console.log('navigater newDiary view.');
@@ -161,6 +162,8 @@ var Xiaomubiao = React.createClass({
 				return <ShareView navigator={navigator}/>;
 			case PAGES.page_edit_question:
 				return <EditQuestionView navigator={navigator} {...route.data}/>;
+			case PAGES.page_new_tag:
+				return <NewTagView navigator={navigator} {...route.data}/>;
 			default:
      		console.error('Encountered unexpected route: ' + route.name);
     }

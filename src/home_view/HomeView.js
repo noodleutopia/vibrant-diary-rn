@@ -16,6 +16,8 @@ import DateStore from '../stores/DateStore';
 // import TagStore from '../stores/TagStore';
 import {TagActions} from '../AllActions';
 import Reflux from 'reflux';
+import {PAGES} from '../xiaomubiao';
+
 
 var selectedTags = [];
 class HomeView extends Reflux.Component {
@@ -56,7 +58,17 @@ class HomeView extends Reflux.Component {
 
 	_addTag(){
 		console.log('添加新标签');
-		TagActions.createTag('heheda');
+		// TagActions.createTag('heheda');
+    this.props.navigator.push({
+      name: PAGES.page_new_tag,
+      data: {
+        // question: question,
+        // answer: this.props.answers[itemID],
+        // getAnswer:(newAnswer)=>{
+        //   this.props.addAnswer(this.props.index, itemID, newAnswer);
+        // }
+      }
+    });
 	}
 
 	render() {
