@@ -31,6 +31,7 @@ class QuestionStore extends Reflux.Store{
     this.listenTo(QuestionActions.createQuestion, this.createQuestion); // listen to the statusUpdate action
     this.listenTo(QuestionActions.deleteQuestion, this.deleteQuestion);
     this.listenTo(QuestionActions.editQuestion, this.editQuestion);
+    this.listenTo(QuestionActions.editQuestionsByTag, this.editQuestionsByTag);
   }
 
   loadQuestions() {
@@ -144,6 +145,41 @@ class QuestionStore extends Reflux.Store{
       realm.create(QuestionSchema.name, {id: question.id, question: newQuestion}, true);
     });
     this.emit();
+  }
+
+  //批量更新tag下面的所有问题
+  editQuestionsByTag(tagId, deleteList, questionList, callback) {
+    try{
+      realm.write(() => {
+        //先查出所有问题
+        let questions = realm.objects(QuestionSchema.name).filtered('tagId == '+tagId);
+        for(let item in questionList) {
+          if(questionList[item].id != undefined) {
+            //修改编辑过的问题
+            realm.create(QuestionSchema.name, {id: questionList[item].id, question: questionList[item].question}, true);
+          } else {
+            //新增问题
+            let newQuestion = realm.create(QuestionSchema.name, {
+              id: this.maxId+1,
+              tagId: tagId,
+              question: questionList[item].question,
+            });
+            this.maxId++;
+          }
+        }
+        //删除问题
+        for(let i in deleteList) {
+          let question = questions.filtered('id == '+deleteList[i].id);
+          realm.delete(question[0]);
+        }
+      });
+      callback();
+    } catch (error) {
+      callback();
+      console.error('editQuestionsByTag error:', error.message);
+    }
+    
+    //删除问题
   }
 
   createQuestion(tagId, question) {

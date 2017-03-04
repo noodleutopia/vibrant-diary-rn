@@ -8,6 +8,7 @@ import{
   TextInput,
 } from 'react-native';
 import GridView from '../components/GridView';
+import ImageButton from '../components/ImageButton';
 import Button from '../components/Button';
 import Reflux from 'reflux';
 import QuestionStore from '../stores/QuestionStore';
@@ -22,6 +23,11 @@ class EditQuestionView extends Reflux.Component {
     console.log('EditThemeView');
     this.store = QuestionStore; // <- just assign the store class itself
     this.storeKeys = ['questionsByTag'];
+    this.state = {
+      data: []
+    }
+    this.deleteList = [];//删除的数据库中的问题
+    this.editList = [];//编辑的数据库中的问题
   }
 
   componentWillMount() {
@@ -30,32 +36,64 @@ class EditQuestionView extends Reflux.Component {
     QuestionActions.getQuestions(this.props.tag.id);
   }
 
+  componentDidMount() {
+    let temp = this.state.questionsByTag;
+    let data = [];
+    for(let i in temp) {
+      let obj = {};
+      obj.id = temp[i].id;
+      obj.question = temp[i].question;
+      obj.tagId = temp[i].tagId;
+      data.push(obj);
+    }
+    console.log('componentDidMount', data);
+    this.setState({data: data});
+  }
+
   render() {
-    console.log('render EditThemeView view here...', this.state.questionsByTag);
+    console.log('render EditThemeView view here...', this.state.data);
     return(
       <View style={styles.container}>
         <Text style={styles.top}>{this.props.tag.tagName}</Text>
         <GridView
           itemStyle={styles.container}
-          data={this.state.questionsByTag}
+          data={this.state.data}
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
-            console.log('render question: ' + item.question);
+            console.log('render question: ',item, itemID);
             return (
-              <View >
-                <TextInput style={styles.grid}
-                  autoFocus={false}
-                  multiline={true}
-                  defaultValue={item.question}
-                  autoCorrect={false}
-                />
-              </View>
+              <QuestionItem item={item} itemID={itemID} deleteQuestion={this._deleteQuestion}
+              editQuestion={this._editQuestion}/>
             );
         }}/>
         <BottomBar handleBottomPress={this.onBottomPress}/>
       </View>
     )
+  }
+
+  _deleteQuestion=(item, itemID)=> {
+    console.log('想要删除问题：', itemID, item);
+    console.log('此时的数组：', this.state.data);
+    let temp = this.state.data;
+    temp.splice(itemID, 1);
+    //如果是数据库中的问题，加入列表
+    if(item.id != undefined) {
+      this.deleteList.push(item);
+      console.log('加入删除列表问题：', item);
+    }
+    this.setState({data: temp});
+  }
+
+  _editQuestion=(item, itemID, text)=> {
+    let temp = this.state.data;
+    //如果是数据库中的问题，加入列表
+    // if(item.id != undefined) {
+    //   this.editList.push(item);
+    //   console.log('加入删除列表问题：', item);
+    // }
+    temp[itemID].question = text;
+    this.setState({data: temp});
   }
 
   onBottomPress=(flag) => {
@@ -77,13 +115,17 @@ class EditQuestionView extends Reflux.Component {
     let newQuestion = {};
     newQuestion.question = "随机问题";
     newQuestion.tagId = this.props.tag.id;
-    let temp = this.state.questionsByTag;
+    let temp = this.state.data;
     temp.push(newQuestion);
-    this.setState({questionsByTag: temp});
+    this.setState({data: temp});
   }
 
   saveQuestions() {
+    QuestionActions.editQuestionsByTag(this.props.tag.id, this.deleteList, this.state.data, this.callback);
+  }
 
+  callback=()=> {
+    this.props.navigator.pop();
   }
 
   _onPress(tag, itemID) {
@@ -98,6 +140,27 @@ class EditQuestionView extends Reflux.Component {
       }
     });
   }
+}
+
+class QuestionItem extends Component {
+  
+  render() {
+    return(
+      <View style={styles.questionItem}>
+        <ImageButton style={{width: 25, height:25}} imageStyle={styles.button} source={require('../../res/images/Fill 143.png')} 
+        onPress={()=>this.props.deleteQuestion(this.props.item, this.props.itemID)}/>
+        <TextInput style={styles.grid}
+          autoFocus={false}
+          multiline={true}
+          defaultValue={this.props.item.question}
+          onChangeText={(text) => this.props.editQuestion(this.props.item, this.props.itemID, text)}
+          value={this.props.item.question}
+          autoCorrect={false}
+        />
+      </View>
+    );
+  }
+
 }
 
 // EditThemeView.propTypes = {
@@ -121,18 +184,25 @@ var styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: '#ffffff',
   },
-  grid: {
-    justifyContent: 'center',
-    padding: 8,
-    // margin: 10,
-    width: Dimensions.get('window').width / 2,
-    height: Dimensions.get('window').width / 2,
-    backgroundColor: '#F6F6F6',
-    alignItems: 'center',
+  questionItem: {
+    flex: 1,
     borderWidth: 1,
-    // borderRadius: 5,
-    borderColor: '#CCC'
-  }
+    borderColor: '#CCC',
+    width: Dimensions.get('window').width / 2-10,
+    height: Dimensions.get('window').width / 3,
+    backgroundColor: '#ffffff',
+    margin: 5
+  },
+  grid: {
+    flex: 1,
+    padding: 5,
+  },
+  button: {
+    marginTop: 10,
+    marginLeft: 10,
+    height: 15,
+    width: 15,
+  },
 });
 
 export default EditQuestionView;

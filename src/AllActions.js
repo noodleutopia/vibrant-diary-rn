@@ -14,6 +14,7 @@ export var QuestionActions = Reflux.createActions([
   'deleteQuestion',
   'editQuestion',
   'getQuestions',
+  'editQuestionsByTag',
   // 'deleteAllCards'
 ]);
 
