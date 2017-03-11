@@ -7,18 +7,18 @@ import ReactNative, {
 	View,
 	Text,
 	StyleSheet,
-  TouchableWithoutFeedback,
-  TextInput,
-  ScrollView,
-  Keyboard,
-  Dimensions,
-  Image,
+    TouchableWithoutFeedback,
+    TextInput,
+    ScrollView,
+    Keyboard,
+    Dimensions,
+    Image,
+    Platform,
   } from 'react-native'
 
 import Button from '../components/Button'
 import dismissKeyboard from 'dismissKeyboard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {QuestionActions} from '../AllActions'
 
 const toolBarHeight=40;
 
@@ -30,11 +30,13 @@ class EditView extends Component {
       keyboardShow: false,
       keyboardHeight: 0,
       text: this.props.answer,};
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardDidHide);
   }
 
   componentWillMount () {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardDidHide);
+    // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    // this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardDidHide);
   }
 
   _keyboardDidShow = (e) =>{
@@ -68,7 +70,7 @@ class EditView extends Component {
 
   _onBlur = ()=> {
     console.log('blur!');
-    // this.setState({keyboardShow: false});
+    this.setState({keyboardShow: false});
     dismissKeyboard();
   }
 
@@ -90,7 +92,8 @@ class EditView extends Component {
     console.log('showView?: ' + this.state.keyboardShow);
     if(this.state.keyboardShow){
           return(
-            <TextToolBar style={{top:(this.state.keyboardHeight-toolBarHeight)}} />
+            <TextToolBar style={{top:(Platform.OS == 'android' ? this.state.keyboardHeight-toolBarHeight-20
+              : this.state.keyboardHeight-toolBarHeight)}} />
             );
         }
   }
@@ -178,6 +181,7 @@ var styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 3,
     fontSize: 16,
+    textAlignVertical: 'top',
   },
   toolBar: {
     width: Dimensions.get('window').width,

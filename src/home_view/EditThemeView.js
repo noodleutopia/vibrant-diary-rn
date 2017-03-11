@@ -24,7 +24,7 @@ class EditThemeView extends Reflux.Component {
   render() {
     console.log('render EditThemeView view here...');
     return(
-      <View>
+      <View style={{flex:1}}>
       <Text style={styles.top}>编辑主题</Text>
       <GridView
         itemStyle={styles.container}
@@ -43,8 +43,8 @@ class EditThemeView extends Reflux.Component {
             </TouchableOpacity>
           );
       }}/>
-    <Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={this.props.quit}/>
-    </View>
+      <Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={this.props.quit}/>
+      </View>
     )
   }
 

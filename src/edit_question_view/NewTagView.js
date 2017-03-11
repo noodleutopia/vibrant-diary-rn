@@ -9,12 +9,10 @@ import{
 } from 'react-native';
 import GridView from '../components/GridView';
 import ImageButton from '../components/ImageButton';
-import Button from '../components/Button';
 import Reflux from 'reflux';
 import QuestionStore from '../stores/QuestionStore';
 import {TagActions, QuestionActions} from '../AllActions';
 import BottomBar from './BottomBar'
-import {PAGES} from '../xiaomubiao';
 
 
 const itemsPerRow = 2;
@@ -96,7 +94,11 @@ class NewTagView extends Reflux.Component {
   }
 
   saveQuestions() {
-    TagActions.createTag(this.state.tagName, this.getNewTagId);
+    if(this.state.tagName == '') {
+      alert("请输入主题名称");
+    } else {
+      TagActions.createTag(this.state.tagName, this.getNewTagId);
+    }
   }
 
   getNewTagId=(success, tagId)=>{

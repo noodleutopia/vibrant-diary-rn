@@ -27,7 +27,7 @@ class BottomBar extends Component {
     console.log('render bottom bar...');
     return(
       <View style={styles.container}>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_polular.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Path Copy 2.png')}
       onPress={()=>this._onPress(PAGES.page_all_diary)}/>
       <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_trending.png')}
       onPress={()=>this._onPress(PAGES.page_edit_theme)}/>
