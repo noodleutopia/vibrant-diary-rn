@@ -31,12 +31,10 @@ class TopBar extends Reflux.Component {
       <TouchableOpacity
         activeOpacity={opacity}
         onPress={this.props.handleTopPress}
-        style={[this.props.style]}>
-        <View style={topBarStyles.container}>
+        style={[topBarStyles.container, this.props.style]}>
           <Text style={topBarStyles.date}>{dateTimeHelper.getInstance().format(_date)+'\n'+dateTimeHelper.getInstance().xingqi(_date)}</Text>
           <Text style={topBarStyles.mood}>心情：{xinqingData[_mood]}</Text>
           <Text style={topBarStyles.temprature}>天气：{tianqiData[_temper]}</Text>
-        </View>
       </TouchableOpacity>
     );
   }
@@ -75,7 +73,7 @@ var topBarStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    backgroundColor: '#ddfdfd',
+    backgroundColor: '#F6A623d0',
     // marginTop: 20
   },
   date: {

@@ -99,8 +99,8 @@ class AllDiaryView extends Reflux.Component {
     return(
       <View style={styles.container}>
         <View style={styles.top}>
-          <Button style={{ position: 'absolute', width: 60, left: 0, margin: 0, padding: 0}} text={"返回"} onPress={this.props.quit}/>
-          <Text style={{textAlign:'center', fontSize: 15,}}>日记列表</Text>
+          <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}} text={"返回"} onPress={this.props.quit}/>
+          <Text style={{textAlign:'center', fontSize: 17,}}>日记列表</Text>
         </View>
         <ListView
           dataSource={this.state.dataSource}
@@ -128,7 +128,10 @@ class AllDiaryView extends Reflux.Component {
   renderSectionHeader(sectionData, sectionID){
     console.log('sectionData: ' , sectionData);
       return(
-          <Text style={{backgroundColor:'yellow', height: 20}}>{sectionData}</Text>
+        <View style={{height: 30, alignItems: 'center', flexDirection: 'row', backgroundColor:'#cfcfcfd0',}}>
+          <Text>{sectionData}</Text>
+        </View>
+
       );
     }
 }
@@ -167,14 +170,15 @@ class DiaryListItem extends Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:20,
+
     // backgroundColor: '#00e700',
     // justifyContent: 'center',
     // alignItems: 'center'
   },
   top: {
-    height: 30,
-    backgroundColor: '#00e700',
+    height: 70,
+    paddingTop:20,
+    backgroundColor: '#F6A623d0',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -185,9 +189,11 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   listItem: {
+    // justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     height: 50,
-    padding: 10,
+    // padding: 10,
   },
 });
 

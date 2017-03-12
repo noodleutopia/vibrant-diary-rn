@@ -189,8 +189,9 @@ render() {
         onPress={()=>this._onPress(this.props.item)}
         onLongPress={()=>this._onLongPress(this.props.item)}
         style={styles.tag}>
-        <Text  style={{textAlign: 'center'}}>
-        {this.props.item.tagName} {this.props.item.id}
+        <Text  style={{textAlign: 'center', fontSize: 16}}>
+        {this.props.item.tagName}
+        {/*{this.props.item.id}*/}
         </Text>
         {this.selectTag()}
         {this.deleteTag()}
@@ -204,7 +205,7 @@ render() {
     if(this.props.isSelected) {
       return (<Image
         style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
-        source={require('../../res/images/ic_polular.png')}
+        source={require('../../res/images/Fill 22.png')}
         />);
     }
   }
@@ -218,7 +219,7 @@ render() {
         style={{position: 'absolute', right: 10, top: 10,}}>
           <Image
           style={[{ width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
-          source={require('../../res/images/ic_trending.png')}
+          source={require('../../res/images/Fill 23.png')}
           />
         </TouchableOpacity>);
     }
@@ -230,19 +231,19 @@ var styles = StyleSheet.create({
   list: {
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center'
+    // flexWrap: 'wrap',
+    // alignItems: 'center'
   },
   tag: {
     justifyContent: 'center',
     padding: 5,
     margin: 10,
-    width: 100,
+    width: 140,
     height: 100,
     backgroundColor: '#F6F6F6',
     // alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 8,
     borderColor: '#CCC'
   },
   text: {

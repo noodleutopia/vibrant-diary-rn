@@ -43,8 +43,8 @@ import ReactNative, {
     alignItems: 'flex-start',
   },
   question: {
-    flex: 1,
-    paddingLeft: -3,
+    flex: 2,
+    marginLeft: -3,
     marginTop: 2,
   },
   answer: {

@@ -4,7 +4,8 @@ var palette = {
   green: '#65ed99',
   tan: '#FFEFE8',
   blue: '#5DA9E9',
-  gray1: '#888888'
+  gray1: '#888888',
+  orange: '#F6A623d0',
 };
 
 module.exports = palette;

@@ -58,6 +58,8 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'center'
     fontWeight: '400',
+    marginTop: 10,
+    marginBottom: 15,
   },
   question: {
     // flex: 1,

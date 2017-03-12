@@ -7,6 +7,7 @@ import{
 } from 'react-native'
 
 import Button from '../components/Button';
+import ImageButton from '../components/ImageButton';
 import TopBar from '../components/TopBar';
 import BottomBar from '../components/BottomBar';
 import TagsGridView from '../components/TagsGridView';
@@ -80,12 +81,14 @@ class HomeView extends Reflux.Component {
 					<ScrollView>
 					<TagsGridView ref='tagsGridView'/>
 					<View style={{justifyContent: 'center',alignItems: 'center',}}>
-						<Button onPress={()=>this._addTag()} style={homeStyles.addButton}/>
+						<ImageButton onPress={()=>this._addTag()} style={homeStyles.addButton} imageStyle={{width: 30, height: 30}}
+												 source={require('../../res/images/plus.png')}/>
 					</View>
 					</ScrollView>
-					<Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={()=>this._onPress()}/>
+					<Button style={homeStyles.doneButton} text={'进入编辑'} onPress={()=>this._onPress()}/>
+					<BottomBar style={{position:'absolute', bottom:0, right:0}} handleBottomPress={(tab)=>this.onPressBottom(tab)}/>
 				</View>
-				<BottomBar handleBottomPress={(tab)=>this.onPressBottom(tab)}/>
+
 			</View>
 		);
 	}
@@ -94,7 +97,7 @@ class HomeView extends Reflux.Component {
 const homeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00ff00',
+    backgroundColor: '#ffffff',
     // opacity: 0.5,
     // justifyContent: 'center',
     // alignItems: 'center',
@@ -105,12 +108,28 @@ const homeStyles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	addButton: {
-		padding: 10,
-    margin: 10,
-    width: 130,
-    height: 130,
+    padding: 0,
+    margin: 0,
+    alignItems: 'center',
+    width: 100,
+    height: 100,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#CCC',
     backgroundColor: colors.blue,
-	}
+	},
+  doneButton: {
+    position:'absolute',
+		bottom:70,
+		right:20,
+    backgroundColor: '#F6A623d0',
+  },
+  text: {
+    // flex: 1,
+		fontSize: 80,
+		marginBottom: 5,
+    textAlign: 'center',
+  },
 });
 
 export default HomeView;

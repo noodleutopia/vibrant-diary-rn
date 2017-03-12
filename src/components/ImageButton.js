@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Text,
 } from 'react-native';
 
 import Button from './Button'
@@ -16,20 +17,59 @@ class ImageButton extends Button {
       <TouchableOpacity
         activeOpacity={opacity}
         onPress={this.props.onPress}
-        style={[this.props.style]}>
-        <View style={{paddingRight:0}}>
+        style={[styles.subContainer, this.props.style]}>
+        <View style={{paddingRight:0, alignItems: 'center', justifyContent: 'center',}}>
           <Image
             style={[{width: 24, height: 24}, this.props.imageStyle]}
             source={this.props.source}
           />
+          {this.renderText()}
         </View>
       </TouchableOpacity>
     );}
+
+    renderText() {
+      if(this.props.text != undefined) {
+        return(<Text style={styles.bottomText}>{this.props.text}</Text>);
+      }
+    }
 }
 
 ImageButton.propTypes = {
   onPress: React.PropTypes.func.isRequired,
   source: React.PropTypes.any.isRequired,
 };
+
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 0,
+    height: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    // marginLeft: 40,
+    // marginRight: 40
+  },
+  subContainer: {
+    width:50,
+    height:40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomButton: {
+    width: 25, height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: 10,
+    marginTop: 5,
+  },
+
+});
 
 export default ImageButton;

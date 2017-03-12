@@ -27,14 +27,14 @@ class BottomBar extends Component {
     console.log('render bottom bar...');
     return(
       <View style={styles.container}>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Path Copy 2.png')}
-      onPress={()=>this._onPress(PAGES.page_all_diary)}/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_trending.png')}
-      onPress={()=>this._onPress(PAGES.page_edit_theme)}/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_favorite.png')}
-      onPress={()=>this._onPress(PAGES.page_data_analyze)}/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_my.png')}
-      onPress={()=>this._onPress(PAGES.page_setting)}/>
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Path Copy 2.png')}
+                     onPress={()=>this._onPress(PAGES.page_all_diary)} text="历史"/>
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Group@3x.png')}
+        onPress={()=>this._onPress(PAGES.page_edit_theme)} text="编辑主题"/>
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_favorite.png')}
+        onPress={()=>this._onPress(PAGES.page_data_analyze)} text="成就"/>
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/setting.png')}
+        onPress={()=>this._onPress(PAGES.page_setting)} text="设置"/>
       </View>
     );
   }
@@ -42,18 +42,33 @@ class BottomBar extends Component {
 
 var styles = StyleSheet.create({
   container: {
-    flex: 0,
-    height: 80,
+    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor: '#cfcfcfd0',
+    // marginLeft: 40,
+    // marginRight: 40
+  },
+  subContainer: {
+    height: 50,
+    // flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     // marginLeft: 40,
     // marginRight: 40
   },
   bottomButton: {
-    width: 30, height: 30,
+    width: 23, height: 23,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bottomText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: 7,
+    marginTop: 5,
   },
 
 });

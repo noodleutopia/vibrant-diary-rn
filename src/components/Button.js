@@ -18,7 +18,7 @@ class Button extends Component {
         activeOpacity={opacity}
         onPress={this.props.onPress}
         style={[styles.wideButton, this.props.style]}>
-        <Text style={{textAlign: 'center'}}>
+        <Text style={[{textAlign: 'center'}, this.props.textStyle]}>
         {this.props.text? this.props.text : ''}
         </Text>
       </TouchableOpacity>
