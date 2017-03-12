@@ -25,7 +25,9 @@ class EditThemeView extends Reflux.Component {
     console.log('render EditThemeView view here...');
     return(
       <View style={{flex:1}}>
-      <Text style={styles.top}>编辑主题</Text>
+        <View style={styles.top}>
+          <Text style={{textAlign:'center', fontSize: 17,}}>编辑主题</Text>
+        </View>
       <GridView
         itemStyle={styles.container}
         data={this.state.tags}
@@ -43,7 +45,7 @@ class EditThemeView extends Reflux.Component {
             </TouchableOpacity>
           );
       }}/>
-      <Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={this.props.quit}/>
+      <Button style={{position:'absolute', bottom:70, right:20, backgroundColor: '#F6A623d0',}} text={'完成'} onPress={this.props.quit}/>
       </View>
     )
   }
@@ -72,10 +74,12 @@ var styles = StyleSheet.create({
   },
   top: {
     paddingTop: 22,  
-    height: 60,
-    fontSize: 15,
-    textAlign: 'center',
-    backgroundColor: '#ffffff',
+    height: 70,
+    // fontSize: 15,
+    // textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F6A623d0',
   },
   grid: {
     justifyContent: 'center',

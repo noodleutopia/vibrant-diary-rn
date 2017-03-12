@@ -28,7 +28,7 @@ render() {
         onPress={()=>this._onPress(this.props.item)}
         style={styles.tag}>
         <Text  style={{textAlign: 'center'}}>
-        测试标签+{this.props.item}
+        {this.props.item}
         </Text>
         {this.selectTag()}
       </TouchableOpacity>
@@ -41,7 +41,7 @@ render() {
     if(this.props.itemId == this.props.selectedId) {
       return (<Image
         style={[styles.flag, this.props.imageStyle]}
-        source={require('../../res/images/ic_polular.png')}
+        source={require('../../res/images/Fill 22.png')}
         />);
     }
   }
@@ -57,10 +57,10 @@ var styles = StyleSheet.create({
   },
   tag: {
     justifyContent: 'center',
-    padding: 5,
-    margin: 10,
-    width: 80,
-    height: 80,
+    // padding: 5,
+    // margin: 10,
+    width: 50,
+    height: 50,
     backgroundColor: '#F6F6F6',
     alignItems: 'center',
     borderWidth: 1,
@@ -74,8 +74,8 @@ var styles = StyleSheet.create({
   },
   flag: {
     position: 'absolute', 
-    right: 10, bottom: 10, 
-    width: 24, height: 24, 
+    right: 2, bottom: 2,
+    width: 12, height: 12,
     // alignSelf: 'flex-end'
   },
 });

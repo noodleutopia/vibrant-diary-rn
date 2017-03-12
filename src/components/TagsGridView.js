@@ -94,8 +94,10 @@ class TagsGridView extends Reflux.Component {
     this.test();
     return (
       <GridView
+        style={{marginTop:13, marginBottom: 10}}
         // contentContainerStyle={styles.list}
         itemStyle={styles.list}
+        rowStyle={styles.row}
         //这里的tags是TagStore传来的。将具有length属性的对象转成数组
         data={this.data}
         dataSource={null}
@@ -234,12 +236,17 @@ var styles = StyleSheet.create({
     // flexWrap: 'wrap',
     // alignItems: 'center'
   },
+  row: {
+    flexDirection: 'row',
+    paddingLeft: 15,
+    paddingRight: 15
+  },
   tag: {
     justifyContent: 'center',
-    padding: 5,
+    // padding: 5,
     margin: 10,
     width: 140,
-    height: 100,
+    height: 85,
     backgroundColor: '#F6F6F6',
     // alignItems: 'center',
     borderWidth: 1,

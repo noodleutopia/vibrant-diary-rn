@@ -177,7 +177,7 @@ var styles = StyleSheet.create({
   },
   top: {
     height: 70,
-    paddingTop:20,
+    paddingTop:22,
     backgroundColor: '#F6A623d0',
     justifyContent: 'center',
     alignItems: 'center',

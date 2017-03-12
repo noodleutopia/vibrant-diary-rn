@@ -80,8 +80,8 @@ class HomeView extends Reflux.Component {
 				<View style={homeStyles.container}>
 					<ScrollView>
 					<TagsGridView ref='tagsGridView'/>
-					<View style={{justifyContent: 'center',alignItems: 'center',}}>
-						<ImageButton onPress={()=>this._addTag()} style={homeStyles.addButton} imageStyle={{width: 30, height: 30}}
+					<View style={{justifyContent: 'center',alignItems: 'center',marginBottom:14}}>
+						<ImageButton onPress={()=>this._addTag()} style={homeStyles.addButton} imageStyle={{width: 20, height: 20}}
 												 source={require('../../res/images/plus.png')}/>
 					</View>
 					</ScrollView>
@@ -111,12 +111,12 @@ const homeStyles = StyleSheet.create({
     padding: 0,
     margin: 0,
     alignItems: 'center',
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#CCC',
-    backgroundColor: colors.blue,
+    backgroundColor: '#F6F6F6',
 	},
   doneButton: {
     position:'absolute',

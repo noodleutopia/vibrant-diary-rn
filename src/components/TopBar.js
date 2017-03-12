@@ -32,9 +32,18 @@ class TopBar extends Reflux.Component {
         activeOpacity={opacity}
         onPress={this.props.handleTopPress}
         style={[topBarStyles.container, this.props.style]}>
-          <Text style={topBarStyles.date}>{dateTimeHelper.getInstance().format(_date)+'\n'+dateTimeHelper.getInstance().xingqi(_date)}</Text>
-          <Text style={topBarStyles.mood}>心情：{xinqingData[_mood]}</Text>
-          <Text style={topBarStyles.temprature}>天气：{tianqiData[_temper]}</Text>
+          <View style={{flexDirection: 'row', paddingTop: 5, alignItems: 'center',}}>
+            <Text style={topBarStyles.date}>{_date.getDate()+ "日"}</Text>
+            <View style={{justifyContent: 'center', marginLeft: 5, marginTop: 1}}>
+              <Text style={topBarStyles.dateMin}>{dateTimeHelper.getInstance().xingqi(_date)}</Text>
+              <Text style={topBarStyles.dateMin}>{_date.getFullYear() + "年" + (_date.getMonth() + 1) + "月"}</Text>
+            </View>
+          </View>
+          <View style={{position: 'absolute', flexDirection: 'row', right: 20, bottom: 20}}>
+            <Text style={topBarStyles.temprature}>{tianqiData[_temper]}</Text>
+            <Text style={topBarStyles.mood}>{xinqingData[_mood]}</Text>
+          </View>
+
       </TouchableOpacity>
     );
   }
@@ -69,24 +78,37 @@ TopBar.defaultProps = {
 var topBarStyles = StyleSheet.create({
   container: {
     // flex: 1,
-    height: 80,
+    height: 105,
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',
     backgroundColor: '#F6A623d0',
+    paddingLeft: 25
     // marginTop: 20
   },
   date: {
-    flex: 1,
+    // flex: 1,
     textAlign: 'center',
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
+  dateMin: {
+    // flex: 1,
+    // textAlign: 'center',
+    fontSize: 10
   },
   mood: {
-    flex: 1,
+    // flex: 1,
+    marginLeft: 15,
+    fontSize: 15,
     textAlign: 'center',
+    // fontWeight: 'bold'
   },
   temprature: {
-    flex: 1,
+    // flex: 1,
+    fontSize: 15,
     textAlign: 'center',
+    // fontWeight: 'bold'
   },
 });
 
