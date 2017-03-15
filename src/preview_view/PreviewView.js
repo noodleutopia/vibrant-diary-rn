@@ -38,7 +38,12 @@ class PreviewView extends Reflux.Component {
         if(this.props.callback != null) {
           this.props.callback(this.state.currentDiary.id);
         }
-        this.props.navigator.pop();
+        this.props.navigator.replace({
+          name: PAGES.page_edit_diary,
+          data: {
+            diaryId: this.state.currentDiary.id,
+          }
+        });
         break;
       case BOTTOM_TAB.flag_share:
         this.props.navigator.push({

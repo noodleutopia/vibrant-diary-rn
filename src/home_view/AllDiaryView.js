@@ -128,7 +128,7 @@ class AllDiaryView extends Reflux.Component {
   renderSectionHeader(sectionData, sectionID){
     console.log('sectionData: ' , sectionData);
       return(
-        <View style={{height: 30, alignItems: 'center', flexDirection: 'row', backgroundColor:'#cfcfcfd0',}}>
+        <View style={{height: 30, alignItems: 'center', flexDirection: 'row', backgroundColor:'#cfcfcf', paddingLeft: 10}}>
           <Text>{sectionData}</Text>
         </View>
 
@@ -158,7 +158,7 @@ class DiaryListItem extends Component {
         onLongPress={()=>this.props.deleteDiary(this.props.rowData.id)}
         style={styles.listItem}>
 
-          <Text>{dateTimeHelper.getInstance().format(this.props.rowData.date) + " " 
+          <Text>{dateTimeHelper.getInstance().format(this.props.rowData.date) + " "
             + dateTimeHelper.getInstance().xingqi(this.props.rowData.date)}</Text>
           <Text style={{marginLeft: 20}}>{this.props.rowData.mood}</Text>
 
@@ -193,6 +193,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: 50,
+    paddingLeft: 10
     // padding: 10,
   },
 });

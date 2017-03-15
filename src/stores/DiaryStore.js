@@ -226,7 +226,7 @@ class DiaryStore extends Reflux.Store {
         realm.create(DiarySchema.name, {id: diaryId, content: diary.content}, true);
       });
       //回调
-      callback(true, this.diaryId);
+      callback(true, diaryId);
     } catch (error) {
       //回调
       callback(false);
