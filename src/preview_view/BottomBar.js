@@ -28,7 +28,7 @@ class BottomBar extends Component {
       <View style={styles.container}>
       <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Fill 61.png')}
       onPress={()=>this._onPress(BOTTOM_TAB.flag_edit)} text="编辑"/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/表.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/diary-list.png')}
       onPress={()=>this._onPress(BOTTOM_TAB.flag_history)} text="日记列表"/>
       <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Fill 108.png')}
       onPress={()=>this._onPress(BOTTOM_TAB.flag_share)} text="分享"/>
@@ -50,7 +50,7 @@ var styles = StyleSheet.create({
     width: 25, height: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    resizeMode: Image.resizeMode.contain,
+    resizeMode: Image.resizeMode.center,
   },
 
 });

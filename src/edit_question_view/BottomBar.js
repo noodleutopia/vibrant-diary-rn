@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import ImageButton from '../components/ImageButton';
+import colors from '../styles/colors';
 import {PAGES} from '../xiaomubiao';
 // export var FLAG_TAB = {
 //     flag_historyTab: 'historyTab', flag_editThemeTab: 'editThemeTab',
@@ -26,11 +27,11 @@ class BottomBar extends Component {
     console.log('render bottom bar...');
     return(
       <View style={styles.container}>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_polular.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/圆叉.png')}
       onPress={()=>this._onPress('back')}/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_trending.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/add.png')}
       onPress={()=>this._onPress('add')}/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_favorite.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/圆对勾.png')}
       onPress={()=>this._onPress('done')}/>
       {/*<ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_my.png')}
       onPress={()=>this._onPress(PAGES.page_setting)}/>*/}
@@ -42,11 +43,11 @@ class BottomBar extends Component {
 var styles = StyleSheet.create({
   container: {
     flex: 0,
-    height: 80,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#ffffff'
+    backgroundColor: colors.mango,
     // marginLeft: 40,
     // marginRight: 40
   },

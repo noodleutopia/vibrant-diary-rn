@@ -44,11 +44,11 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // flex: 1,
-    padding: 10,
-    margin: 10,
+    // padding: 10,
+    // margin: 10,
     width: 100,
     height: 30,
-    backgroundColor: colors.pink
+    backgroundColor: '#F6A623'
   }
 });
 

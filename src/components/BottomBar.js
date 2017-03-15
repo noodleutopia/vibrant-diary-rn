@@ -26,12 +26,12 @@ class BottomBar extends Component {
   render() {
     console.log('render bottom bar...');
     return(
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Path Copy 2.png')}
                      onPress={()=>this._onPress(PAGES.page_all_diary)} text="历史"/>
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Group@3x.png')}
         onPress={()=>this._onPress(PAGES.page_edit_theme)} text="编辑主题"/>
-        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_favorite.png')}
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_unstar_navbar.png')}
         onPress={()=>this._onPress(PAGES.page_data_analyze)} text="成就"/>
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/setting.png')}
         onPress={()=>this._onPress(PAGES.page_setting)} text="设置"/>
@@ -46,7 +46,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#cfcfcfd0',
+    backgroundColor: '#fcfcfccc',
     // marginLeft: 40,
     // marginRight: 40
   },

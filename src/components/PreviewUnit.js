@@ -27,9 +27,9 @@ class PreviewUnit extends Component {
     let array = [];
     for(let i=0; i<questions.length; ++i) {
       array.push(
-      <View  key={i}>
-        <Text style={styles.question}> {questions[i]} </Text>
-        <Text style={styles.answer}> {answers[i]} </Text>
+      <View  style={styles.QAContainer} key={i}>
+        <Text style={styles.question}>{questions[i]}</Text>
+        <Text style={styles.answer}>{answers[i]}</Text>
       </View>
       );
     }
@@ -40,39 +40,50 @@ class PreviewUnit extends Component {
 var styles = StyleSheet.create({
   container: {
     // flex: 1,
-    backgroundColor: '#0aaacf',
+    backgroundColor: 'white',
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingLeft: 10
+    paddingLeft: 35,
+    paddingRight: 35,
+    paddingTop: 20
   },
   QAContainer: {
     // flex: 1,
-    backgroundColor: '#0aaacf',
+    // backgroundColor: 'white',
     // justifyContent: 'center',
     // alignItems: 'center'
+    marginTop: 10,
+    marginBottom: 15
   },
 
   tag: {
     // flex: 1,
-    fontSize: 30,
+    fontSize: 20,
     justifyContent: 'center',
+    color: '#4B4B4B',
     // alignItems: 'center'
     fontWeight: '400',
     marginTop: 10,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   question: {
     // flex: 1,
-    fontSize: 15,
-    justifyContent: 'center',
+    fontSize: 17,
+    color: '#4B4B4B',
+    lineHeight: 25,
+    // justifyContent: 'center',
     // alignItems: 'center'
-    fontWeight: 'bold'
+    // fontWeight: 'bold'
   },
   answer: {
     // flex: 1,
+    fontSize: 17,
     justifyContent: 'center',
+    color: '#4B4B4B',
     // alignItems: 'center'
-    marginTop: 10,
+    fontWeight: '100',
+    lineHeight: 25,
+    marginTop: 6,
   },
 });
 export default PreviewUnit;

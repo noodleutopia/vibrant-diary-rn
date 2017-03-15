@@ -54,7 +54,9 @@ class EditQuestionView extends Reflux.Component {
     console.log('render EditThemeView view here...', this.state.data);
     return(
       <View style={styles.container}>
-        <Text style={styles.top}>{this.props.tag.tagName}</Text>
+        <View style={{backgroundColor: 'white', paddingTop: 22, height: 60, justifyContent: 'center'}}>
+          <Text style={styles.top}>{this.props.tag.tagName}</Text>
+        </View>
         <GridView
           itemStyle={styles.container}
           data={this.state.data}
@@ -159,16 +161,14 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6F6F6',
-      
     // alignItems: 'center',
     // justifyContent: 'space-around',
     // marginTop: 10,
     // marginBottom: 20,
   },
   top: {
-    paddingTop: 22,  
-    paddingLeft: 30,
-    height: 60,
+    // paddingTop: 22,
+    marginLeft: 30,
     fontSize: 20,
     backgroundColor: '#ffffff',
   },

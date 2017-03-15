@@ -118,7 +118,7 @@ class EditView extends Component {
             <View style={{paddingLeft:10, flex:3}}>
               <Text style={{ marginBottom:5}}>{this.props.question.question}</Text>
             </View>
-            <Button style={{flex:1}}text={'完成'} onPress={this._onPress}/>
+            <Button style={{flex:1, marginRight: 10}}text={'完成'} onPress={this._onPress}/>
           </View>
           <KeyboardAwareScrollView 
           ref='scroll' 
@@ -186,7 +186,7 @@ var styles = StyleSheet.create({
   toolBar: {
     width: Dimensions.get('window').width,
     height: toolBarHeight,
-    backgroundColor: '#00aa00',
+    backgroundColor: 'gray',
     flexDirection: 'row',
     position:'absolute', 
     alignItems: 'center',

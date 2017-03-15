@@ -4,6 +4,7 @@ import{
 	Text,
 	StyleSheet,
 	ScrollView,
+  Dimensions,
 } from 'react-native'
 
 import Button from '../components/Button';
@@ -86,7 +87,7 @@ class HomeView extends Reflux.Component {
 					</View>
 					</ScrollView>
 					<Button style={homeStyles.doneButton} text={'进入编辑'} onPress={()=>this._onPress()}/>
-					<BottomBar style={{position:'absolute', bottom:0, right:0}} handleBottomPress={(tab)=>this.onPressBottom(tab)}/>
+					<BottomBar style={{width: Dimensions.get('window').width, position:'absolute', bottom:0, right:0}} handleBottomPress={(tab)=>this.onPressBottom(tab)}/>
 				</View>
 
 			</View>
@@ -110,6 +111,7 @@ const homeStyles = StyleSheet.create({
 	addButton: {
     padding: 0,
     margin: 0,
+		marginBottom: 50,
     alignItems: 'center',
     width: 50,
     height: 50,
@@ -122,7 +124,7 @@ const homeStyles = StyleSheet.create({
     position:'absolute',
 		bottom:70,
 		right:20,
-    backgroundColor: '#F6A623d0',
+    backgroundColor: '#F6A623f0',
   },
   text: {
     // flex: 1,

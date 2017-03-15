@@ -5,7 +5,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-
+import {dateTimeHelper} from '../utils/DateFormatUtil'
 import ImageButton from '../components/ImageButton';
 import Button from '../components/Button';
 import {PAGES} from '../xiaomubiao';
@@ -26,14 +26,25 @@ class TopBar extends Component {
     let _mood = this.props.diary.mood;
     return(
       <View style={styles.container}>
+
         <View style={styles.firstRow}>
-        <Text style={styles.date}>{_date.getFullYear()}年{_date.getMonth()+1}月{_date.getDate()}日</Text>
-        <Text style={styles.mood}>心情：{_mood}</Text>
-        <Text style={styles.temprature}>天气：{_temper}</Text>
+          <View style={{flexDirection: 'row', paddingTop: 5, flex: 1}}>
+            <Text style={styles.date}>{_date.getDate()+ "日"}</Text>
+            <View style={{marginLeft: 5, marginTop: 3}}>
+              <Text style={styles.dateMin}>{dateTimeHelper.getInstance().xingqi(_date)}</Text>
+              <Text style={styles.dateMin}>{_date.getFullYear() + "年" + (_date.getMonth() + 1) + "月"}</Text>
+            </View>
+          </View>
+          <View style={{flex: 2, flexDirection: 'row', justifyContent: 'flex-end'}}>
+            <Text style={styles.temprature}>{_temper}</Text>
+            <Text style={styles.mood}>{_mood}</Text>
+          </View>
+
+
         </View>
         <View style={styles.secondRow}>
-        <Text style={styles.mood}>主题 {this.props.diary.tagCount}</Text>
-        <Text style={styles.temprature}>回答 {this.props.diary.answerCount}</Text>
+        <Text style={styles.secondText}>{this.props.diary.tagCount+'\n'}主题 </Text>
+        <Text style={styles.secondText}>{this.props.diary.answerCount+'\n'}回答</Text>
         </View>
       </View>
     );
@@ -58,17 +69,25 @@ class TopBar extends Component {
 
 var styles = StyleSheet.create({
   container: {
-    flex: 0,
-    paddingTop:10,
-    backgroundColor: '#cfcfcf',
+    height: 165,
+    justifyContent: 'flex-start',
+    backgroundColor: '#F6A623d0',
+    paddingLeft: 45,
+    paddingRight: 45,
+    paddingTop: 25,
+    paddingBottom:12
+    // marginTop: 20
   },
   firstRow: {
+    flex: 2,
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    marginBottom: 50
+    // justifyContent: 'space-around',
   },
   secondRow: {
+    flex: 1,
     height: 30,
     flexDirection: 'row',
     alignItems: 'center',
@@ -78,6 +97,42 @@ var styles = StyleSheet.create({
     width: 30, height: 30,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  date: {
+    // flex: 1,
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  dateMin: {
+    // flex: 1,
+    // textAlign: 'center',
+    fontSize: 10,
+    color: 'white'
+  },
+  mood: {
+    // flex: 1,
+    marginLeft: 35,
+    fontSize: 15,
+    textAlign: 'center',
+    // marginRight: 20,
+    color: 'white'
+    // fontWeight: 'bold'
+  },
+  temprature: {
+    // flex: 1,
+    fontSize: 15,
+    // textAlign: 'center',
+    color: 'white'
+    // fontWeight: 'bold'
+  },
+  secondText: {
+    // flex: 1,
+    fontSize: 10,
+    // textAlign: 'center',
+    color: 'white'
+    // fontWeight: 'bold'
   },
 
 });

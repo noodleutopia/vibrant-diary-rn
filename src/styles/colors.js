@@ -6,6 +6,7 @@ var palette = {
   blue: '#5DA9E9',
   gray1: '#888888',
   orange: '#F6A623d0',
+  mango: '#F6A623d0',
 };
 
 module.exports = palette;
