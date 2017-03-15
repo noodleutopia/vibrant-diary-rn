@@ -13,7 +13,7 @@ import ScrollableTabView, {ScrollableTabBar, } from 'react-native-scrollable-tab
 import TabPageView from '../components/TabPageView';
 import {DiaryActions} from '../AllActions';
 import DiaryStore from '../stores/DiaryStore';
-import {QuestionActions} from '../AllActions';
+import {PAGES} from '../xiaomubiao';
 import Reflux from 'reflux';
 
 class EditDiaryView extends Reflux.Component {
@@ -93,7 +93,13 @@ class EditDiaryView extends Reflux.Component {
   onCreateDone=(isSuccess, id)=> {
     console.log('写入回调', isSuccess);
     if(isSuccess) {
-      this.props.preview(id, this.onPreviewBack);
+      this.props.navigator.replacePrevious({
+        name: PAGES.page_preview,
+        data: {
+          diaryId: id,
+        }
+      });
+      this.props.navigator.pop();
     } else {
       alert("保存日记时发生错误");
     }
