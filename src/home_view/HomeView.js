@@ -51,7 +51,12 @@ class HomeView extends Reflux.Component {
 
 	onPressBottom(tab){
 		console.log('进入homeview: ' + tab);
-		this.props._onPBottom(tab);
+    this.props._onPBottom(tab);
+    // if(tab == 'allDiary' && this.state.diarys.length<1){
+			// alert("您还没有任何历史日记哟！");
+    // } else {
+    //   this.props._onPBottom(tab);
+    // }
 	}
 
 	onPressTop = () =>{

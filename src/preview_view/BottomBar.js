@@ -50,7 +50,7 @@ var styles = StyleSheet.create({
     width: 25, height: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    resizeMode: Image.resizeMode.center,
+    resizeMode: Image.resizeMode.contain,
   },
 
 });

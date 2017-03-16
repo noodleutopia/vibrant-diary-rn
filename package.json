@@ -16,7 +16,8 @@
     "react-native-modal-datetime-picker": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.7.0",
     "realm": "^0.15.4",
-    "reflux": "^6.0.0"
+    "reflux": "^6.0.0",
+    "react-native-push-notification": "latest"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

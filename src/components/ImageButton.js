@@ -18,7 +18,7 @@ class ImageButton extends Button {
         activeOpacity={opacity}
         onPress={this.props.onPress}
         style={[styles.subContainer, this.props.style]}>
-        <View style={{paddingRight:0, alignItems: 'center', justifyContent: 'center',}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center',}}>
           <Image
             style={[{width: 24, height: 24}, this.props.imageStyle]}
             source={this.props.source}
@@ -43,7 +43,6 @@ ImageButton.propTypes = {
 
 var styles = StyleSheet.create({
   container: {
-    flex: 0,
     height: 80,
     flexDirection: 'row',
     alignItems: 'center',
@@ -53,7 +52,7 @@ var styles = StyleSheet.create({
   },
   subContainer: {
     width:50,
-    height:40,
+    height:50,
     alignItems: 'center',
     justifyContent: 'center',
   },

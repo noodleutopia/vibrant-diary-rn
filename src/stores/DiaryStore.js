@@ -244,23 +244,24 @@ class DiaryStore extends Reflux.Store {
           sectionIDs = [],
           rowIDs = [],
           icons = [];
-      let date = new Date(0);
-      console.log('date', allData[0].date);
-      let ii=-1, jj=0;
-      while(jj< allData.length) {
-        if(allData[jj].date.getFullYear() == date.getFullYear() && 
-        allData[jj].date.getMonth() == date.getMonth()) {
-          this.sectionList[ii]++;
-        } else {
-          date = allData[jj].date;
-          this.sectionList[++ii] = 1;
+      if(allData.length > 0) {
+        let date = new Date(0);
+        console.log('date', allData[0].date);
+        let ii=-1, jj=0;
+        while(jj< allData.length) {
+          if(allData[jj].date.getFullYear() == date.getFullYear() &&
+            allData[jj].date.getMonth() == date.getMonth()) {
+            this.sectionList[ii]++;
+          } else {
+            date = allData[jj].date;
+            this.sectionList[++ii] = 1;
+          }
+          jj++;
         }
-        jj++;
-      }
-      let index = 0;
-     
-      // 遍历数组中对应的数据并存入变量内
-      for (let i = 0; i<this.sectionList.length; i++){
+        let index = 0;
+
+        // 遍历数组中对应的数据并存入变量内
+        for (let i = 0; i<this.sectionList.length; i++){
           // 将组号存入 sectionIDs 中
           sectionIDs.push(i);
           // 将每组头部需要显示的内容存入 dataBlob 中
@@ -271,13 +272,15 @@ class DiaryStore extends Reflux.Store {
           rowIDs[i] = [];
           // 遍历所有 icon
           for (var j = 0; j<this.sectionList[i]; j++){
-              // 设置标识
-              rowIDs[i].push(j);
-              // 根据标识,将数据存入 dataBlob
-              dataBlob[i + ':' + j] = allData[index+j];
+            // 设置标识
+            rowIDs[i].push(j);
+            // 根据标识,将数据存入 dataBlob
+            dataBlob[i + ':' + j] = allData[index+j];
           }
+        }
+        console.log('after init:', dataBlob);
       }
-      console.log('after init:', dataBlob);
+
       // 刷新dataSource状态
       this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
       });
