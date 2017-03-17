@@ -43,7 +43,7 @@ class SettingView extends Component {
           <View style={{height:1, backgroundColor: 'black'}} />
           <View style={[styles.item, {justifyContent: 'space-between'}]}>
             <Text>联系我们</Text>
-            <Text onPress={()=>this.handlePressEmail('mailto:noodleutopia@outlook.com')}>noodleutopia@outlook.com</Text>
+            <Text onPress={()=>this.handlePressEmail('mailto:vibrantdiary@outlook.com')}>vibrantdiary@outlook.com</Text>
           </View>
           <View style={{height:1, backgroundColor: 'black'}} />
         </View>
