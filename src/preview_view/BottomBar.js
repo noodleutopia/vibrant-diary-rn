@@ -30,10 +30,19 @@ class BottomBar extends Component {
       onPress={()=>this._onPress(BOTTOM_TAB.flag_edit)} text="编辑"/>
       <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/diary-list.png')}
       onPress={()=>this._onPress(BOTTOM_TAB.flag_history)} text="日记列表"/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Fill 108.png')}
-      onPress={()=>this._onPress(BOTTOM_TAB.flag_share)} text="分享"/>
+        {this.canShare()}
       </View>
     );
+  }
+
+  canShare() {
+	  if(this.props.os == 'android') {
+	    return(
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Fill 108.png')}
+                     onPress={()=>this._onPress(BOTTOM_TAB.flag_share)} text="存为图片"/>
+      );
+
+    }
   }
 }
 
