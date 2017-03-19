@@ -27,6 +27,7 @@ class NewDiaryView extends Reflux.Component {
     this.questionFlags = Array(this.tags.length).fill(false);
     this.diaryId = -1;
     this.state = {
+      questions: new Array([]),
       answers: new Array([]),
     };
     this.store = QuestionStore;
@@ -36,17 +37,22 @@ class NewDiaryView extends Reflux.Component {
   componentWillMount() {
     super.componentWillMount();
     console.log('componentWillMount');
-    QuestionActions.getAllQuestions(this.tags);
   }
 
   componentDidMount() {
-    //这里先将所有回答置空
-    let temp = new Array(this.tags.length);
-    for(let i=0;i<this.tags.length;++i) {
-      temp[i] = new Array(this.state.questions[i].length).fill('');
+    console.log('componentDidMount');
+    QuestionActions.getAllQuestions(this.tags, this.callback);
+  }
+
+  callback=(questions)=> {
+    if(questions != undefined && questions.length>=0) {
+      //这里先将所有回答置空
+      let temp = new Array(this.tags.length);
+      for(let i=0;i<this.tags.length;++i) {
+        temp[i] = new Array(questions[i].length).fill('');
+      }
+      this.setState({answers: temp});
     }
-    this.setState({answers: temp});
-    console.log('answers', this.state.answers);
   }
 
   _onPress(name){
@@ -132,20 +138,32 @@ class NewDiaryView extends Reflux.Component {
     console.log('render answers', this.state.answers);
     return (
       <View style={styles.container}>
-        <ScrollableTabView
-        style={{paddingTop: 20, }}
-        initialPage={this.props.initialPage || 0}
-        renderTabBar={() => <ScrollableTabBar />}
-        onChangeTab={this._onChangeTab}
-        // locked={true}
-        // scrollWithoutAnimation={true}
-        >
-        {this.tags.map((tag, index) => <TabPageView key={index} index={index} tagId={tag.id} tabLabel={tag.tagName} questions={this.state.questions[index].slice()} answers={this.state.answers[index]} addQuestions={this.addQuestions} addAnswer={this.addAnswer} {...this.props} />)}
-        </ScrollableTabView>
+        {this.renderPages()}
+
         <Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={()=>this._onPress('done')}/>
         <Button style={{position:'absolute', bottom:70, left:20}} text={'返回'} onPress={()=>this._onPress('back')}/>
       </View>
     );
+  }
+
+  renderPages() {
+    if(this.state.questions != undefined && this.state.questions.length > 0) {
+      return(
+        <ScrollableTabView
+          style={{paddingTop: 20, }}
+          initialPage={this.props.initialPage || 0}
+          renderTabBar={() => <ScrollableTabBar />}
+          onChangeTab={this._onChangeTab}
+          // locked={true}
+          // scrollWithoutAnimation={true}
+        >
+          {this.tags.map((tag, index) => <TabPageView key={index} index={index} tagId={tag.id} tabLabel={tag.tagName}
+                                                     questions={(this.state.questions[index]==undefined ? [] : this.state.questions[index].slice())}
+                                                      answers={this.state.answers[index]}
+                                                     addQuestions={this.addQuestions} addAnswer={this.addAnswer} {...this.props} />)}
+        </ScrollableTabView>
+      )
+    }
   }
 }
 

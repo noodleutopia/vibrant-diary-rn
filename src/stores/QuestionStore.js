@@ -53,7 +53,7 @@ class QuestionStore extends Reflux.Store{
     }
   }
 
-  getAllQuestions(tags) {
+  getAllQuestions(tags, callback) {
     try {
       let questions = [];
       let tagId = null;
@@ -74,6 +74,8 @@ class QuestionStore extends Reflux.Store{
         console.info('tagId: '+tagId+` ${QUESTION_KEY} not found on disk.`);
         this._questions = [];
       }
+      console.log('will callback', this._questions);
+      callback(this._questions);
       this.emit();
     }
     catch (error) {
