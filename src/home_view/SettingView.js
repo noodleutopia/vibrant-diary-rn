@@ -74,7 +74,7 @@ class ClockView extends React.Component {
 
   setNotify(time) {
     let now = new Date();
-    let temp = new Date(time);
+    let temp = new Date(time.setSeconds(0));
     let date = time < now ? new Date(temp.setDate(time.getDate()+1)): time;
     console.log('设定闹钟： ',  time, date);
 
@@ -150,7 +150,7 @@ class ClockView extends React.Component {
   handleSwitch(on) {
     if(on) {
       //显示Date Picker
-      this.setState({isDateTimePickerVisible: true, switchOn: on});
+      this.setState({isDateTimePickerVisible: true, switchOn: on, time: new Date(),});
     } else {
       this.setState({switchOn: on});
       if(Platform.OS == "ios") {
