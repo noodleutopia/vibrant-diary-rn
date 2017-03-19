@@ -26,9 +26,10 @@ class AllDiaryView extends Reflux.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount', this.state.diarys);
-    DiaryActions.loadData();
-    afterMount = true;
+    console.log('componentDidMount');
+    if(this.state.dataSource == null || this.state.dataSource._dataBlob == null) {
+      DiaryActions.loadData();
+    }
   }
 
   // componentWillReceiveProps(nextProps) {
