@@ -34,6 +34,19 @@ class HomeView extends Reflux.Component {
 		this.storeKeys = ['diarys'];
 	}
 
+  shouldComponentUpdate(nextProps, nextState) {
+    //通过此处判断是否需要更新页面数据，只有当前Tab展示新数据
+    // let result = false;
+    console.log('shouldComponentUpdate', nextProps, nextState)
+		return nextState.diarys != this.state.diarys;
+    // try {
+    //   result = nextProps.item.id == this.props.item.id;
+    // } catch (error) {
+    //
+    // }
+    // return result;
+  }
+
 	//点击事件处理
 	_onPress(){
 		console.log('点击了完成按钮');
@@ -79,7 +92,7 @@ class HomeView extends Reflux.Component {
 	}
 
 	render() {
-		// console.log('render home view here...' + 'all diarys: ' + this.state.diarys.length);
+		console.log('render home view here...');
 		return(
 			<View style={{flex: 1}}>
 				<TopBar handleTopPress={this.onPressTop}/>

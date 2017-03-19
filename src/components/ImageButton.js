@@ -11,7 +11,7 @@ import Button from './Button'
 
 class ImageButton extends Button {
   render() {
-    console.log('这是一个ImageButton!' + this.props.disabled);
+    // console.log('这是一个ImageButton!' + this.props.disabled);
     let opacity = this.props.disabled ? 1 : 0.5;
     return(
       <TouchableOpacity

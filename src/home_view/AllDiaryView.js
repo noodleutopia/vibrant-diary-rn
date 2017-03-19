@@ -104,6 +104,7 @@ class AllDiaryView extends Reflux.Component {
           <Text style={{textAlign:'center', fontSize: 17,}}>日记列表</Text>
         </View>
         <ListView
+          initialListSize={1}
           dataSource={this.state.dataSource}
           renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID} 
             rowID={rowID} deleteDiary={this.deleteDiary} preview={this.props.preview}/>}

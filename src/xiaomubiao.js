@@ -29,6 +29,14 @@ var Xiaomubiao = React.createClass({
 
   componentWillMount() {
     console.log('will mount ...');
+    if (!__DEV__) {
+      global.console = {
+        info: () => {},
+        log: () => {},
+        warn: () => {},
+        error: () => {},
+      };
+    }
   },
 
   componentDidMount() {

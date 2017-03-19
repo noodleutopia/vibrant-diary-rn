@@ -65,6 +65,7 @@ class GridView extends Component {
 
     return (
       <ListView
+        initialListSize={1}
         onLayout={(...args) => {
           /**
            * The grid data needs to be rebound if the items per row is
