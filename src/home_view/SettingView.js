@@ -66,7 +66,7 @@ class ClockView extends React.Component {
 
   componentDidMount() {
     AsyncStorage.getItem(KEY_CLOCK_TIME).then((time)=>{
-      if(time != 'close') {
+      if(time!=null && time != 'close') {
         this.setState({time: new Date(time), switchOn: true});
       }
     }).catch().done();

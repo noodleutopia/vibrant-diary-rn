@@ -62,7 +62,7 @@ class DiaryStore extends Reflux.Store {
       // var val = await AsyncStorage.getItem(TAG_KEY);
       // this.realm = new Realm({schema: TagSchema});
       var val = realm.objects(DiarySchema.name);
-      if (val !== null && val.length > 0) {
+      if (val !== null) {
         this._diarys = val.sorted('date', true);
         console.info('all diarys: ' + val.length);
         let sortedDiarys = val.sorted('id');
@@ -105,8 +105,8 @@ class DiaryStore extends Reflux.Store {
   //   });
   // }
 
-  deleteDiary(id) {
-    console.log('want to delete diary: ', id);
+  deleteDiary(id, callback) {
+    console.log('want to delete diary: ', id, callback);
     try{
       realm.write(() => {
         console.log('限制条件: '+'id == '+id);
@@ -114,13 +114,16 @@ class DiaryStore extends Reflux.Store {
         let diary = diarys.filtered('id == '+id);
         console.log('限制后： ', diary);
         realm.delete(diary[0]);
-        this.loadData();
+        this.loadData(callback);
         // this.emit();
         // this.loadData();
       });
     } catch (error) {
       console.error('deleteTag error:', error.message);
     }
+    // if(callback != undefined) {
+    //   callback();
+    // }
   }
 
   // editCard(newCard) {
@@ -285,7 +288,9 @@ class DiaryStore extends Reflux.Store {
       // 刷新dataSource状态
       this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
       });
-      callback();
+      if (callback != undefined) {
+        callback();
+      }
   }
 
   emit() {

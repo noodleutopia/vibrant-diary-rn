@@ -54,8 +54,11 @@ class AllDiaryView extends Reflux.Component {
       {text:'取消',onPress:()=>console.log('你点击了取消')},
       {text:'确定',onPress:()=>{
         console.log('你点击了确定');
-        //这里删除一篇日记
-        DiaryActions.deleteDiary(id);}
+        this.setState({visible: true}, function () {
+          //这里删除一篇日记
+          DiaryActions.deleteDiary(id, this.callback);
+        });
+        }
       },
     ]);
   }
@@ -79,7 +82,7 @@ class AllDiaryView extends Reflux.Component {
           initialListSize={1}
           dataSource={this.state.dataSource}
           renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID} 
-            rowID={rowID} deleteDiary={this.deleteDiary} preview={this.props.preview}/>}
+            rowID={rowID} deleteDiary={()=>this.deleteDiary(rowData.id)} preview={this.props.preview}/>}
           renderSeparator={this._renderSeperator}
           renderSectionHeader={this.renderSectionHeader}
         />
@@ -89,9 +92,10 @@ class AllDiaryView extends Reflux.Component {
 
   renderLoading() {
     // if(this.state.dataSource == null || this.state.dataSource._cachedRowCount == 0) {
+    console.log('visible? ' ,this.state.visible);
     if(this.state.visible) {
       return(
-        <Spinner style={{position: 'absolute'}} visible={true} textContent={""} textStyle={{color: '#FFF'}} />
+        <Spinner visible={true} textContent={""} textStyle={{color: '#FFF'}} />
       );
     }
   }
@@ -138,7 +142,7 @@ class DiaryListItem extends Component {
     return(
       <TouchableOpacity
         onPress={()=>this._onPress(this.props.rowData)}
-        onLongPress={()=>this.props.deleteDiary(this.props.rowData.id)}
+        onLongPress={this.props.deleteDiary}
         style={styles.listItem}>
 
           <Text>{dateTimeHelper.getInstance().format(this.props.rowData.date) + " "
