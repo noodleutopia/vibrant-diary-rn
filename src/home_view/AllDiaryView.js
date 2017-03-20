@@ -20,16 +20,18 @@ class AllDiaryView extends Reflux.Component {
     super(props);
     this.store = DiaryStore;
     this.storeKeys = ['dataSource'];
-    this.diaryList = [];
     this.sectionList = [];
-    this.sections = [];
   }
 
   componentDidMount() {
     console.log('componentDidMount');
-    if(this.state.dataSource == null || this.state.dataSource._dataBlob == null) {
+    // if(this.state.dataSource == null || this.state.dataSource._dataBlob == null) {
       DiaryActions.loadData();
-    }
+    // }
+  }
+
+  componentWillReceiveProps() {
+    console.log('componentWillReceiveProps');
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -100,7 +102,8 @@ class AllDiaryView extends Reflux.Component {
     return(
       <View style={styles.container}>
         <View style={styles.top}>
-          <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}} text={"返回"} onPress={this.props.quit}/>
+          <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}}
+                  text={"返回"} onPress={this.props.navigator.pop}/>
           <Text style={{textAlign:'center', fontSize: 17,}}>日记列表</Text>
         </View>
         <ListView

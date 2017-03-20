@@ -99,6 +99,7 @@ class EditView extends Component {
   }
 
   render() {
+    console.log('render EditView here...');
     //插入图片区域，先不做
     //   <View style={{flexDirection: 'row', alignItems: 'center'}}>
     //   <Image
@@ -139,7 +140,7 @@ class EditView extends Component {
             style={styles.editText}/>
             </View>
           </KeyboardAwareScrollView>
-           {this._showView()}
+           {/*{this._showView()}*/}
         </View>
        
       </TouchableWithoutFeedback>

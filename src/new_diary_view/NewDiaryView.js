@@ -10,7 +10,7 @@ import ScrollableTabView, {ScrollableTabBar, } from 'react-native-scrollable-tab
 import TabPageView from '../components/TabPageView';
 import {DiaryActions} from '../AllActions';
 import QuestionStore from '../stores/QuestionStore';
-import AnswerStore from '../stores/AnswerStore';
+import DiaryStore from '../stores/DiaryStore';
 import {QuestionActions} from '../AllActions';
 import Reflux from 'reflux';
 
@@ -30,7 +30,7 @@ class NewDiaryView extends Reflux.Component {
       questions: new Array([]),
       answers: new Array([]),
     };
-    this.store = QuestionStore;
+    this.stores = [QuestionStore, DiaryStore];
     this.storeKeys = ['questions'];
   }
 

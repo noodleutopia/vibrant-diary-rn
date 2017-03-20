@@ -21,6 +21,16 @@ class EditThemeView extends Reflux.Component {
     this.store = TagStore; // <- just assign the store class itself
   }
 
+  componentDidMount() {
+    console.log('componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('shouldComponentUpdate', nextProps, nextState)
+    return nextState.tags != this.state.tags;
+  }
+
+
   render() {
     console.log('render EditThemeView view here...');
     return(

@@ -30,21 +30,19 @@ class HomeView extends Reflux.Component {
 		this.state = {
 			// selectedTags: [],
 		}; // our store will add its own state to the component's
-		this.store = DiaryStore;
-		this.storeKeys = ['diarys'];
+		// this.store = DiaryStore;
+		// this.storeKeys = ['diarys'];
 	}
 
   shouldComponentUpdate(nextProps, nextState) {
-    //通过此处判断是否需要更新页面数据，只有当前Tab展示新数据
-    // let result = false;
-    console.log('shouldComponentUpdate', nextProps, nextState)
-		return nextState.diarys != this.state.diarys;
-    // try {
-    //   result = nextProps.item.id == this.props.item.id;
-    // } catch (error) {
-    //
-    // }
-    // return result;
+    console.log('shouldComponentUpdate', nextProps, nextState, this.props.navigator.getCurrentRoutes());
+    //不可见时，不渲染
+		let routes = this.props.navigator.getCurrentRoutes();
+		if(routes[routes.length-1] != 'home') {
+    	return false;
+		}
+		return this.state != nextState;
+		// return nextState.diarys != this.state.diarys;
   }
 
 	//点击事件处理

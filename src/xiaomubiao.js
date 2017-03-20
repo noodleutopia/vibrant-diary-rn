@@ -58,7 +58,6 @@ var Xiaomubiao = React.createClass({
 		this.refs.navigator.push({
       name: PAGES.page_all_diary,
       data: {
-        message: 'I am a new diary!'
       }
     });
 	},
@@ -68,7 +67,6 @@ var Xiaomubiao = React.createClass({
 		this.refs.navigator.push({
       name: PAGES.page_edit_theme,
       data: {
-        message: 'I am a new diary!'
       }
     });
 	},
@@ -78,7 +76,6 @@ var Xiaomubiao = React.createClass({
 		this.refs.navigator.push({
       name: PAGES.page_data_analyze,
       data: {
-        message: 'I am a new diary!'
       }
     });
 	},
@@ -88,7 +85,6 @@ var Xiaomubiao = React.createClass({
 		this.refs.navigator.push({
       name: PAGES.page_setting,
       data: {
-        message: 'I am a new diary!'
       }
     });
 	},
@@ -152,7 +148,7 @@ var Xiaomubiao = React.createClass({
 			 	console.log('navigater newDiary view.');
 				return <NewDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator} route={route}/>;
 			case PAGES.page_all_diary:
-				return <AllDiaryView quit={this.goHome} preview={this._previewDiary}/>;
+				return <AllDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator}/>;
 			case PAGES.page_data_analyze:
 				return <DataAnalyzeView quit={this.goHome}/>;
 			case PAGES.page_edit_theme:

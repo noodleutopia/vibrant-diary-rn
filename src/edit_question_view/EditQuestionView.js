@@ -20,7 +20,7 @@ class EditQuestionView extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    console.log('EditThemeView');
+    console.log('EditQuestionView');
     this.store = QuestionStore; // <- just assign the store class itself
     this.storeKeys = ['questionsByTag'];
     this.state = {

@@ -114,8 +114,8 @@ class DiaryStore extends Reflux.Store {
         let diary = diarys.filtered('id == '+id);
         console.log('限制后： ', diary);
         realm.delete(diary[0]);
-        this.emit();
         this.loadData();
+        // this.emit();
         // this.loadData();
       });
     } catch (error) {
@@ -195,6 +195,7 @@ class DiaryStore extends Reflux.Store {
       // this.emit();
       // this.setState({diarys: this._diarys});
       this.emit();
+      // this.loadData();
       //回调
       callback(true, this.maxId);
     } catch (error) {
@@ -237,7 +238,7 @@ class DiaryStore extends Reflux.Store {
     // 加载数据
   loadData() {
     this.sectionList = [];
-      var allData = this.state.diarys;
+      var allData = this._diarys;
       console.log('allData', allData);
       // 定义变量
       var dataBlob = {},
