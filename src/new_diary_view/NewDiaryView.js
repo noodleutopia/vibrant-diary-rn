@@ -3,6 +3,7 @@ import{
 	View,
 	Text,
 	StyleSheet,
+  InteractionManager
 } from 'react-native';
 
 import Button from '../components/Button';
@@ -13,6 +14,7 @@ import QuestionStore from '../stores/QuestionStore';
 import DiaryStore from '../stores/DiaryStore';
 import {QuestionActions} from '../AllActions';
 import Reflux from 'reflux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class NewDiaryView extends Reflux.Component {
 
@@ -29,6 +31,7 @@ class NewDiaryView extends Reflux.Component {
     this.state = {
       questions: new Array([]),
       answers: new Array([]),
+      visible: true,
     };
     this.stores = [QuestionStore, DiaryStore];
     this.storeKeys = ['questions'];
@@ -41,7 +44,10 @@ class NewDiaryView extends Reflux.Component {
 
   componentDidMount() {
     console.log('componentDidMount');
-    QuestionActions.getAllQuestions(this.tags, this.callback);
+    InteractionManager.runAfterInteractions(() => {
+      // ...long-running synchronous task...
+      QuestionActions.getAllQuestions(this.tags, this.callback);
+    });
   }
 
   callback=(questions)=> {
@@ -53,6 +59,7 @@ class NewDiaryView extends Reflux.Component {
       }
       this.setState({answers: temp});
     }
+    this.setState({visible: false});
   }
 
   _onPress(name){
@@ -138,12 +145,21 @@ class NewDiaryView extends Reflux.Component {
     console.log('render answers', this.state.answers);
     return (
       <View style={styles.container}>
+        {this.renderLoading()}
         {this.renderPages()}
-
         <Button style={{position:'absolute', bottom:70, right:20}} text={'完成'} onPress={()=>this._onPress('done')}/>
         <Button style={{position:'absolute', bottom:70, left:20}} text={'返回'} onPress={()=>this._onPress('back')}/>
       </View>
     );
+  }
+
+  renderLoading() {
+    // if(this.state.dataSource == null || this.state.dataSource._cachedRowCount == 0) {
+    if(this.state.visible) {
+      return(
+        <Spinner style={{position: 'absolute'}} visible={true} textContent={""} textStyle={{fontSize: 15, color: '#FFF'}} />
+      );
+    }
   }
 
   renderPages() {
@@ -175,7 +191,7 @@ NewDiaryView.propTypes = {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#ff0000',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center'
   },

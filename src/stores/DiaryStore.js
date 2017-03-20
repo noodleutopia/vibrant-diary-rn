@@ -236,7 +236,7 @@ class DiaryStore extends Reflux.Store {
   }
 
     // 加载数据
-  loadData() {
+  loadData(callback) {
     this.sectionList = [];
       var allData = this._diarys;
       console.log('allData', allData);
@@ -285,6 +285,7 @@ class DiaryStore extends Reflux.Store {
       // 刷新dataSource状态
       this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
       });
+      callback();
   }
 
   emit() {

@@ -3,6 +3,7 @@ import {
   View,
   Navigator,
 	StyleSheet,
+  InteractionManager,
 } from 'react-native';
 
 import HomeView from './home_view/HomeView'
@@ -118,7 +119,10 @@ var Xiaomubiao = React.createClass({
 	_onHandleBottom(tab) {
 		switch(tab) {
 			case PAGES.page_all_diary:
-				this._allDiary();
+        // InteractionManager.runAfterInteractions(() => {
+          // ...long-running synchronous task...
+          this._allDiary();
+        // });
 				break;
 			case PAGES.page_edit_theme:
 				this._editTheme();

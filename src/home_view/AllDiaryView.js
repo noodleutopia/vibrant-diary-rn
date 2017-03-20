@@ -6,6 +6,7 @@ import{
   ListView,
   TouchableOpacity,
   Alert,
+  InteractionManager,
 } from 'react-native';
 
 import Button from '../components/Button';
@@ -13,6 +14,7 @@ import Reflux from 'reflux';
 import DiaryStore from '../stores/DiaryStore';
 import {DiaryActions} from '../AllActions';
 import {dateTimeHelper} from '../utils/DateFormatUtil'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class AllDiaryView extends Reflux.Component {
 
@@ -21,69 +23,31 @@ class AllDiaryView extends Reflux.Component {
     this.store = DiaryStore;
     this.storeKeys = ['dataSource'];
     this.sectionList = [];
+    this.state = {
+      visible: true
+    }
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
+    console.log('componentDidMount');
+    InteractionManager.runAfterInteractions(() => {
+      // ...long-running synchronous task...
+      DiaryActions.loadData(this.callback);
+    });
   }
 
   componentDidMount() {
     console.log('componentDidMount');
-    // if(this.state.dataSource == null || this.state.dataSource._dataBlob == null) {
-      DiaryActions.loadData();
-    // }
+    // InteractionManager.runAfterInteractions(() => {
+    //   // ...long-running synchronous task...
+    //   DiaryActions.loadData();
+    // });
   }
 
   componentWillReceiveProps() {
     console.log('componentWillReceiveProps');
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   console.log('componentWillReceiveProps, nextkey: ' ,nextProps);
-  // }
-
-  // // 加载数据
-  // loadData() {
-  //     var allData = this.state.diarys;
-  //     // 定义变量
-  //     var dataBlob = {},
-  //         sectionIDs = [],
-  //         rowIDs = [],
-  //         icons = [];
-  //     let date = new Date(0);
-  //     console.log('date', allData[0].date);
-  //     let ii=-1, jj=0;
-  //     while(jj< allData.length) {
-  //       if(allData[jj].date.getFullYear() == date.getFullYear() && 
-  //       allData[jj].date.getMonth() == date.getMonth()) {
-  //         this.sectionList[ii]++;
-  //       } else {
-  //         date = allData[jj].date;
-  //         this.sectionList[++ii] = 1;
-  //       }
-  //       jj++;
-  //     }
-  //     let index = 0;
-     
-  //     // 遍历数组中对应的数据并存入变量内
-  //     for (let i = 0; i<this.sectionList.length; i++){
-  //         // 将组号存入 sectionIDs 中
-  //         sectionIDs.push(i);
-  //         // 将每组头部需要显示的内容存入 dataBlob 中
-  //         if(i>0)index = index + this.sectionList[i-1];
-  //         let d = new Date(allData[index].date);
-  //         dataBlob[i] = d.getFullYear() + '年' + (d.getMonth()+1) + '月';
-  //         // 取出该组所有的 icon
-  //         rowIDs[i] = [];
-  //         // 遍历所有 icon
-  //         for (var j = 0; j<this.sectionList[i]; j++){
-  //             // 设置标识
-  //             rowIDs[i].push(j);
-  //             // 根据标识,将数据存入 dataBlob
-  //             dataBlob[i + ':' + j] = allData[index+j];
-  //         }
-  //     }
-  //     console.log('after init:', dataBlob);
-  //     // 刷新dataSource状态
-  //     this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
-  //     });
-  // }
 
   deleteDiary(id) {
     Alert.alert('温馨提醒','确定删除这篇日记吗?',[
@@ -96,6 +60,10 @@ class AllDiaryView extends Reflux.Component {
     ]);
   }
 
+  callback = () =>{
+    this.setState({visible: false});
+  }
+
   render() {
     console.log('render AllDiaryView view here...', this.state.dataSource);
 
@@ -106,6 +74,7 @@ class AllDiaryView extends Reflux.Component {
                   text={"返回"} onPress={this.props.navigator.pop}/>
           <Text style={{textAlign:'center', fontSize: 17,}}>日记列表</Text>
         </View>
+        {this.renderLoading()}
         <ListView
           initialListSize={1}
           dataSource={this.state.dataSource}
@@ -116,6 +85,15 @@ class AllDiaryView extends Reflux.Component {
         />
       </View>
     )
+  }
+
+  renderLoading() {
+    // if(this.state.dataSource == null || this.state.dataSource._cachedRowCount == 0) {
+    if(this.state.visible) {
+      return(
+        <Spinner style={{position: 'absolute'}} visible={true} textContent={""} textStyle={{color: '#FFF'}} />
+      );
+    }
   }
 
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
@@ -175,8 +153,7 @@ class DiaryListItem extends Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    // backgroundColor: '#00e700',
+    backgroundColor: 'white',
     // justifyContent: 'center',
     // alignItems: 'center'
   },

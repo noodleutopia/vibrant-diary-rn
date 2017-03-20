@@ -45,6 +45,11 @@ class HomeView extends Reflux.Component {
 		// return nextState.diarys != this.state.diarys;
   }
 
+  componentWillUnmount() {
+		super.componentWillUnmount();
+		console.log('componentWillUnmount');
+  }
+
 	//点击事件处理
 	_onPress(){
 		console.log('点击了完成按钮');
