@@ -75,7 +75,7 @@ class TabPageView extends Component {
           dataSource={null}
           itemsPerRow={itemsPerRow}
           renderItem={(item, sectionID, rowID, itemIndex, itemID) => {
-            // console.log('render questions: ' + item.tagId);
+            console.log('render questions: ' , item);
             return (
               <TouchableOpacity
               onPress={()=>this._onPress(item, itemID)}

@@ -32,8 +32,8 @@ class BottomBar extends Component {
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Group@3x.png')}
         onPress={()=>this._onPress(PAGES.page_edit_theme)} text="编辑主题"/>
         {/*//TODO:需要补充成就系统*/}
-        {/*<ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_unstar_navbar.png')}*/}
-        {/*onPress={()=>this._onPress(PAGES.page_data_analyze)} text="成就"/>*/}
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_unstar_navbar.png')}
+        onPress={()=>this._onPress(PAGES.page_data_analyze)} text="成就"/>
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/setting.png')}
         onPress={()=>this._onPress(PAGES.page_setting)} text="设置"/>
       </View>

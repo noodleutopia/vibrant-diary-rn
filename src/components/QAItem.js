@@ -23,7 +23,7 @@ import ReactNative, {
     render() {
       return(
         <View style={styles.container}>
-          <Text style={styles.question}> {this.props.itemId+1}.{this.props.qaItem.question}</Text>
+          <Text style={styles.question}>{this.props.itemId+1}.{this.props.qaItem.question==undefined?this.props.qaItem:this.props.qaItem.question}</Text>
           <Text style={styles.answer}>{this.props.answer} </Text>
         </View>
         
@@ -44,7 +44,6 @@ import ReactNative, {
   },
   question: {
     flex: 2,
-    marginLeft: -3,
     marginTop: 2,
   },
   answer: {

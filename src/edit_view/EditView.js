@@ -17,6 +17,7 @@ import ReactNative, {
   } from 'react-native'
 
 import Button from '../components/Button'
+import ImageButton from '../components/ImageButton'
 import dismissKeyboard from 'dismissKeyboard'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -140,7 +141,7 @@ class EditView extends Component {
             style={styles.editText}/>
             </View>
           </KeyboardAwareScrollView>
-           {/*{this._showView()}*/}
+           {this._showView()}
         </View>
        
       </TouchableWithoutFeedback>
@@ -158,8 +159,10 @@ class TextToolBar extends Component {
     return(
       <TouchableWithoutFeedback onPress={this._empty()}>
       <View style={[styles.toolBar, this.props.style]}>
-      <Button text={'字体'} style={styles.toolButton} onPress={this._empty()}/>
-      <Button text={'图片'} style={styles.toolButton} onPress={this._empty()}/>
+      <ImageButton source={require('../../res/images/Group 2.png')}
+                   style={styles.toolButtonContainer} imageStyle={styles.toolButton} onPress={this._empty()}/>
+      <ImageButton source={require('../../res/images/Fill 206.png')}
+                   style={styles.toolButtonContainer} imageStyle={styles.toolButton} onPress={this._empty()}/>
       </View>
       </TouchableWithoutFeedback>
     );
@@ -187,15 +190,23 @@ var styles = StyleSheet.create({
   toolBar: {
     width: Dimensions.get('window').width,
     height: toolBarHeight,
-    backgroundColor: 'gray',
+    // backgroundColor: 'gray',
     flexDirection: 'row',
     position:'absolute', 
     alignItems: 'center',
   },
   toolButton: {
-    margin:0, 
-    padding:10, 
-    height:toolBarHeight,
+    margin:0,
+    // marginLeft: 15,
+    // marginRight
+    resizeMode: Image.resizeMode.contain,
+    padding:0,
+    // height:toolBarHeight,
+  },
+  toolButtonContainer: {
+    marginLeft: 10,
+    backgroundColor: '#F6A623d0',
+    borderRadius: 8
   }
 });
 
