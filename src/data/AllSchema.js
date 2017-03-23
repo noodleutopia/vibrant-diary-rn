@@ -19,16 +19,16 @@ export const TagSchema = {
     }
 };
 
-export const AnswerSchema = {
-    name: "Answer",
-    primaryKey: 'id',
-    properties: {
-        id: "int",
-        diaryId: "int",
-        questionId: "int",
-        answer: "string"
-    }
-};
+// export const AnswerSchema = {
+//     name: "Answer",
+//     primaryKey: 'id',
+//     properties: {
+//         id: "int",
+//         diaryId: "int",
+//         questionId: "int",
+//         answer: "string"
+//     }
+// };
 
 export const DiarySchema = {
     name: "Diary",

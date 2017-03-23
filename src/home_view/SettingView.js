@@ -124,7 +124,7 @@ class ClockView extends React.Component {
           <DateTimePicker
             isVisible={this.state.isDateTimePickerVisible}
             mode="time"
-            is24Hour={true}
+            is24Hour={false}
             onConfirm={this._handleDatePicked}
             onCancel={this._hideDateTimePicker}
           />
