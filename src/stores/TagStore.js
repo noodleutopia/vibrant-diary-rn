@@ -1,12 +1,8 @@
-import Tag from './../data/AllSchema';
 import Reflux from 'reflux';
-import _ from 'lodash';
 import {TagActions} from './../AllActions';
-import Realm from 'realm';
 import React from 'react-native';
-import {QuestionSchema, TagSchema, DiarySchema} from './../data/AllSchema'
+import {TagSchema} from './../data/AllSchema'
 import {realm} from './../Utils';
-var { AsyncStorage } = React;
 
 const TAG_KEY = 'xiaomubiao-tag';
 

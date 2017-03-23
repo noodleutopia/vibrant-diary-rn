@@ -81,7 +81,7 @@ class ClockView extends React.Component {
     if(Platform.OS == "ios") {
       PushNotificationIOS.scheduleLocalNotification(
         {
-          fireDate : date,
+          fireDate : date.getTime(),
           alertBody : "写一篇日记来记录今天的活动和心得吧~",
           repeatInterval : 'day'
         }
@@ -123,8 +123,9 @@ class ClockView extends React.Component {
             value={this.state.switchOn} />
           <DateTimePicker
             isVisible={this.state.isDateTimePickerVisible}
+            date={this.state.time}
             mode="time"
-            is24Hour={true}
+            is24Hour={false}
             onConfirm={this._handleDatePicked}
             onCancel={this._hideDateTimePicker}
           />

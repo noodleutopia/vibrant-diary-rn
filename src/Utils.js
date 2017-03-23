@@ -1,8 +1,8 @@
 import Realm from 'realm';
-import {QuestionSchema, TagSchema, DiarySchema, AnswerSchema} from './data/AllSchema'
+import {QuestionSchema, TagSchema, DiarySchema} from './data/AllSchema'
 
 var realm = new Realm({
-  schema: [TagSchema, QuestionSchema, DiarySchema, AnswerSchema],
+  schema: [TagSchema, QuestionSchema, DiarySchema],
   schemaVersion: 1,
   migration: function(oldRealm, newRealm) {
     // 只有在 schemaVersion 提升为 1 的时候才应用此变化

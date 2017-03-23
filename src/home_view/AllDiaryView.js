@@ -74,7 +74,7 @@ class AllDiaryView extends Reflux.Component {
       <View style={styles.container}>
         <View style={styles.top}>
           <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}}
-                  text={"返回"} onPress={this.props.navigator.pop}/>
+                  text={"<返回"} onPress={this.props.navigator.pop}/>
           <Text style={{textAlign:'center', fontSize: 17,}}>日记列表</Text>
         </View>
         {this.renderLoading()}
