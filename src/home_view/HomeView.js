@@ -12,17 +12,11 @@ import ImageButton from '../components/ImageButton';
 import TopBar from '../components/TopBar';
 import BottomBar from '../components/BottomBar';
 import TagsGridView from '../components/TagsGridView';
-import colors from '../styles/colors';
-import DiaryStore from '../stores/DiaryStore';
-import DateStore from '../stores/DateStore';
-// import TagStore from '../stores/TagStore';
-import {TagActions} from '../AllActions';
-import Reflux from 'reflux';
 import {PAGES} from '../xiaomubiao';
 
 
 var selectedTags = [];
-class HomeView extends Reflux.Component {
+class HomeView extends Component {
 
 	constructor(props)
 	{
