@@ -27,11 +27,11 @@ class BottomBar extends Component {
     console.log('render bottom bar...');
     return(
       <View style={styles.container}>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/圆叉.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/round_wrong.png')}
       onPress={()=>this._onPress('back')}/>
       <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/add.png')}
       onPress={()=>this._onPress('add')}/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/圆对勾.png')}
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/round_right.png')}
       onPress={()=>this._onPress('done')}/>
       {/*<ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/ic_my.png')}
       onPress={()=>this._onPress(PAGES.page_setting)}/>*/}

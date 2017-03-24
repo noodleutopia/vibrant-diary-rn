@@ -81,7 +81,7 @@ class DateView extends Reflux.Component {
           onPress={this._onPress('date')}>
           <View style={styles.dateContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image style={{width: 15, height: 15}} source={require('../../res/images/Fill 158@3x.png')} />
+              <Image style={{width: 15, height: 15}} source={require('../../res/images/date_clock.png')} />
               <Text style={styles.dateText}>{_date.getFullYear()}年{_date.getMonth()+1}月{_date.getDate()}日</Text>
             </View>
             <DateTimePicker

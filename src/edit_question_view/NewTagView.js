@@ -119,7 +119,7 @@ class QuestionItem extends Component {
   render() {
     return(
       <View style={styles.questionItem}>
-        <ImageButton style={{width: 25, height:25}} imageStyle={styles.button} source={require('../../res/images/Fill 143.png')} 
+        <ImageButton style={{width: 25, height:25}} imageStyle={styles.button} source={require('../../res/images/edit_theme_delete.png')}
         onPress={()=>this.props.deleteQuestion(this.props.item, this.props.itemID)}/>
         <TextInput style={styles.grid}
           autoFocus={false}

@@ -41,7 +41,7 @@ render() {
     if(this.props.itemId == this.props.selectedId) {
       return (<Image
         style={[styles.flag, this.props.imageStyle]}
-        source={require('../../res/images/Fill 22.png')}
+        source={require('../../res/images/tag_select.png')}
         />);
     }
   }

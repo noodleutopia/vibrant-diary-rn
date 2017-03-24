@@ -159,9 +159,9 @@ class TextToolBar extends Component {
     return(
       <TouchableWithoutFeedback onPress={this._empty()}>
       <View style={[styles.toolBar, this.props.style]}>
-      <ImageButton source={require('../../res/images/Group 2.png')}
+      <ImageButton source={require('../../res/images/toolbar_font.png')}
                    style={styles.toolButtonContainer} imageStyle={styles.toolButton} onPress={this._empty()}/>
-      <ImageButton source={require('../../res/images/Fill 206.png')}
+      <ImageButton source={require('../../res/images/toolbar_camera.png')}
                    style={styles.toolButtonContainer} imageStyle={styles.toolButton} onPress={this._empty()}/>
       </View>
       </TouchableWithoutFeedback>

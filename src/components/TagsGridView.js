@@ -207,7 +207,7 @@ render() {
     if(this.props.isSelected) {
       return (<Image
         style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
-        source={require('../../res/images/Fill 22.png')}
+        source={require('../../res/images/tag_select.png')}
         />);
     }
   }
@@ -221,7 +221,7 @@ render() {
         style={{position: 'absolute', right: 10, top: 10,}}>
           <Image
           style={[{ width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
-          source={require('../../res/images/Fill 23.png')}
+          source={require('../../res/images/tag_delete.png')}
           />
         </TouchableOpacity>);
     }
