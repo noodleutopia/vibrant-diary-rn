@@ -105,12 +105,6 @@ class EditDiaryView extends Reflux.Component {
     }
   }
 
-  //浏览返回的回调
-  onPreviewBack=(diaryId)=> {
-    this.diaryId = diaryId;
-  }
-
-
   _onChangeTab(tab) {
     console.log('_onChangeTab' + tab.i);
     this.currentTab = tab.ref.props.tagId;

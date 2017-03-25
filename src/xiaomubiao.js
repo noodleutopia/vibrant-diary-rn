@@ -196,7 +196,7 @@ var Xiaomubiao = React.createClass({
 			 	console.log('navigater newDiary view.');
 				return <NewDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator} route={route}/>;
 			case PAGES.page_all_diary:
-				return <AllDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator}/>;
+				return <AllDiaryView quit={this.goHome} navigator={navigator}/>;
 			case PAGES.page_data_analyze:
 				return <DataAnalyzeView quit={this.goHome}/>;
 			case PAGES.page_edit_theme:
@@ -218,7 +218,7 @@ var Xiaomubiao = React.createClass({
 			case PAGES.page_new_tag:
 				return <NewTagView navigator={navigator} {...route.data}/>;
       case PAGES.page_edit_diary:
-        return <EditDiaryView navigator={navigator} {...route.data} preview={this._previewDiary}/>;
+        return <EditDiaryView navigator={navigator} {...route.data}/>;
 			default:
      		console.error('Encountered unexpected route: ' + route.name);
     }
