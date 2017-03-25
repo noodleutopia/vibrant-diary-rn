@@ -173,6 +173,7 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop:20,
+    backgroundColor: 'white'
   },
   title: {
 
