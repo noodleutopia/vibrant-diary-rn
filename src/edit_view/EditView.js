@@ -141,7 +141,7 @@ class EditView extends Component {
             style={styles.editText}/>
             </View>
           </KeyboardAwareScrollView>
-           {this._showView()}
+           {/*{this._showView()}*/}
         </View>
        
       </TouchableWithoutFeedback>
