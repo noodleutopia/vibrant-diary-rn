@@ -4,6 +4,7 @@ import {
   Navigator,
 	StyleSheet,
   InteractionManager,
+  AsyncStorage,
 } from 'react-native';
 
 import HomeView from './home_view/HomeView'
@@ -19,6 +20,7 @@ import ShareView from './preview_view/ShareView'
 import EditQuestionView from './edit_question_view/EditQuestionView'
 import NewTagView from './edit_question_view/NewTagView'
 import EditDiaryView from './edit_diary_view/EditDiaryView'
+import {achieveKeys} from './home_view/DataAnalyzeView'
 
 export var PAGES = { page_new_diary: 'newDiary', page_all_diary: 'allDiary',
 							page_edit_theme: 'editTheme', page_data_analyze: 'dataAnalyze',
@@ -29,7 +31,7 @@ export var PAGES = { page_new_diary: 'newDiary', page_all_diary: 'allDiary',
 var Xiaomubiao = React.createClass({
 
   componentWillMount() {
-    console.log('will mount ...');
+    // console.log('will mount ...');
     if (!__DEV__) {
       global.console = {
         info: () => {},
@@ -42,7 +44,48 @@ var Xiaomubiao = React.createClass({
 
   componentDidMount() {
     console.log('did mount.');
+    //这里统计使用天数
+    // this.getCount().done();
+    this.deleteCount().done();
   },
+
+  async getCount() {
+    try{
+      let lastDay = await AsyncStorage.getItem(achieveKeys.KEY_ACHIEVE_LAST_DAY);
+      let lastDayCount = await AsyncStorage.getItem(achieveKeys.KEY_ACHIEVE_DAY);
+      console.log('after mount.', lastDay, lastDayCount);
+
+      let date = new Date();
+      if(lastDay != null){
+        let lastDate = new Date(parseInt(lastDay));
+        console.log('lastdate', lastDate);
+        if(!(lastDate.getFullYear() == date.getFullYear() && lastDate.getMonth() == date.getMonth()
+          && lastDate.getDate() == date.getDate()) && lastDay < date.getTime()) {
+          //非同一天才统计
+          await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_LAST_DAY, date.getTime().toString());
+          let temp = lastDayCount ? (parseInt(lastDayCount)+1): 1;
+          await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DAY, temp.toString());
+        } else {
+        	console.log('同一天非第一次打开');
+          // await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DAY, '56');
+				}
+      }else{
+        //第一次使用
+        await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_LAST_DAY, date.getTime().toString());
+        await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DAY, '1');
+        console.log('first time', date);
+      }
+    }catch(error){
+      console.log('AsyncStorage错误'+error.message);
+    }
+	},
+
+	async deleteCount() {
+  	try{
+  		await AsyncStorage.removeItem(achieveKeys.KEY_ACHIEVE_LAST_DAY);
+  		await AsyncStorage.removeItem(achieveKeys.KEY_ACHIEVE_DAY);
+		} catch(e) {}
+	},
 
 	//创建新日记
 	_createNewDiary(tags){
