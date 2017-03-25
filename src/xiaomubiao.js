@@ -45,8 +45,8 @@ var Xiaomubiao = React.createClass({
   componentDidMount() {
     console.log('did mount.');
     //这里统计使用天数
-    // this.getCount().done();
-    this.deleteCount().done();
+    this.getCount().done();
+    // this.deleteCount().done();
   },
 
   async getCount() {

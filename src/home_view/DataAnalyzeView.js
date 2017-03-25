@@ -10,6 +10,7 @@ import{
 
 import Button from '../components/Button';
 import GridView from './../components/GridView';
+import {DiaryActions} from '../AllActions'
 const images = [
   [require('../../res/images/round-3.png'), require('../../res/images/round-5.png'),
     require('../../res/images/round-7.png'), require('../../res/images/round-10.png'),
@@ -39,10 +40,11 @@ class DataAnalyzeView extends Component {
     this.state = {
       dayAchieve: 0,
       diaryAchieve: 0,
-    }
+    };
+    DiaryActions.setCount();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getCount().done();
   }
 
@@ -63,7 +65,7 @@ class DataAnalyzeView extends Component {
   }
 
   render() {
-    console.log('render DataAnalyzeView view here...');
+    console.log('render DataAnalyzeView view here...', this.state.dayAchieve, this.state.diaryAchieve);
     return(
       <View style={styles.container}>
         <View style={styles.top}>

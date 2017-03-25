@@ -1,13 +1,11 @@
-import Diary from './../data/AllSchema';
 import Reflux from 'reflux';
-import _ from 'lodash';
 import {DiaryActions} from './../AllActions';
-import Realm from 'realm';
 
 import { ListView,AsyncStorage } from 'react-native';
 import {DiarySchema} from './../data/AllSchema'
 import {realm} from './../Utils';
 import {tianqiData, xinqingData} from '../home_view/DateView';
+import {achieveKeys} from '../home_view/DataAnalyzeView'
 
 const DAIRY_KEY = 'xiaomubiao-diary';
 
@@ -49,6 +47,7 @@ class DiaryStore extends Reflux.Store {
     this.listenTo(DiaryActions.editDiary, this.editDiary);
     this.listenTo(DiaryActions.deleteDiary, this.deleteDiary);
     this.listenTo(DiaryActions.loadData, this.loadData);
+    this.listenTo(DiaryActions.setCount, this.setCount);
     this.sectionList = [];
     // this.listenTo(DiaryActions.getAllDiaries, this._loadTags);
     // this.deleteTag(1);
@@ -59,8 +58,6 @@ class DiaryStore extends Reflux.Store {
 
    _loadDiarys() {
     try {
-      // var val = await AsyncStorage.getItem(TAG_KEY);
-      // this.realm = new Realm({schema: TagSchema});
       var val = realm.objects(DiarySchema.name);
       if (val !== null) {
         this._diarys = val.sorted('date', true);
@@ -79,32 +76,6 @@ class DiaryStore extends Reflux.Store {
     }
   }
 
-  // async _writeCards() {
-  //   try {
-  //     // await AsyncStorage.setItem(CARD_KEY, JSON.stringify(this._tags));
-  //     var realm = this.realm;
-  //     realm.write(() => {
-  //       for (var i = 0; i < tags.length; i++) {
-  //           var obj = tags[i];
-  //           realm.create(TagSchema.name, obj);
-  //       }
-  //     });
-  //   catch (error) {
-  //     console.error('AsyncStorage error: ', error.message);
-  //   }
-  // },
-
-  // deleteAllTags() {
-  //   // this._tags = [];
-  //   // var realm = this.realm;
-  //   realm.write(() => {
-  //     let allTags = realm.objects(TagSchema.name);
-  //     realm.delete(allTags); // Deletes all books
-  //     this.maxId = -1;
-  //     this.emit();
-  //   });
-  // }
-
   deleteDiary(id, callback) {
     console.log('want to delete diary: ', id, callback);
     try{
@@ -114,8 +85,8 @@ class DiaryStore extends Reflux.Store {
         let diary = diarys.filtered('id == '+id);
         console.log('限制后： ', diary);
         realm.delete(diary[0]);
-        this.loadData(callback);
         // this.emit();
+        this.loadData(callback);
         // this.loadData();
       });
     } catch (error) {
@@ -126,53 +97,6 @@ class DiaryStore extends Reflux.Store {
     // }
   }
 
-  // editCard(newCard) {
-  //   // Assume newCard.id corresponds to an existing card.
-  //   let match = _.find(this._tags, (card) => {
-  //     return card.id === newCard.id;
-  //   });
-  //   match.setFromObject(newCard);
-  //   this.emit();
-
-  // }
-
-  //需要传入问题数组
-  /**
-   *  id: "int",
-        date: "date",
-        temperature: "string",
-        mood: "string",
-        tags: {type: 'list', objectType: 'Tag'},
-        questions: {type: 'list', objectType: 'Question'},
-        answers: {type: 'list', objectType: 'Answer'}
-   */
-  // async createDiary(tags, questions, answers) {
-  //   console.log('将插入日记：',this.maxId+1, tags, questions, answers);
-  //   // var realm = this.realm;
-  //   try{
-  //     let date = await AsyncStorage.getItem(DATE_KEY);
-  //     console.log('date: ', date);
-  //     let mood = await AsyncStorage.getItem(MOOD_KEY);
-  //     var temper = await AsyncStorage.getItem(TEMPER_KEY);
-  //     realm.write(() => {
-  //       let newDiary = realm.create(DiarySchema.name, {
-  //         id: this.maxId+1,
-  //         date: new Date(date),
-  //         //这里天气心情暂时写死，后面加入AsyncStorage
-  //         temperature: tianqiData[temper],
-  //         mood: xinqingData[mood],
-  //         tags: tags,
-  //         questions: questions,
-  //         answers: answers
-  //       });
-  //     });
-  //     this.maxId++;
-  //     console.log('after create: ' + realm.objects(DiarySchema.name).length);
-  //     this.emit();
-  //   } catch (error) {
-  //     console.error('createDiary error: ', error.message);
-  //   }
-  // }
   async createDiary(diary, callback) {
     console.log('将插入日记：',this.maxId+1, diary);
     try{
@@ -295,6 +219,15 @@ class DiaryStore extends Reflux.Store {
 
   emit() {
     this.setState({diarys: this._diarys.slice()});
+  }
+
+  async setCount() {
+    try{
+      await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DIARY, this._diarys.length.toString());
+      console.log('diaryCount', this._diarys.length);
+    } catch (e) {
+      console.log('diaryStore', e);
+    }
   }
 
 }
