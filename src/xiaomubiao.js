@@ -144,13 +144,14 @@ var Xiaomubiao = React.createClass({
 	},
 
 	//日记预览页
-	_previewDiary(id, backFunc) {
+	_previewDiary(id) {
 		console.log('back content: ' + id);
 		this.refs.navigator.replace({
 			name: PAGES.page_preview,
 			data: {
 				diaryId: id,
-				callback: backFunc
+				// callback: backFunc
+				from: 'other'
 			}
 		})
 	},

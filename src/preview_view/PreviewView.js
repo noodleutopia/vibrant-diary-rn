@@ -44,7 +44,7 @@ class PreviewView extends Reflux.Component {
     DiaryActions.getDiary(this.props.diaryId);
   }
 
-  onPressBottom = (tab) =>{
+  onPressBottom =(tab)=>{
 		console.log('preview bottom: ' + tab);
     switch(tab) {
       case BOTTOM_TAB.flag_edit:
@@ -75,7 +75,11 @@ class PreviewView extends Reflux.Component {
         // });
         break;
       case BOTTOM_TAB.flag_history:
-        this.props.navigator.replace({name: PAGES.page_all_diary});
+        if(this.props.from == 'all') {
+          this.props.navigator.pop();
+        } else {
+          this.props.navigator.push({name: PAGES.page_all_diary});
+        }
         break;
     }
 	}
@@ -100,7 +104,7 @@ class PreviewView extends Reflux.Component {
     console.log('转化的日记：', this.content);
     console.log('render PreviewView view here...', this.state.currentDiary);
     return(
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         <ScrollView style={{flex: 1, backgroundColor: 'white'}}
                     contentContainerStyle={{backgroundColor: 'white'}} ref='full'>
           <TopBar diary={this.state.currentDiary} />
