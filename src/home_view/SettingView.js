@@ -35,7 +35,7 @@ class SettingView extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.top}>
-          <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}} text={"返回"} onPress={this.props.quit}/>
+          <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}} text={"<返回"} onPress={this.props.quit}/>
           <Text style={{textAlign:'center', fontSize: 17,}}>设置</Text>
         </View>
         <View style={{flex: 1, marginTop: 10, marginLeft: 20, marginRight: 20}}>

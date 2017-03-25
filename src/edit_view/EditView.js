@@ -118,7 +118,7 @@ class EditView extends Component {
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
             <View style={{paddingLeft:10, flex:3}}>
-              <Text style={{ marginBottom:5}}>{this.props.question.question}</Text>
+              <Text style={{ marginBottom:5}}>{this.props.question.question==undefined?this.props.question:this.props.question.question}</Text>
             </View>
             <Button style={{flex:1, marginRight: 10}}text={'完成'} onPress={this._onPress}/>
           </View>

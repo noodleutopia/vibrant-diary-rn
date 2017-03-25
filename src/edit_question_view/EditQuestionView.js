@@ -115,7 +115,7 @@ class EditQuestionView extends Reflux.Component {
   //增加一个问题
   addNewQuestion() {
     let newQuestion = {};
-    newQuestion.question = "随机问题";
+    newQuestion.question = "新的问题";
     newQuestion.tagId = this.props.tag.id;
     let temp = this.state.data;
     temp.push(newQuestion);
