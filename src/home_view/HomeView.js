@@ -5,6 +5,8 @@ import{
 	StyleSheet,
 	ScrollView,
   Dimensions,
+  BackAndroid,
+  ToastAndroid
 } from 'react-native'
 
 import Button from '../components/Button';
@@ -27,6 +29,31 @@ class HomeView extends Component {
 		// this.store = DiaryStore;
 		// this.storeKeys = ['diarys'];
 	}
+
+  componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
+	}
+
+  onBackAndroid = () => {
+    const nav = this.props.navigator;
+    const routers = nav.getCurrentRoutes();
+    console.log('onBackAndroid', routers);
+    if (routers.length > 1) {
+      nav.pop();
+      return true;
+    }
+    if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+      //最近2秒内按过back键，可以退出应用。
+      return false;
+    }
+    this.lastBackPressed = Date.now();
+    ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
+    return true;
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     console.log('shouldComponentUpdate', nextProps, nextState, this.props.navigator.getCurrentRoutes());
