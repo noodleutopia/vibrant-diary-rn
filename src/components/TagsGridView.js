@@ -8,6 +8,7 @@ import{
 	StyleSheet,
   TouchableOpacity,
   Image,
+  Dimensions
 } from 'react-native'
 
 import GridView from './GridView';
@@ -206,7 +207,7 @@ render() {
     // if(this.state.selected) {
     if(this.props.isSelected) {
       return (<Image
-        style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
+        style={[{position: 'absolute', right: 10, bottom: 10, width: wid/6, height: wid/6, alignSelf: 'flex-end'}, this.props.imageStyle]}
         source={require('../../res/images/tag_select.png')}
         />);
     }
@@ -220,7 +221,7 @@ render() {
         onPress={()=>this._onDelete(this.props.item)}
         style={{position: 'absolute', right: 10, top: 10,}}>
           <Image
-          style={[{ width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
+          style={[{ width: wid/6, height: wid/6, alignSelf: 'flex-end'}, this.props.imageStyle]}
           source={require('../../res/images/tag_delete.png')}
           />
         </TouchableOpacity>);
@@ -228,7 +229,8 @@ render() {
   }
   
 }
-
+const wid = Dimensions.get('window').width / 2-60;
+const hei = wid/3*2;
 var styles = StyleSheet.create({
   list: {
     justifyContent: 'center',
@@ -242,11 +244,13 @@ var styles = StyleSheet.create({
     paddingRight: 15
   },
   tag: {
+    width: wid,
+    height: hei,
     justifyContent: 'center',
     // padding: 5,
     margin: 10,
-    width: 140,
-    height: 85,
+    // width: 140,
+    // height: 85,
     backgroundColor: '#F6F6F6',
     // alignItems: 'center',
     borderWidth: 1,

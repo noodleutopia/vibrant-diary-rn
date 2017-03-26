@@ -5,6 +5,8 @@ import{
 	StyleSheet,
   TouchableOpacity,
   Image,
+  ScrollView,
+  Dimensions
 } from 'react-native';
 
 import Button from '../components/Button';
@@ -31,6 +33,8 @@ class DateView extends Reflux.Component {
       isDateTimePickerVisible: false,
     };
     this.store = DateStore;
+    console.log('wid, hei: ', wid, hei);
+
   }
 
    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true })
@@ -74,7 +78,7 @@ class DateView extends Reflux.Component {
     let _selectedTianqi = this.state.temperature;
     let _selectedXinqing = this.state.mood;
     return(
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <View>
         <TouchableOpacity
           activeOpacity={0.5}
@@ -115,9 +119,9 @@ class DateView extends Reflux.Component {
                <SelectableItem item={item} itemId={itemID} setSelected={()=>this.onSelected('xinqing', itemID)} selectedId={_selectedXinqing}/>
             );
         }}/>
+        <Button style={{backgroundColor:'#F6A623d0', alignSelf:'flex-end', marginTop: hei/20, marginRight: wid/10}} text={'完成'} onPress={this._onPress('done')}/>
         </View>
-				<Button style={{position:'absolute', bottom:70, right:20, backgroundColor:'#F6A623d0'}} text={'完成'} onPress={this._onPress('done')}/>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -125,35 +129,38 @@ class DateView extends Reflux.Component {
 DateView.propTypes = {
   quit: React.PropTypes.func.isRequired,
 };
-
+const wid = Dimensions.get('window').width;
+const hei = Dimensions.get('window').height;
+const WID = 750/2;
+const HEI = 1334/2;
 var styles = StyleSheet.create({
   list: {
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     // paddingLeft: 15,
-    marginTop: 10,
-    marginBottom: 10
+    marginTop: 10*hei/HEI,
+    marginBottom: 10*hei/HEI
   },
   row: {
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: 40*wid/WID,
+    paddingRight: 40*wid/WID,
   },
   container: {
     flex: 1,
     backgroundColor: 'white',
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingTop: 60
+    paddingTop: 60*hei/HEI
   },
   title: {
     // flex: 1,
-    marginTop: 40,
-    marginBottom: 20,
+    marginTop: 40*hei/HEI,
+    marginBottom: 20*hei/HEI,
     textAlign: 'center',
     color: '#4B4B4B'
   },
@@ -162,7 +169,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateText: {
-    marginLeft: 5,
+    marginLeft: 5*wid/WID,
     color: '#4B4B4B'
   }
 });
