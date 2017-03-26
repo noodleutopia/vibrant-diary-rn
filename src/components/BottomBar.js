@@ -27,7 +27,7 @@ class BottomBar extends Component {
     console.log('render bottom bar...');
     return(
       <View style={[styles.container, this.props.style]}>
-        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/home_history.png')}
+        <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/diary-list.png')}
                      onPress={()=>this._onPress(PAGES.page_all_diary)} text="历史"/>
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/Group@3x.png')}
         onPress={()=>this._onPress(PAGES.page_edit_theme)} text="编辑主题"/>

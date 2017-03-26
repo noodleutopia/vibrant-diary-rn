@@ -78,7 +78,8 @@ class PreviewView extends Reflux.Component {
         if(this.props.from == 'all') {
           this.props.navigator.pop();
         } else {
-          this.props.navigator.push({name: PAGES.page_all_diary});
+          this.props.navigator.popToTop();
+          // this.props.navigator.replace({name: PAGES.page_all_diary});
         }
         break;
     }

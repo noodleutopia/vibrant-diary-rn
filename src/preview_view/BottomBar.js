@@ -28,8 +28,8 @@ class BottomBar extends Component {
       <View style={styles.container}>
       <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/preview_edit.png')}
       onPress={()=>this._onPress(BOTTOM_TAB.flag_edit)} text="编辑"/>
-      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/diary-list.png')}
-      onPress={()=>this._onPress(BOTTOM_TAB.flag_history)} text="日记列表"/>
+      <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/home_history.png')}
+      onPress={()=>this._onPress(BOTTOM_TAB.flag_history)} text="返回"/>
         {this.canShare()}
       </View>
     );

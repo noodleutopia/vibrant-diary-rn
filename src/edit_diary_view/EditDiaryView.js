@@ -156,7 +156,7 @@ class EditDiaryView extends Reflux.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#ff0000',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center'
   },

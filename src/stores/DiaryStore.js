@@ -1,7 +1,10 @@
 import Reflux from 'reflux';
 import {DiaryActions} from './../AllActions';
 
-import { ListView,AsyncStorage } from 'react-native';
+import {
+  ListView,
+  AsyncStorage,
+  InteractionManager} from 'react-native';
 import {DiarySchema} from './../data/AllSchema'
 import {realm} from './../Utils';
 import {tianqiData, xinqingData} from '../home_view/DateView';
@@ -36,7 +39,8 @@ class DiaryStore extends Reflux.Store {
         rowHasChanged : (r1, r2) => r1 !== r2,
         sectionHeaderHasChanged : (s1, s2) => s1 !== s2
       }),
-      currentDiary: null
+      currentDiary: null,
+      showLoading: true,
     }; // <- set store's default state much like in React
     this._diarys = [];
     // this.createTag('testTag-1');
@@ -76,8 +80,9 @@ class DiaryStore extends Reflux.Store {
     }
   }
 
-  deleteDiary(id, callback) {
-    console.log('want to delete diary: ', id, callback);
+  deleteDiary(id) {
+    console.log('want to delete diary: ', id);
+    // this.setState({showLoading: true});
     try{
       realm.write(() => {
         console.log('限制条件: '+'id == '+id);
@@ -85,16 +90,13 @@ class DiaryStore extends Reflux.Store {
         let diary = diarys.filtered('id == '+id);
         console.log('限制后： ', diary);
         realm.delete(diary[0]);
-        // this.emit();
-        this.loadData(callback);
-        // this.loadData();
+      });
+      InteractionManager.runAfterInteractions(() => {
+        this.loadData();
       });
     } catch (error) {
       console.error('deleteTag error:', error.message);
     }
-    // if(callback != undefined) {
-    //   callback();
-    // }
   }
 
   async createDiary(diary, callback) {
@@ -163,9 +165,10 @@ class DiaryStore extends Reflux.Store {
   }
 
     // 加载数据
-  loadData(callback) {
+  loadData() {
     this.sectionList = [];
       var allData = this._diarys;
+    // var allData = realm.objects(DiarySchema.name).sorted('date', true);
       console.log('allData', allData);
       // 定义变量
       var dataBlob = {},
@@ -210,11 +213,9 @@ class DiaryStore extends Reflux.Store {
       }
 
       // 刷新dataSource状态
-      this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
+      this.setState({dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+        showLoading: false
       });
-      if (callback != undefined) {
-        callback();
-      }
   }
 
   emit() {

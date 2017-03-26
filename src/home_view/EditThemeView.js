@@ -34,7 +34,7 @@ class EditThemeView extends Reflux.Component {
   render() {
     console.log('render EditThemeView view here...');
     return(
-      <View style={{flex:1}}>
+      <View style={{flex:1, backgroundColor: 'white'}}>
         <View style={styles.top}>
           <Text style={{textAlign:'center', fontSize: 17,}}>编辑主题</Text>
         </View>
