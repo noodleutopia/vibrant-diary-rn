@@ -14,8 +14,7 @@ class QuestionStore extends Reflux.Store{
   constructor(props){
     super(props);
     console.log('QuestionStore');
-    // realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
-    
+
     //路径："/Users/zhangyafei/Library/Developer/CoreSimulator/Devices/80DF32C9-62D3-4B11-B817-869BFF5A8592/data/Containers/Data/Application/88C70E3C-F37A-4A23-9EEF-F3934F3A418A/Documents/default.realm"
     this.state = {
       questions: [],
@@ -32,6 +31,10 @@ class QuestionStore extends Reflux.Store{
     this.listenTo(QuestionActions.deleteQuestion, this.deleteQuestion);
     this.listenTo(QuestionActions.editQuestion, this.editQuestion);
     this.listenTo(QuestionActions.editQuestionsByTag, this.editQuestionsByTag);
+    
+    // this.listenTo(QuestionActions.editQuestionsByTag.hahacompleted, this.onComplete);
+
+
   }
 
   loadQuestions() {
@@ -180,8 +183,10 @@ class QuestionStore extends Reflux.Store{
       callback();
       console.error('editQuestionsByTag error:', error.message);
     }
-    
-    //删除问题
+  }
+
+  onEditQuestionsByTagComplete() {
+    console.log("hahahahahahaha");
   }
 
   createQuestion(tagId, question) {

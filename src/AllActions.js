@@ -5,6 +5,8 @@ export var TagActions = Reflux.createActions([
   'createTag',
   'deleteTag',
   'editTag',
+  'toggleSelect',
+  'toggleDelete',
   // 'deleteAllCards'
 ]);
 

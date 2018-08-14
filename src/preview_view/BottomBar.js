@@ -36,13 +36,13 @@ class BottomBar extends Component {
   }
 
   canShare() {
-	  if(this.props.os == 'android') {
+	  // if(this.props.os == 'android') {
 	    return(
         <ImageButton imageStyle={styles.bottomButton} source={require('../../res/images/preview_share.png')}
                      onPress={()=>this._onPress(BOTTOM_TAB.flag_share)} text="存为图片"/>
       );
 
-    }
+    // }
   }
 }
 

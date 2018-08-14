@@ -66,7 +66,7 @@ class PreviewView extends Reflux.Component {
           // this.saveInfo.width = 800;
           // this.saveInfo.height = 800;
         }
-        this.snapshot();
+        this.snapshot('f');
         // this.props.navigator.push({
         //   name: PAGES.page_share,
         //   data: {
@@ -105,16 +105,15 @@ class PreviewView extends Reflux.Component {
     console.log('转化的日记：', this.content);
     console.log('render PreviewView view here...', this.state.currentDiary);
     return(
-      <View style={{flex: 1, backgroundColor: 'white'}}>
         <ScrollView style={{flex: 1, backgroundColor: 'white'}}
                     contentContainerStyle={{backgroundColor: 'white'}} ref='full'>
           <TopBar diary={this.state.currentDiary} />
           <View  style={styles.container}>
           {this.renderUnits(this.state.currentDiary)}
         </View>
-        </ScrollView>
-        <BottomBar os={Platform.OS} handleBottomPress={this.onPressBottom}/>
-      </View>
+    <BottomBar os={Platform.OS} handleBottomPress={this.onPressBottom}/>
+
+    </ScrollView>
     )
   }
 

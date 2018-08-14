@@ -12,29 +12,33 @@ class TagStore extends Reflux.Store {
     super();
     console.log('TagStore');
     // realm = new Realm({schema: [TagSchema, QuestionSchema, DiarySchema]});
-    this.state = {tags: []}; // <- set store's default state much like in React
+    this.state = {tags: [], selected: [], deletable: []}; // <- set store's default state much like in React
     this._tags = [];
     this.sortedTags = [];
+    this.tempFalseArray = [];
     console.log('realm: ' , realm);
     this.maxId = -1;
     this._loadTags();
     this.listenTo(TagActions.createTag, this.createTag); // listen to the statusUpdate action
     this.listenTo(TagActions.deleteTag, this.deleteTag);
     this.listenTo(TagActions.getAllTags, this._loadTags);
+    this.listenTo(TagActions.toggleSelect, this.toggleSelectMark);
   }
 
-  _loadTags() {
+  async _loadTags() {
     try {
       // var val = await AsyncStorage.getItem(TAG_KEY);
       // this.realm = new Realm({schema: TagSchema});
-      var val = realm.objects(TagSchema.name);
+      var val = await realm.objects(TagSchema.name);
       if (val !== null) {
         this._tags = val;
         console.info('all tags: ' + val.length);
         this.sortedTags = val.sorted('date');
         this.maxId = val.length>0 ? this.sortedTags[val.length-1].id : -1; //maxId 是当前最大的ID，再加入新tag则自增
         console.info('maxId: ' + this.maxId);
-        this.emit();
+        // this.emit();
+        this.tempFalseArray = Array(val.length).fill(false);
+        this.setState({tags: this.sortedTags, selected: this.tempFalseArray, deletable: this.tempFalseArray});
       }
       else {
         console.info(`${TAG_KEY} not found on disk.`);
@@ -59,6 +63,16 @@ class TagStore extends Reflux.Store {
   //     console.error('AsyncStorage error: ', error.message);
   //   }
   // },
+
+  toggleSelectMark(id) {
+    let temp = this.state.selected.slice();
+    if(temp[id]) {
+      temp[id] = false;
+    } else {
+      temp[id] = true;
+    }
+    this.setState({selected: temp, deletable: Array(this.state.deletable.length).fill(false)});//取消所有删除标记
+  }
 
   deleteAllTags() {
     // this._tags = [];
@@ -123,7 +137,7 @@ class TagStore extends Reflux.Store {
   }
 
   emit() {
-    this.setState({tags: this.sortedTags.slice()});
+    this.setState({tags: this.sortedTags});
   }
 }
 
