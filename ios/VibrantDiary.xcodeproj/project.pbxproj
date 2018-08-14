@@ -380,6 +380,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		022AE0A52066ADF90022C898 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E45B89DEF2F04ED2B42F2534 /* libRealmReact.a */,
+				9A51D8E504A041B3AA2B42E7 /* libRNViewShot.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		026A97031E79AB58005B78F2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,6 +535,7 @@
 				00E356EF1AD99517003FC87E /* VibrantDiaryTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				5E3B60448F8143B49B4BD0E9 /* Frameworks */,
+				022AE0A52066ADF90022C898 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
