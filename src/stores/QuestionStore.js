@@ -37,9 +37,9 @@ class QuestionStore extends Reflux.Store{
 
   }
 
-  loadQuestions() {
+  async loadQuestions() {
     try {
-      val = realm.objects(QuestionSchema.name);
+      val = await realm.objects(QuestionSchema.name);
       if (val !== null && val.length > 0) {
         console.info('all questions: ' + val.length);
         let sortedQuestions = val.sorted('id');

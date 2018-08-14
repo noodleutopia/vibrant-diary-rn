@@ -29,8 +29,8 @@ class NewDiaryView extends Reflux.Component {
     this.questionFlags = Array(this.tags.length).fill(false);
     this.diaryId = -1;
     this.state = {
-      questions: new Array([]),
-      answers: new Array([]),
+      questions: [],
+      answers: [],
       visible: true,
     };
     this.stores = [QuestionStore, DiaryStore];
@@ -66,18 +66,18 @@ class NewDiaryView extends Reflux.Component {
     switch(name) {
       case 'done':
         //这里写入新日记
-        let jsonObjs = Array(this.tags.length);
+        let jsonObjs = new Array(this.tags.length);
         let questionCount = 0;
         let answerCount = 0;
         for(let i=0;i<this.tags.length;++i) {
-          jsonObjs[i] = Object.create(null);
+          jsonObjs[i] = {};
           jsonObjs[i].tag = this.tags[i].tagName;
-          jsonObjs[i].questions = Object.values(this.state.questions[i]).map(v=>v.question);
+          jsonObjs[i].questions = this.state.questions[i].map(v=>v.question);
           questionCount += jsonObjs[i].questions.length;
           jsonObjs[i].answers = this.state.answers[i];
           answerCount += this.state.answers[i].length;
         }
-        let newDiary = Object.create(null);
+        let newDiary = {};
         let content = JSON.stringify(jsonObjs);
         newDiary.content = content;
         newDiary.tagCount = this.tags.length;
