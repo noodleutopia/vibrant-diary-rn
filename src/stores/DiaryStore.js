@@ -102,31 +102,26 @@ class DiaryStore extends Reflux.Store {
   async createDiary(diary, callback) {
     console.log('将插入日记：',this.maxId+1, diary);
     try{
-      let date = await AsyncStorage.getItem(DATE_KEY);
-      console.log('date: ', date);
-      let mood = await AsyncStorage.getItem(MOOD_KEY);
-      var temper = await AsyncStorage.getItem(TEMPER_KEY);
+      let tempDiary = {
+        id: this.maxId+1,
+        tagCount: diary.tagCount,
+        questionCount: diary.questionCount,
+        answerCount: diary.answerCount,
+        content: diary.content
+      };
+      const date = await AsyncStorage.getItem(DATE_KEY);
+      const mood = await AsyncStorage.getItem(MOOD_KEY);
+      const temper = await AsyncStorage.getItem(TEMPER_KEY);
+      tempDiary.date = new Date(date);
+      tempDiary.mood = xinqingData[mood];
+      tempDiary.temperature = tianqiData[temper];
       realm.write(() => {
-        let newDiary = realm.create(DiarySchema.name, {
-          id: this.maxId+1,
-          date: new Date(date),
-          temperature: tianqiData[temper],
-          mood: xinqingData[mood],
-          tagCount: diary.tagCount,
-          questionCount: diary.questionCount,
-          answerCount: diary.answerCount,
-          content: diary.content
-        });
+        let newDiary = realm.create(DiarySchema.name, tempDiary);
+        this.maxId++;
+        this.emit();
+        //回调
+        callback(true, this.maxId);
       });
-      this.maxId++;
-      // console.log('after create: ' + realm.objects(DiarySchema.name).length);
-      
-      // this.emit();
-      // this.setState({diarys: this._diarys});
-      this.emit();
-      // this.loadData();
-      //回调
-      callback(true, this.maxId);
     } catch (error) {
       //回调
       callback(false);

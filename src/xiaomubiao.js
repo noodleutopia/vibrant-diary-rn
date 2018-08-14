@@ -50,14 +50,14 @@ var Xiaomubiao = React.createClass({
   },
 
 
-	firstCheck() {
+	async firstCheck() {
   	console.log('first check');
     try {
     	let v = realm.objects(TagSchema.name);
     	if(v && v.length>0) {
     		return;
 			}
-      var first = AsyncStorage.getItem(KEY_FIRST_INIT);
+      const first = await AsyncStorage.getItem(KEY_FIRST_INIT);
       // let first = 'true';
       if(!first || first != 'false') {
         console.log('添加标签');
