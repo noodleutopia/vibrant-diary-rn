@@ -4,8 +4,10 @@ import {
   Navigator,
 	StyleSheet,
   InteractionManager,
+  AsyncStorage,
 } from 'react-native';
-
+import {realm} from './Utils';
+import {TagSchema, QuestionSchema} from './data/AllSchema'
 import HomeView from './home_view/HomeView'
 import AllDiaryView from './home_view/AllDiaryView'
 import DataAnalyzeView from './home_view/DataAnalyzeView'
@@ -19,6 +21,11 @@ import ShareView from './preview_view/ShareView'
 import EditQuestionView from './edit_question_view/EditQuestionView'
 import NewTagView from './edit_question_view/NewTagView'
 import EditDiaryView from './edit_diary_view/EditDiaryView'
+import {achieveKeys} from './home_view/DataAnalyzeView'
+
+const KEY_FIRST_INIT = 'xiaomubiao_first_check_key';
+const defaultTags = ['示例标签', '读书'];
+const defaultQuestions = [['今天有什么印象深刻的事情？', '有哪些收获和感悟？', '一句话总结？'], ['今天读了哪些章节？', '总结一下印象深刻的内容？', '有何感想？']];
 
 export var PAGES = { page_new_diary: 'newDiary', page_all_diary: 'allDiary',
 							page_edit_theme: 'editTheme', page_data_analyze: 'dataAnalyze',
@@ -29,7 +36,7 @@ export var PAGES = { page_new_diary: 'newDiary', page_all_diary: 'allDiary',
 var Xiaomubiao = React.createClass({
 
   componentWillMount() {
-    console.log('will mount ...');
+    // console.log('will mount ...');
     if (!__DEV__) {
       global.console = {
         info: () => {},
@@ -38,11 +45,95 @@ var Xiaomubiao = React.createClass({
         error: () => {},
       };
     }
+    console.log('realm: ' , realm);
+    this.firstCheck();
+  },
+
+
+	firstCheck() {
+  	console.log('first check');
+    try {
+    	let v = realm.objects(TagSchema.name);
+    	if(v && v.length>0) {
+    		return;
+			}
+      var first = AsyncStorage.getItem(KEY_FIRST_INIT);
+      // let first = 'true';
+      if(!first || first != 'false') {
+        console.log('添加标签');
+        let count = 0;
+        for(let i = 0; i<defaultTags.length; i++) {
+          realm.write(() => {
+            realm.create(TagSchema.name, {
+              id: i,
+              tagName: defaultTags[i],
+              date: new Date(),
+            });
+          });
+          for(let j=0;j<defaultQuestions[i].length;j++) {
+            realm.write(() => {
+              realm.create(QuestionSchema.name, {
+                id: count,
+                tagId: i,
+                question: defaultQuestions[i][j],
+              });
+            });
+            count++;
+          }
+				}
+				AsyncStorage.setItem(KEY_FIRST_INIT, 'false');
+        console.log('添加标签完毕');
+      }
+    } catch (e) {
+      console.log('first check: ',e);
+    }
+
   },
 
   componentDidMount() {
     console.log('did mount.');
+    //这里统计使用天数
+    this.getCount().done();
+    // this.deleteCount().done();
   },
+
+  async getCount() {
+    try{
+      let lastDay = await AsyncStorage.getItem(achieveKeys.KEY_ACHIEVE_LAST_DAY);
+      let lastDayCount = await AsyncStorage.getItem(achieveKeys.KEY_ACHIEVE_DAY);
+      console.log('after mount.', lastDay, lastDayCount);
+
+      let date = new Date();
+      if(lastDay != null){
+        let lastDate = new Date(parseInt(lastDay));
+        console.log('lastdate', lastDate);
+        if(!(lastDate.getFullYear() == date.getFullYear() && lastDate.getMonth() == date.getMonth()
+          && lastDate.getDate() == date.getDate()) && lastDay < date.getTime()) {
+          //非同一天才统计
+          await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_LAST_DAY, date.getTime().toString());
+          let temp = lastDayCount ? (parseInt(lastDayCount)+1): 1;
+          await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DAY, temp.toString());
+        } else {
+        	console.log('同一天非第一次打开');
+          // await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DAY, '56');
+				}
+      }else{
+        //第一次使用
+        await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_LAST_DAY, date.getTime().toString());
+        await AsyncStorage.setItem(achieveKeys.KEY_ACHIEVE_DAY, '1');
+        console.log('first time', date);
+      }
+    }catch(error){
+      console.log('AsyncStorage错误'+error.message);
+    }
+	},
+
+	async deleteCount() {
+  	try{
+  		await AsyncStorage.removeItem(achieveKeys.KEY_ACHIEVE_LAST_DAY);
+  		await AsyncStorage.removeItem(achieveKeys.KEY_ACHIEVE_DAY);
+		} catch(e) {}
+	},
 
 	//创建新日记
 	_createNewDiary(tags){
@@ -101,13 +192,14 @@ var Xiaomubiao = React.createClass({
 	},
 
 	//日记预览页
-	_previewDiary(id, backFunc) {
+	_previewDiary(id) {
 		console.log('back content: ' + id);
 		this.refs.navigator.replace({
 			name: PAGES.page_preview,
 			data: {
 				diaryId: id,
-				callback: backFunc
+				// callback: backFunc
+				from: 'other'
 			}
 		})
 	},
@@ -152,7 +244,7 @@ var Xiaomubiao = React.createClass({
 			 	console.log('navigater newDiary view.');
 				return <NewDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator} route={route}/>;
 			case PAGES.page_all_diary:
-				return <AllDiaryView quit={this.goHome} preview={this._previewDiary} navigator={navigator}/>;
+				return <AllDiaryView quit={this.goHome} navigator={navigator}/>;
 			case PAGES.page_data_analyze:
 				return <DataAnalyzeView quit={this.goHome}/>;
 			case PAGES.page_edit_theme:
@@ -174,7 +266,7 @@ var Xiaomubiao = React.createClass({
 			case PAGES.page_new_tag:
 				return <NewTagView navigator={navigator} {...route.data}/>;
       case PAGES.page_edit_diary:
-        return <EditDiaryView navigator={navigator} {...route.data} preview={this._previewDiary}/>;
+        return <EditDiaryView navigator={navigator} {...route.data}/>;
 			default:
      		console.error('Encountered unexpected route: ' + route.name);
     }

@@ -18,7 +18,7 @@
     "react-native-push-notification": "latest",
     "react-native-scrollable-tab-view": "^0.7.0",
     "react-native-view-shot": "^1.9.1",
-    "realm": "^0.15.4",
+    "realm": "2.2.15",
     "reflux": "^6.0.0"
   },
   "devDependencies": {

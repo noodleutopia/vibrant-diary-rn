@@ -50,6 +50,9 @@ class DateStore extends Reflux.Store {
             ' ' +
             this._date.toLocaleTimeString());
       await AsyncStorage.setItem(DATE_KEY, this._date.toString());
+      console.log('写入日期完毕： ' + this._date.toLocaleDateString() +
+            ' ' +
+            this._date.toLocaleTimeString());
     }
     catch (error) {
       console.error('AsyncStorage error: ', error.message);
@@ -60,6 +63,7 @@ class DateStore extends Reflux.Store {
     try {
       console.log('将要写入天气： ' + this._temperature);
       await AsyncStorage.setItem(TEMPER_KEY, this._temperature.toString());
+      console.log('写入天气完毕： ' + this._temperature);
     }
     catch (error) {
       console.error('AsyncStorage error: ', error.message);
@@ -70,6 +74,7 @@ class DateStore extends Reflux.Store {
     try {
       console.log('将要写入心情： ' + this._mood);
       await AsyncStorage.setItem(MOOD_KEY, this._mood.toString());
+      console.log('写入心情完毕： ' + this._mood);
     }
     catch (error) {
       console.error('AsyncStorage error: ', error.message);
@@ -105,9 +110,9 @@ class DateStore extends Reflux.Store {
   }
 
   emit() {
-    this._writeDate().done();
-    this._writeTemp().done();
-    this._writeMood().done();
+    this._writeDate();
+    this._writeTemp();
+    this._writeMood();
   }
 
   init() {
@@ -117,6 +122,7 @@ class DateStore extends Reflux.Store {
       temperature: this._temperature,
       mood: this._mood,
     });
+    
   }
 
 }

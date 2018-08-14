@@ -102,17 +102,11 @@ class NewDiaryView extends Reflux.Component {
   onCreateDone=(isSuccess, id)=> {
     console.log('写入回调', isSuccess);
     if(isSuccess) {
-      this.props.preview(id, this.onPreviewBack);
+      this.props.preview(id);
     } else {
       alert("保存日记时发生错误");
     }
   }
-
-  //浏览返回的回调
-  onPreviewBack=(diaryId)=> {
-    this.diaryId = diaryId;
-  }
-    
 
   _onChangeTab(tab) {
     console.log('_onChangeTab' + tab.i);
@@ -185,7 +179,7 @@ class NewDiaryView extends Reflux.Component {
 
 NewDiaryView.propTypes = {
   quit: React.PropTypes.func.isRequired,
-  preview:React.PropTypes.func.isRequired,
+  // preview:React.PropTypes.func.isRequired,
 };
 
 var styles = StyleSheet.create({

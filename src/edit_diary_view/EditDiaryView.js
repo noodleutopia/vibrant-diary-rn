@@ -105,12 +105,6 @@ class EditDiaryView extends Reflux.Component {
     }
   }
 
-  //浏览返回的回调
-  onPreviewBack=(diaryId)=> {
-    this.diaryId = diaryId;
-  }
-
-
   _onChangeTab(tab) {
     console.log('_onChangeTab' + tab.i);
     this.currentTab = tab.ref.props.tagId;
@@ -162,7 +156,7 @@ class EditDiaryView extends Reflux.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#ff0000',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center'
   },

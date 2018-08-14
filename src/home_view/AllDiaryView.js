@@ -15,26 +15,34 @@ import DiaryStore from '../stores/DiaryStore';
 import {DiaryActions} from '../AllActions';
 import {dateTimeHelper} from '../utils/DateFormatUtil'
 import Spinner from 'react-native-loading-spinner-overlay';
+import {PAGES} from '../xiaomubiao'
 
 class AllDiaryView extends Reflux.Component {
 
   constructor(props) {
     super(props);
     this.store = DiaryStore;
-    this.storeKeys = ['dataSource'];
+    this.storeKeys = ['dataSource', 'showLoading'];
     this.sectionList = [];
-    this.state = {
-      visible: true
-    }
+    // this.state = {
+    //   visible: true
+    // }
+    this.navigator = this.props.navigator;
+    // this.empty = new ListView.DataSource({rowHasChanged : (r1, r2) => r1 !== r2,});
   }
 
   componentWillMount() {
     super.componentWillMount();
-    console.log('componentDidMount');
-    InteractionManager.runAfterInteractions(() => {
-      // ...long-running synchronous task...
-      DiaryActions.loadData(this.callback);
+    console.log('componentWillMount');
+    this.setState({showLoading: true}, ()=>{
+      //这里删除一篇日记
+      console.log('after show: ', this.state.showLoading);
+      InteractionManager.runAfterInteractions(() => {
+        // ...long-running synchronous task...
+        DiaryActions.loadData();
+      });
     });
+
   }
 
   componentDidMount() {
@@ -49,40 +57,57 @@ class AllDiaryView extends Reflux.Component {
     console.log('componentWillReceiveProps');
   }
 
-  deleteDiary(id) {
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate', prevState.showLoading);
+  }
+
+  componentWillUnmount() {
+    super.componentWillUnmount();
+    this.timer && clearTimeout(this.timer);
+  }
+
+
+  deleteDiary=(id)=> {
     Alert.alert('温馨提醒','确定删除这篇日记吗?',[
       {text:'取消',onPress:()=>console.log('你点击了取消')},
       {text:'确定',onPress:()=>{
         console.log('你点击了确定');
-        this.setState({visible: true}, function () {
-          //这里删除一篇日记
-          DiaryActions.deleteDiary(id, this.callback);
+        InteractionManager.runAfterInteractions(() => {
+
+          this.setState({showLoading: true}, ()=>{
+            this.timer = setTimeout(
+              () => {
+                //这里删除一篇日记
+                console.log('after show: ', this.state.showLoading);
+                DiaryActions.deleteDiary(id);
+              },
+              500
+            );
+          });
         });
         }
       },
     ]);
   }
 
-  callback = () =>{
-    this.setState({visible: false});
-  }
-
   render() {
-    console.log('render AllDiaryView view here...', this.state.dataSource);
+    console.log('render AllDiaryView view here...', this.state.dataSource, this.state.showLoading);
 
     return(
       <View style={styles.container}>
         <View style={styles.top}>
           <Button style={{ position: 'absolute', width: 60, left: 0, margin:0, marginTop: 30, padding: 0, backgroundColor: 'transparent'}}
-                  text={"<返回"} onPress={this.props.navigator.pop}/>
+                  text={"<返回"} onPress={this.props.navigator.popToTop}/>
           <Text style={{textAlign:'center', fontSize: 17,}}>日记列表</Text>
         </View>
-        {this.renderLoading()}
+        <Spinner visible={this.state.showLoading} textContent={""} textStyle={{color: '#FFF'}} />
+        {/*{this.renderLoading()}*/}
+        {/*{this.renderListView()}*/}
         <ListView
           initialListSize={1}
           dataSource={this.state.dataSource}
-          renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID} 
-            rowID={rowID} deleteDiary={()=>this.deleteDiary(rowData.id)} preview={this.props.preview}/>}
+          renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID}
+            rowID={rowID} deleteDiary={this.deleteDiary} navigator={this.props.navigator}/>}
           renderSeparator={this._renderSeperator}
           renderSectionHeader={this.renderSectionHeader}
         />
@@ -90,10 +115,39 @@ class AllDiaryView extends Reflux.Component {
     )
   }
 
+  // renderListView() {
+  //   if(this.state.showLoading) {
+  //     return(<Text>无数据</Text>);
+  //   } else {
+  //     return(
+  //       <ListView
+  //         initialListSize={1}
+  //         dataSource={this.state.dataSource}
+  //         renderRow={(rowData, sectionID, rowID) => <DiaryListItem rowData={rowData} sectionID={sectionID}
+  //           rowID={rowID} deleteDiary={this.deleteDiary} navigator={this.props.navigator}/>}
+  //         renderSeparator={this._renderSeperator}
+  //         renderSectionHeader={this.renderSectionHeader}
+  //       />
+  //     );
+  //   }
+  // }
+  //
+  // preview(id) {
+  //   console.log('preview ' + id);
+  //   this.navigator.push({
+  //     name: PAGES.page_preview,
+  //     data: {
+  //       diaryId: id,
+  //       // callback: backFunc
+  //       from: 'all'
+  //     }
+  //   })
+  // }
+
   renderLoading() {
     // if(this.state.dataSource == null || this.state.dataSource._cachedRowCount == 0) {
-    console.log('visible? ' ,this.state.visible);
-    if(this.state.visible) {
+    console.log('visible? ' ,this.state.showLoading);
+    if(this.state.showLoading) {
       return(
         <Spinner visible={true} textContent={""} textStyle={{color: '#FFF'}} />
       );
@@ -135,14 +189,27 @@ class DiaryListItem extends Component {
 
   _onPress (item) {
     console.log('你点击了Item：', item);
-    this.props.preview(item.id);
+    // this.props.preview(item.id);
+    console.log('preview ' + item.id);
+    this.props.navigator.push({
+      name: PAGES.page_preview,
+      data: {
+        diaryId: item.id,
+        // callback: backFunc
+        from: 'all'
+      }
+    })
+  }
+
+  temp(id) {
+    this.props.deleteDiary(id);
   }
 
   render() {
     return(
       <TouchableOpacity
         onPress={()=>this._onPress(this.props.rowData)}
-        onLongPress={this.props.deleteDiary}
+        onLongPress={()=>this.temp(this.props.rowData.id)}
         style={styles.listItem}>
 
           <Text>{dateTimeHelper.getInstance().format(this.props.rowData.date) + " "

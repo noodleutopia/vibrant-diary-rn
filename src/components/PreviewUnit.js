@@ -7,6 +7,7 @@ import{
 	Text,
 	StyleSheet,
   WebView,
+  Platform
 } from 'react-native';
 
 class PreviewUnit extends Component {
@@ -73,7 +74,7 @@ var styles = StyleSheet.create({
     lineHeight: 25,
     // justifyContent: 'center',
     // alignItems: 'center'
-    // fontWeight: 'bold'
+    fontWeight: Platform.OS == "ios"? 'normal':'bold'
   },
   answer: {
     // flex: 1,

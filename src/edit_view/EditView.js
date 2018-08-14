@@ -141,7 +141,7 @@ class EditView extends Component {
             style={styles.editText}/>
             </View>
           </KeyboardAwareScrollView>
-           {this._showView()}
+           {/*{this._showView()}*/}
         </View>
        
       </TouchableWithoutFeedback>
@@ -173,6 +173,7 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop:20,
+    backgroundColor: 'white'
   },
   title: {
 

@@ -8,6 +8,7 @@ import{
 	StyleSheet,
   TouchableOpacity,
   Image,
+  Dimensions
 } from 'react-native'
 
 import GridView from './GridView';
@@ -25,7 +26,7 @@ class TagsGridView extends Reflux.Component {
     super(props);
     // const ds = new GridView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      selected: [],
+      // selected: [],
       deletable: [],
       // dataSource: ds.cloneWithRows([
       //   'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin', 'Jackson', 'Jillian', 'Julie', 'Devin'
@@ -37,15 +38,17 @@ class TagsGridView extends Reflux.Component {
     // this.selectedTags = new Map();
     console.log('TagsGridView');
     this.store = TagStore; // <- just assign the store class itself
+    console.log("ssssssss: ", this.state);
   }
 
   componentDidMount() {
     console.log('componentDidMount');
     let len = this.state.tags.length;
     this.setState({
-      selected: Array(len).fill(false),
-      deletable: Array(len).fill(false),
+      // selected: Array(len).fill(false),
+      // deletable: Array(len).fill(false),
     });
+    console.log("ttttttttttttt: ", this.state);
   }
 
   // componentWillReceiveProps() {
@@ -55,13 +58,7 @@ class TagsGridView extends Reflux.Component {
 
   addTag=(id)=> {
     console.log('addTag: ' + id, this.state);
-    let temp = this.state.selected.slice();
-    if(temp[id]) {
-      temp[id] = false;
-    } else {
-      temp[id] = true;
-    }
-    this.setState({selected: temp, deletable: Array(temp.length).fill(false)});
+    TagActions.toggleSelect(id);
   }
 
   deleteFlag=(id)=> {
@@ -112,6 +109,8 @@ class TagsGridView extends Reflux.Component {
         let test = this.state.tags;
 
     console.log('tags will render' + test.length);
+    console.log("ffffffffffff: ", this.state);
+
   }
   
   renderRow = (item, sectionID, rowID, itemIndex, itemID) =>{
@@ -153,10 +152,10 @@ class Tag extends Component {
   }
 
   _onLongPress(item) {
-    console.log('你长按了标签：' + item.tagName + " " + item.id);
-    if(this.props.isDeletable) {
-      return;
-    }
+    console.log('你长按了标签：' + item.tagName + " " + item.id , this.props);
+    // if(this.props.isDeletable) {
+    //   return;
+    // }
     this.props.deleteFlag(this.props.itemId);
   }
 
@@ -185,7 +184,7 @@ class Tag extends Component {
 
 
 render() {
-    console.log(this.state,this.props.item.id)
+    console.log("tag render: ",this.state,this.props)
     return (
       <TouchableOpacity
         onPress={()=>this._onPress(this.props.item)}
@@ -206,7 +205,7 @@ render() {
     // if(this.state.selected) {
     if(this.props.isSelected) {
       return (<Image
-        style={[{position: 'absolute', right: 10, bottom: 10, width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
+        style={[{position: 'absolute', right: 10, bottom: 10, width: wid/6, height: wid/6, alignSelf: 'flex-end'}, this.props.imageStyle]}
         source={require('../../res/images/tag_select.png')}
         />);
     }
@@ -220,7 +219,7 @@ render() {
         onPress={()=>this._onDelete(this.props.item)}
         style={{position: 'absolute', right: 10, top: 10,}}>
           <Image
-          style={[{ width: 24, height: 24, alignSelf: 'flex-end'}, this.props.imageStyle]}
+          style={[{ width: wid/6, height: wid/6, alignSelf: 'flex-end'}, this.props.imageStyle]}
           source={require('../../res/images/tag_delete.png')}
           />
         </TouchableOpacity>);
@@ -228,7 +227,8 @@ render() {
   }
   
 }
-
+const wid = Dimensions.get('window').width / 2-60;
+const hei = wid/3*2;
 var styles = StyleSheet.create({
   list: {
     justifyContent: 'center',
@@ -242,11 +242,13 @@ var styles = StyleSheet.create({
     paddingRight: 15
   },
   tag: {
+    width: wid,
+    height: hei,
     justifyContent: 'center',
     // padding: 5,
     margin: 10,
-    width: 140,
-    height: 85,
+    // width: 140,
+    // height: 85,
     backgroundColor: '#F6F6F6',
     // alignItems: 'center',
     borderWidth: 1,
